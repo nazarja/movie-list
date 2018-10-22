@@ -5,36 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Browse The Movie Database (TMDb) for Movies and TV Shows. Create your own Custom Lists. Download Fanart and View Movie Statistics.">
-    <title>Movie List | TMDb List Creator</title>
-
-    <!-- Material Design Icons -->
+    <title>Movie List - TMDb</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- Custom CSS Stylesheets -->
-    <link rel="stylesheet" href="app/styles/css/styles.css">
+    <link rel="stylesheet" href="app/styles/css/style.css">
 </head>
 <body>
 
-    <!-- TopBar and Search -->
     <header>
-        <!-- TopBar -->
-        <div id="top-bar">
-            <i class="material-icons movie-icon">movie</i>
-            <h1>Movie List</h1>
-            <span class="menu-ref">Code &amp; Design by <a href="http://seanmurphy.eu" target="_blank">Sean Murphy</a></span>
-            <i id="menu-btn" class="material-icons menu-btn">menu</i>
+        <!-- Topbar -->
+        <div id="topbar">
+            <div id="topbar-left">
+                <a href="index.html" id="logo">
+                    <i class="material-icons movie-icon">movie_filter</i>
+                    <h1>Movie List</h1>
+                </a>
+            </div>
+            <div id="topbar-right">
+                <span id="made-by">Design & Code by <a href="http://seanmurphy.eu" target="_blank">Sean Murphy</a></span>
+                <i class="material-icons menu-icon">menu</i>
+            </div>
         </div>
-        
-        <!-- Search -->
-        <div id="search">
-            <!-- Search Input -->
-            <input id="search-input" type="text" placeholder="Search TMDb for Movies and TV Shows ..." autocomplete="off">
-            <!-- Search Results -->
+
+        <!-- Searchbox -->
+        <div id="searchbox">
+            <input id="search-input" type="text" placeholder="Search TMDb for Movies & TV Shows ..." autocomplete="off">
             <div id="search-results"></div>
         </div>
     </header>
 
-
-    <!-- JavaScript -->
+    <main>
+        <div id="side-nav">
+            <ul>
+                <li class="active" data-nav="movies">Movies</li>
+                <li data-nav="tvshows">TV Shows</li>
+                <li data-nav="userlists">My Lists</li>
+                <li data-nav="statistics">Statistics</li>
+            </ul>
+        </div>
+        <div id="main-content">
+            <p>Main Content</p>
+        </div>
+    </main>
+    
     <script src="app/js/dist/script.js"></script>
 </body>
 </html>

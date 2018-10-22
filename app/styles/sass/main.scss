@@ -1,19 +1,20 @@
 
 /*
 ==================================================================
-    GLOBAL / FONTS / VARIABLES
+    FONTS / VARIABLES
 ==================================================================
 */
 
-@import url("https://fonts.googleapis.com/css?family=Oswald|Roboto");
+@import url('https://fonts.googleapis.com/css?family=Julius+Sans+One|Oswald|Raleway');
 
-// Colors
-$red: rgb(172, 30, 30);
-$white: ghostwhite;
-$light-grey: #ccc;
+$oswald-font: 'Oswald', sans-serif;
+$julius-font: 'Julius Sans One', sans-serif;
 
-// Fonts
-$text-shadow: 1px 1px rgba(0,0,0,0.2);
+$white: #f9f9f9;
+$grey-font: #484539;
+$light-grey-font: #8c8c8c;
+
+$container-padding: 0 5%;
 
 /*
 ==================================================================
@@ -22,10 +23,29 @@ $text-shadow: 1px 1px rgba(0,0,0,0.2);
 */
 
 body {
-  margin: 0;
-  padding: 0; 
+    font-family: $julius-font;
+    color: $grey-font;
+    @extend %no-spacing;
+}
+
+ul {
+    list-style: none;
 }
 
 a {
-    transition: 0.3s;
+    text-decoration: none;
+    transition: 0.4s;
 }
+
+h1, h2, h3, h4 {
+    @extend %no-spacing;
+}
+
+main {
+    padding: $container-padding;
+
+    div {
+        display: inline-block;
+    }
+}
+

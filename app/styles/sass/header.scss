@@ -6,78 +6,80 @@
 */
 
 header {
-    background-color: $red;
-
     * {
-        text-transform: uppercase;
-        font-family: 'Oswald', Arial, Helvetica, sans-serif;
+        @extend %title-font; 
     }
 
-    // TOPBAR
-    #top-bar {
-        padding: 0 5%;
-        color: $white;
-        text-shadow: $text-shadow; 
-        
-        h1 {
-            display: inline-block;
-            font-size: 1em;
-        }
+    div * {
+        display: inline-block;
+    }
 
-        .movie-icon {
-            position: relative;
-            top: 5px;
-            padding: 0 5px 0 1px;
-        }
+    i {
+        padding: 12px;
+    }
 
-        .menu-btn {
-            float: right;
-            top: 0;
-            padding: 10px;
-            cursor: pointer;
+    #topbar {
+        padding: $container-padding;
 
-            @media (min-width: 800px) {
-                display: none;
-            }
-        }
+        #topbar-left {
+            #logo {
 
-        .menu-ref {
-            float: right;
-            top: 0;
-            padding-top: 14px;
-            font-size: 0.8em;
+                h1 {
+                    position: relative;
+                    top: -4px;
+                }
 
-            a {
-                color: $white;
                 &:hover {
-                    color: $light-grey;
+                    transform: translateX(2px);
                 }
             }
 
-            @media (max-width: 800px) {
-                display: none;
+        }
+
+        #topbar-right {
+            float: right;
+
+            #made-by {
+                position: relative;
+                top: 12px;
+                font-size: 0.8em;
+                color: $light-grey-font;
+
+                a {
+                    color: $light-grey-font;
+                    text-decoration: underline;
+
+                    &:hover {
+                        color: $grey-font;
+                    }
+                }
+
+                @media (max-width: 800px) {
+                    display: none;
+                }
+            }
+
+            .menu-icon {
+                cursor: pointer;
+                @media (min-width: 800px) {
+                    display: none;
+                }
             }
         }
     }
 
-    // SEARCH 
-    #search {
-        background-color: $white;
-        box-sizing: border-box;
-        
-        #search-input {
+    #searchbox {
+        input[type="text"] {
+            box-sizing: border-box;
+            padding: $container-padding;
+            padding-left: calc(5% + 10px);
             width: 100%;
-            height: 8vmin;
+            height: 6vmin;
             min-height: 50px;
-            padding-left: 5%;
             border: none;
-            border-bottom: 1px solid $light-grey;
-            font-size: 3.25vmin;
-        }
-    
-        #search-results {
-            padding-left: 5%;            
+            border-top: 1px solid #d9d9d9;
+            border-bottom: 1px solid #d9d9d9;
         }
     }
-
+   
 }

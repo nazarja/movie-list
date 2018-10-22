@@ -1,0 +1,125 @@
+/*
+==================================================================
+    FONTS / VARIABLES
+==================================================================
+*/
+@import url("https://fonts.googleapis.com/css?family=Julius+Sans+One|Oswald|Raleway");
+/*
+==================================================================
+    GLOBAL / GENERAL
+==================================================================
+*/
+body {
+  font-family: "Julius Sans One", sans-serif;
+  color: #484539; }
+
+ul {
+  list-style: none; }
+
+a {
+  text-decoration: none;
+  transition: 0.4s; }
+
+main {
+  padding: 0 5%; }
+  main div {
+    display: inline-block; }
+
+body, h1, h2, h3, h4 {
+  margin: 0;
+  padding: 0; }
+
+header *, #side-nav {
+  font-family: "Oswald", sans-serif;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #484539; }
+
+/*
+==================================================================
+    HEADER
+==================================================================
+*/
+header div * {
+  display: inline-block; }
+
+header i {
+  padding: 12px; }
+
+header #topbar {
+  padding: 0 5%; }
+  header #topbar #topbar-left #logo h1 {
+    position: relative;
+    top: -4px; }
+  header #topbar #topbar-left #logo:hover {
+    -webkit-transform: translateX(2px);
+            transform: translateX(2px); }
+  header #topbar #topbar-right {
+    float: right; }
+    header #topbar #topbar-right #made-by {
+      position: relative;
+      top: 12px;
+      font-size: 0.8em;
+      color: #8c8c8c; }
+      header #topbar #topbar-right #made-by a {
+        color: #8c8c8c;
+        text-decoration: underline; }
+        header #topbar #topbar-right #made-by a:hover {
+          color: #484539; }
+      @media (max-width: 800px) {
+        header #topbar #topbar-right #made-by {
+          display: none; } }
+    header #topbar #topbar-right .menu-icon {
+      cursor: pointer; }
+      @media (min-width: 800px) {
+        header #topbar #topbar-right .menu-icon {
+          display: none; } }
+
+header #searchbox input[type="text"] {
+  box-sizing: border-box;
+  padding: 0 5%;
+  padding-left: calc(5% + 10px);
+  width: 100%;
+  height: 6vmin;
+  min-height: 50px;
+  border: none;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9; }
+
+/*
+==================================================================
+    NAVIGATION
+==================================================================
+*/
+#side-nav {
+  display: inline-block;
+  position: relative;
+  left: -160px;
+  width: 140px;
+  transition: 1s;
+  background-color: #f9f9f9; }
+  #side-nav ul {
+    position: relative;
+    padding-left: 12px;
+    color: #8c8c8c; }
+    #side-nav ul .active {
+      color: #484539; }
+    #side-nav ul li {
+      transition: 0.4s;
+      cursor: pointer;
+      padding: 0.05em 0; }
+    #side-nav ul li:hover {
+      color: #484539;
+      -webkit-transform: translateX(2px);
+              transform: translateX(2px); }
+  @media (min-width: 800px) {
+    #side-nav {
+      left: 0; } }
+
+#main-content {
+  position: relative;
+  left: -140px;
+  transition: 1s; }
+  @media (min-width: 800px) {
+    #main-content {
+      left: 0; } }

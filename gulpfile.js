@@ -29,9 +29,11 @@ const concat = require('gulp-concat');
 gulp.task('watch-sass', () => {
     gulp.src([
                 'app/styles/sass/main.scss',
+                'app/styles/sass/placeholders.scss',
                 'app/styles/sass/header.scss',
+                'app/styles/sass/nav.scss',
     ])
-    .pipe(concat('styles.scss'))
+    .pipe(concat('style.scss'))
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer({
         browsers: ['last 1 version']
@@ -44,7 +46,6 @@ gulp.task('watch-sass', () => {
 gulp.task('watch-js', () => {
     gulp.src([
                 'app/js/src/main.js',
-                'app/js/src/search.js',
     ])
     .pipe(concat('script.js'))
     .pipe(gulp.dest('app/js/dist'));
