@@ -1,0 +1,23 @@
+{
+  "name": "movie-list",
+  "version": "1.0.0",
+  "description": "Front End JavaScript Project using TMDB API, Local Storage and D3 (Code Institute 2nd Milestone Project)",
+  "main": "index.html",
+  "Dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^6.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nazarja/movie-list.git"
+  },
+  "author": "Sean Murphy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nazarja/movie-list/issues"
+  },
+  "homepage": "https://nazarja.github.io/movie-list/index.html"
+}
