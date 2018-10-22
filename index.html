@@ -5,12 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Browse The Movie Database (TMDb) for Movies and TV Shows. Create your own Custom Lists. Download Fanart and View Movie Statistics.">
-    <title>Movie Array</title>
-    
+    <title>Movie List | TMDb List Creator</title>
+
+    <!-- Material Design Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- Custom CSS Stylesheets -->
     <link rel="stylesheet" href="app/styles/css/styles.css">
 </head>
 <body>
+
+    <!-- TopBar and Search -->
+    <header>
+        <!-- TopBar -->
+        <div id="top-bar">
+            <i class="material-icons movie-icon">movie</i>
+            <h1>Movie List</h1>
+            <span class="menu-ref">Code &amp; Design by <a href="http://seanmurphy.eu" target="_blank">Sean Murphy</a></span>
+            <i id="menu-btn" class="material-icons menu-btn">menu</i>
+        </div>
+        
+        <!-- Search -->
+        <div id="search">
+            <!-- Search Input -->
+            <input id="search-input" type="text" placeholder="Search TMDb for Movies and TV Shows ..." autocomplete="off">
+            <!-- Search Results -->
+            <div id="search-results"></div>
+        </div>
+    </header>
 
 
     <!-- JavaScript -->

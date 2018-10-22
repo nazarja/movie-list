@@ -1,0 +1,83 @@
+
+/*
+==================================================================
+    HEADER
+==================================================================
+*/
+
+header {
+    background-color: $red;
+
+    * {
+        text-transform: uppercase;
+        font-family: 'Oswald', Arial, Helvetica, sans-serif;
+    }
+
+    // TOPBAR
+    #top-bar {
+        padding: 0 5%;
+        color: $white;
+        text-shadow: $text-shadow; 
+        
+        h1 {
+            display: inline-block;
+            font-size: 1em;
+        }
+
+        .movie-icon {
+            position: relative;
+            top: 5px;
+            padding: 0 5px 0 1px;
+        }
+
+        .menu-btn {
+            float: right;
+            top: 0;
+            padding: 10px;
+            cursor: pointer;
+
+            @media (min-width: 800px) {
+                display: none;
+            }
+        }
+
+        .menu-ref {
+            float: right;
+            top: 0;
+            padding-top: 14px;
+            font-size: 0.8em;
+
+            a {
+                color: $white;
+                &:hover {
+                    color: $light-grey;
+                }
+            }
+
+            @media (max-width: 800px) {
+                display: none;
+            }
+        }
+    }
+
+    // SEARCH 
+    #search {
+        background-color: $white;
+        box-sizing: border-box;
+        
+        #search-input {
+            width: 100%;
+            height: 8vmin;
+            min-height: 50px;
+            padding-left: 5%;
+            border: none;
+            border-bottom: 1px solid $light-grey;
+            font-size: 3.25vmin;
+        }
+    
+        #search-results {
+            padding-left: 5%;            
+        }
+    }
+
+}

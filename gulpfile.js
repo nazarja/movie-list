@@ -29,6 +29,7 @@ const concat = require('gulp-concat');
 gulp.task('watch-sass', () => {
     gulp.src([
                 'app/styles/sass/main.scss',
+                'app/styles/sass/header.scss',
     ])
     .pipe(concat('styles.scss'))
     .pipe(sass().on('error', sass.logError))
@@ -43,6 +44,7 @@ gulp.task('watch-sass', () => {
 gulp.task('watch-js', () => {
     gulp.src([
                 'app/js/src/main.js',
+                'app/js/src/search.js',
     ])
     .pipe(concat('script.js'))
     .pipe(gulp.dest('app/js/dist'));

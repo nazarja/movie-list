@@ -1,0 +1,31 @@
+
+/*
+==================================================================
+    GLOBAL / FONTS / VARIABLES
+==================================================================
+*/
+
+@import url("https://fonts.googleapis.com/css?family=Oswald|Roboto");
+
+// Colors
+$red: rgb(172, 30, 30);
+$white: ghostwhite;
+$light-grey: #ccc;
+
+// Fonts
+$text-shadow: 1px 1px rgba(0,0,0,0.2);
+
+/*
+==================================================================
+    GLOBAL / GENERAL
+==================================================================
+*/
+
+body {
+  margin: 0;
+  padding: 0; 
+}
+
+a {
+    transition: 0.3s;
+}
