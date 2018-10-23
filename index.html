@@ -6,47 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="description" content="Browse The Movie Database (TMDb) for Movies and TV Shows. Create your own Custom Lists. Download Fanart and View Movie Statistics.">
     <title>Movie List - TMDb</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="app/styles/css/style.css">
 </head>
 <body>
 
+    
     <header>
-        <!-- Topbar -->
         <div id="topbar">
-            <div id="topbar-left">
-                <a href="index.html" id="logo">
-                    <i class="material-icons movie-icon">movie_filter</i>
-                    <h1>Movie List</h1>
-                </a>
-            </div>
-            <div id="topbar-right">
-                <span id="made-by">Design & Code by <a href="http://seanmurphy.eu" target="_blank">Sean Murphy</a></span>
-                <i class="material-icons menu-icon">menu</i>
-            </div>
-        </div>
-
-        <!-- Searchbox -->
-        <div id="searchbox">
-            <input id="search-input" type="text" placeholder="Search TMDb for Movies & TV Shows ..." autocomplete="off">
-            <div id="search-results"></div>
+            <a href="index.html" id="logo">
+                <i class="material-icons" id="movie-icon">movie_filter</i>
+                <h1>Movie List</h1>
+            </a>
+            <span id="ref-link">
+                Design & Code by <a href="http://seanmurphy.eu">Sean Murphy</a>
+            </span>
+            <i tabindex="0" aria-label="menu button" class="material-icons" id="menu-btn">menu</i>
         </div>
     </header>
-
-    <main>
-        <div id="side-nav">
-            <ul>
-                <li class="active" data-nav="movies">Movies</li>
-                <li data-nav="tvshows">TV Shows</li>
-                <li data-nav="userlists">My Lists</li>
-                <li data-nav="statistics">Statistics</li>
-            </ul>
-        </div>
-        <div id="main-content">
-            <p>Main Content</p>
-        </div>
-    </main>
     
+    <!-- JavaScript -->
     <script src="app/js/dist/script.js"></script>
 </body>
 </html>

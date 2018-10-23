@@ -29,9 +29,8 @@ const concat = require('gulp-concat');
 gulp.task('watch-sass', () => {
     gulp.src([
                 'app/styles/sass/main.scss',
-                'app/styles/sass/placeholders.scss',
-                'app/styles/sass/header.scss',
-                'app/styles/sass/nav.scss',
+                'app/styles/sass/navigation.scss',
+                
     ])
     .pipe(concat('style.scss'))
     .pipe(sass().on('error', sass.logError))

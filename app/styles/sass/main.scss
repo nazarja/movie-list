@@ -6,19 +6,96 @@
 */
 
 @import url('https://fonts.googleapis.com/css?family=Julius+Sans+One|Oswald|Raleway');
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialicons/v41/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2) format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
 
 $oswald-font: 'Oswald', sans-serif;
 $julius-font: 'Julius Sans One', sans-serif;
-
 $white: #f9f9f9;
 $grey-font: #484539;
 $light-grey-font: #8c8c8c;
+$small-padding: 0 5%;
+$breakpoint: 800px;
 
-$container-padding: 0 5%;
+
 
 /*
 ==================================================================
-    GLOBAL / GENERAL
+    PLACEHOLDERS
+==================================================================
+*/
+
+// No Spacing 
+%no-spacing {
+    margin: 0;
+    padding: 0;
+}
+
+// Title Font
+%title-font {
+    font-family: $oswald-font;
+    font-size: 1em;
+    text-transform: uppercase;
+    color: $grey-font;
+}
+
+%title-small-font {
+    font-family: $oswald-font;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    color: $light-grey-font;
+}
+
+
+/*
+==================================================================
+    MIXINs
+==================================================================
+*/
+
+@mixin pos-relative ($top, $left) {
+    position: relative;
+    top: $top;
+    left: $left;
+}
+
+@mixin pos-fixed ($width, $top, $left) {
+    position: fixed;
+    width: $width;
+    top: $top;
+    left: $left;
+}
+
+@mixin breakpoint {
+    @media (min-width: #{$breakpoint}) {
+        @content;
+    }
+ }
+
+
+/*
+==================================================================
+    GENERAL
 ==================================================================
 */
 
@@ -41,11 +118,11 @@ h1, h2, h3, h4 {
     @extend %no-spacing;
 }
 
-main {
-    padding: $container-padding;
-
-    div {
-        display: inline-block;
-    }
+i {
+    padding: 12px;
 }
+
+
+
+
 

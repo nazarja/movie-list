@@ -1,0 +1,50 @@
+header {
+    @include pos-fixed(100%, 0, 0);
+    padding: $small-padding;
+    box-sizing: border-box;
+
+    * {
+        @extend %title-font;
+        background-color: $white;
+    }
+
+    #topbar {
+        * {
+            display: inline-block;
+        }
+
+        #movie-icon {
+            padding-left: 0;
+        }
+
+        h1 {
+            @include pos-relative(-4px, auto);
+        }
+
+        #ref-link {
+            @include pos-relative(17px, auto);
+            @extend %title-small-font;
+            @include breakpoint {
+                display: inline-block;
+            }
+            display: none;
+            float: right;
+            a {
+                transition: 0.4s;
+                &:hover {
+                    text-decoration: underline;
+                    color: $light-grey-font;
+                }
+            }
+        }
+
+        #menu-btn {
+            float: right;
+            @include breakpoint {
+                display: none;
+            }
+        }
+    }
+
+    
+}
