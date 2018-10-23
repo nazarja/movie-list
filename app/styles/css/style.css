@@ -30,7 +30,7 @@
     PLACEHOLDERS
 ==================================================================
 */
-body, h1, h2, h3, h4 {
+body, h1, h2, h3, h4, header nav ul {
   margin: 0;
   padding: 0; }
 
@@ -48,7 +48,7 @@ header #topbar #ref-link {
 
 /*
 ==================================================================
-    MIXINs
+    MIXINS
 ==================================================================
 */
 /*
@@ -58,10 +58,12 @@ header #topbar #ref-link {
 */
 body {
   font-family: "Julius Sans One", sans-serif;
-  color: #484539; }
+  color: #484539;
+  height: 3000px; }
 
 ul {
-  list-style: none; }
+  list-style: none;
+  color: #8c8c8c; }
 
 a {
   text-decoration: none;
@@ -70,39 +72,103 @@ a {
 i {
   padding: 12px; }
 
+.active {
+  color: #484539; }
+
 header {
   position: fixed;
   width: 100%;
   top: 0;
-  left: 0;
-  padding: 0 5%;
-  box-sizing: border-box; }
+  left: 0; }
   header * {
     background-color: #f9f9f9; }
-  header #topbar * {
-    display: inline-block; }
-  header #topbar #movie-icon {
-    padding-left: 0; }
-  header #topbar h1 {
-    position: relative;
-    top: -4px;
-    left: auto; }
-  header #topbar #ref-link {
-    position: relative;
-    top: 17px;
-    left: auto;
-    display: none;
-    float: right; }
-    @media (min-width: 800px) {
-      header #topbar #ref-link {
-        display: inline-block; } }
-    header #topbar #ref-link a {
-      transition: 0.4s; }
-      header #topbar #ref-link a:hover {
-        text-decoration: underline;
-        color: #8c8c8c; }
-  header #topbar #menu-btn {
-    float: right; }
-    @media (min-width: 800px) {
-      header #topbar #menu-btn {
-        display: none; } }
+  header #topbar {
+    padding: 0 5%;
+    box-sizing: border-box; }
+    header #topbar * {
+      display: inline-block; }
+    header #topbar #logo:hover {
+      -webkit-transform: translateX(2px);
+              transform: translateX(2px); }
+    header #topbar #movie-icon {
+      padding-left: 0; }
+    header #topbar h1 {
+      position: relative;
+      top: -4px;
+      left: auto; }
+    header #topbar #ref-link {
+      position: relative;
+      top: 17px;
+      left: auto;
+      display: none;
+      float: right; }
+      @media (min-width: 800px) {
+        header #topbar #ref-link {
+          display: inline-block; } }
+      header #topbar #ref-link a {
+        transition: 0.4s; }
+        header #topbar #ref-link a:hover {
+          text-decoration: underline;
+          color: #8c8c8c; }
+    header #topbar #menu-btn {
+      float: right;
+      cursor: pointer; }
+      @media (min-width: 800px) {
+        header #topbar #menu-btn {
+          display: none; } }
+  header #search {
+    position: relative; }
+    header #search #search-input {
+      padding: 0 5%;
+      width: 100%;
+      height: 6vmin;
+      min-height: 50px;
+      border: none;
+      border-top: 1px solid #d9d9d9;
+      border-bottom: 1px solid #d9d9d9;
+      outline: none; }
+  header nav {
+    margin-top: 25px; }
+    header nav div {
+      position: fixed;
+      display: inline-block; }
+    header nav ul li {
+      color: #8c8c8c;
+      outline: none; }
+    header nav #primary-nav {
+      padding: 0 5%;
+      padding-top: 40px;
+      transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      left: -140px;
+      height: calc(100vh - 175px); }
+      header nav #primary-nav li {
+        font-family: "Oswald", sans-serif;
+        font-size: 1em;
+        text-transform: uppercase;
+        transition: 0.4s;
+        cursor: pointer; }
+        header nav #primary-nav li:hover {
+          color: #484539; }
+        header nav #primary-nav li:hover {
+          -webkit-transform: translateX(2px);
+                  transform: translateX(2px); }
+      @media (min-width: 800px) {
+        header nav #primary-nav {
+          left: 0; } }
+    header nav #secondry-nav {
+      width: 100%;
+      text-align: center; }
+      header nav #secondry-nav li {
+        font-family: "Julius Sans One", sans-serif;
+        font-size: 0.8em;
+        text-transform: uppercase;
+        transition: 0.4s;
+        cursor: pointer;
+        display: inline-block;
+        padding: 10px; }
+        header nav #secondry-nav li:hover {
+          color: #484539; }
+        @media screen and (max-width: 400px) {
+          header nav #secondry-nav li {
+            padding: 5px;
+            font-size: 0.6em; } }

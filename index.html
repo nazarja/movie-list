@@ -12,6 +12,8 @@
 
     
     <header>
+
+        <!-- Topbar - Logo & Nav Btn -->
         <div id="topbar">
             <a href="index.html" id="logo">
                 <i class="material-icons" id="movie-icon">movie_filter</i>
@@ -22,7 +24,40 @@
             </span>
             <i tabindex="0" aria-label="menu button" class="material-icons" id="menu-btn">menu</i>
         </div>
+
+        <!-- Search Input & Search Results -->
+        <div id="search">
+            <input id="search-input" type="text" placeholder="Search TMDb for Movies & TV Shows ..." autocomplete="off">
+            <div id="search-results"></div>
+        </div>
+
+        <!-- Primary & Secondry Nav -->
+        <nav>
+            <div id="secondry-nav">
+                <ul>
+                    <li class="active nav-child nav-item">Trending</li>
+                    <li class="nav-child nav-item">Popular</li>
+                    <li class="nav-child nav-item">Upcoming</li>
+                    <li class="nav-child nav-item">In Cinemas</li>
+                </ul>
+            </div>
+            <div id="primary-nav">
+                <ul>
+                    <li tabindex="0" class="active nav-parent nav-item" data-nav="movies">Movies</li>
+                    <li tabindex="0" class="nav-parent nav-item" data-nav="tvshows">TV Shows</li>
+                    <li tabindex="0" class="nav-parent nav-item" data-nav="userlists">My Lists</li>
+                    <li tabindex="0" class="nav-parent nav-item" data-nav="statistics">Statistics</li>
+                </ul>
+            </div>
+        </nav>
     </header>
+
+
+
+    <main>
+        
+        <div id=main-content""></div>
+    </main>
     
     <!-- JavaScript -->
     <script src="app/js/dist/script.js"></script>

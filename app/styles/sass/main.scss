@@ -36,6 +36,7 @@ $grey-font: #484539;
 $light-grey-font: #8c8c8c;
 $small-padding: 0 5%;
 $breakpoint: 800px;
+$move-x: translateX(2px);
 
 
 
@@ -67,9 +68,10 @@ $breakpoint: 800px;
 }
 
 
+
 /*
 ==================================================================
-    MIXINs
+    MIXINS
 ==================================================================
 */
 
@@ -90,8 +92,22 @@ $breakpoint: 800px;
     @media (min-width: #{$breakpoint}) {
         @content;
     }
- }
+}
 
+@mixin nav($display) {
+    display: $display;
+}
+
+@mixin menu-font($font-family, $font-size) {
+    font-family: $font-family;
+    font-size: $font-size;
+    text-transform: uppercase;
+    transition: 0.4s;
+    cursor: pointer;
+    &:hover {
+        color: $grey-font;
+    }
+}
 
 /*
 ==================================================================
@@ -102,11 +118,13 @@ $breakpoint: 800px;
 body {
     font-family: $julius-font;
     color: $grey-font;
+    height: 3000px;
     @extend %no-spacing;
 }
 
 ul {
     list-style: none;
+    color: $light-grey-font;
 }
 
 a {
@@ -122,6 +140,9 @@ i {
     padding: 12px;
 }
 
+.active {
+    color: $grey-font;
+}
 
 
 
