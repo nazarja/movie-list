@@ -45,6 +45,11 @@ gulp.task('watch-sass', () => {
 gulp.task('watch-js', () => {
     gulp.src([
                 'app/js/src/main.js',
+                'app/js/src/navigation.js',
+                'app/js/src/localStorage.js',
+                'app/js/src/api.js',
+                'app/js/src/sampleData.js',
+                'app/js/src/init.js',
     ])
     .pipe(concat('script.js'))
     .pipe(gulp.dest('app/js/dist'));
