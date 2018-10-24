@@ -4,6 +4,7 @@
 =========================================*/
 
 function init() {
+    setNavClickListener();
     nav('movies,trending');
 }
 init();

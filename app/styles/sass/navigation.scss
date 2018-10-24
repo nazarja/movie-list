@@ -109,6 +109,12 @@ header {
                 @include menu-font($julius-font, 0.8em); 
                 display: inline-block;
                 padding: 10px;
+                &:hover {
+                    color: $black-font;
+                }
+                &:active {
+                    outline: none;
+                }
                 @media screen and (max-width: 400px) {
                     padding: 5px;
                     font-size: 0.6em;

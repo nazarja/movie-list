@@ -9,9 +9,8 @@ const BACKDROP = `https://image.tmdb.org/t/p/original`
 const PREVIEW = `https://image.tmdb.org/t/p/preview`
 
 function getTMDbData(param) {
-    let navdata = param.split(',');
-    let primary = navdata[0];
-    let secondry = navdata[1];
+    let nav = param.split(',');
+    let primary = nav[0];
+    let secondary = nav[1];
 
-    console.log('TMDB was called!')
 }

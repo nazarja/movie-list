@@ -72,8 +72,11 @@ a {
 i {
   padding: 12px; }
 
-.active {
+.active-parent {
   color: #484539; }
+
+.active-child {
+  color: #000; }
 
 header {
   position: fixed;
@@ -168,6 +171,10 @@ header {
         padding: 10px; }
         header nav #secondry-nav li:hover {
           color: #484539; }
+        header nav #secondry-nav li:hover {
+          color: #000; }
+        header nav #secondry-nav li:active {
+          outline: none; }
         @media screen and (max-width: 400px) {
           header nav #secondry-nav li {
             padding: 5px;

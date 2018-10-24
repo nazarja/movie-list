@@ -1,36 +1,49 @@
 
 
 
-
 /*
 ==============================
     MANAGE ACTIVE CLASS
 ==============================
 */
 
+
 // Iterate over nav items and remove active class
-function manageActiveClass(activeClass) {
-    for (let i = 0; i < activeClass.length; i++) {
-        if (activeClass[i].classList.contains('active')) {
-            activeClass[i].classList.remove('active');
+function manageActiveClass(primary, secondary) {
+    let activeParent = document.querySelectorAll('.nav-parent');
+    let activeChild = document.querySelectorAll('.nav-child');
+
+    activeParent.forEach(parent => {
+        parent.classList.remove('active-parent');
+        if (parent.dataset.nav.includes(primary)) {
+            parent.classList.add('active-parent');
         }
-    }
-}
+    });
+
+    activeChild.forEach(child => {
+        child.classList.remove('active-child');
+        if (child.dataset.nav.includes(secondary)) {
+            child.classList.add('active-child');
+        }
+    });
+
+};
+
 
 
 /*
 ==============================
-    MANAGE ACTIVE STATE
+    NAV CLICK LISTENERS
 ==============================
 */
 
-
-navItem.forEach(navitem => {
-    navitem.addEventListener('click', () => {
-        nav(navitem.dataset.nav);
+function setNavClickListener() {
+    navItem.forEach(navitem => {
+        navitem.addEventListener('click', () => {
+            nav(navitem.dataset.nav);
+        })
     })
-})
-
+};
 
 
 
@@ -49,10 +62,15 @@ function manageSecondaryNav(primary, secondary) {
 
     secondaryNav.innerHTML = `<ul>`
     for (let i of state[primary]) {
-        secondaryNav.innerHTML += `<li tabindex="0" class="nav-child nav-item" onclick="nav('${primary}','${i.toLowerCase().replace(/\s/g, '')}')">${i}</li>`;
+        let secondary = i.toLowerCase().replace(/\s/g, '');
+        secondaryNav.innerHTML += `
+            <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">${i}</li>
+        `;
     }
     secondaryNav.innerHTML += `</ul>`;
-}
+};
+
+
 
 /*
 ==============================
@@ -60,39 +78,31 @@ function manageSecondaryNav(primary, secondary) {
 ==============================
 */
 
-function nav(secondry) {
-    let navdata = secondry.split(',');
-    let primary = navdata[0];
-    let secondary = navdata[1];
+function nav(param) {
+    let nav = param.split(',');
+    let primary = nav[0];
+    let secondary = nav[1];
 
-    // MOVIES
-    if (primary == 'movies') {
-        getTMDbData(secondry);
-        manageSecondaryNav(primary, secondary);
+
+    switch(primary) {
+        case 'movies':
+            getTMDbData(primary, secondary);
+            manageSecondaryNav(primary, secondary);
+            break;
+        case 'tvshows':
+            getTMDbData(primary, secondary);
+            manageSecondaryNav(primary, secondary);
+            break;
+        case 'mylists':
+            getLocalStorageLists();
+            manageSecondaryNav(primary, secondary);
+            break;
+        case 'statistics':
+            manageSecondaryNav(primary, secondary);
+            break;
+        default:
+            break;
     }
 
-    // TV SHOWS
-    else if (primary == 'tvshows') {
-        getTMDbData(secondry);
-        manageSecondaryNav(primary, secondary);
-    }
-
-    // MY LISTS
-    else if (primary == 'mylists') {
-        getLocalStorageLists();
-        manageSecondaryNav(primary, secondary);
-    }
-
-    // STATISTICS
-    else if (primary == 'statistics') {
-        getStatisticsData();
-        manageSecondaryNav(primary, secondary);
-    }
-
-    // SEARCH
-    else {
-
-    };
-
-    // manageActiveState();
-}
+    manageActiveClass(primary, secondary);
+};

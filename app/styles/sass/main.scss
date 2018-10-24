@@ -32,6 +32,7 @@
 $oswald-font: 'Oswald', sans-serif;
 $julius-font: 'Julius Sans One', sans-serif;
 $white: #f9f9f9;
+$black-font: #000;
 $grey-font: #484539;
 $light-grey-font: #8c8c8c;
 $small-padding: 0 5%;
@@ -140,9 +141,14 @@ i {
     padding: 12px;
 }
 
-.active {
+.active-parent {
     color: $grey-font;
 }
+
+.active-child {
+    color: $black-font;
+}
+
 
 
 
