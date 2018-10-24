@@ -7,14 +7,12 @@
 const menuBtn = document.querySelector('#menu-btn');
 const primaryNav = document.querySelector('#primary-nav');
 const secondaryNav = document.querySelector('#secondry-nav');
-const navParent = document.querySelectorAll('.nav-parent');
-const navChild = document.querySelectorAll('.nav-child');
 const navItem = document.querySelectorAll('.nav-item');
 
 
 const state = {
-    movies : ['Trending', 'Popular', 'Upcoming', 'In Cinemas'],
-    tvshows : ['Trending', 'Popular', 'On the Air', 'Airing Today'],
+    movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
+    tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
     mylists : [],
     statistics: []
 };

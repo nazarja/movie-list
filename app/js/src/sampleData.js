@@ -416,3 +416,5 @@ const sampleData = {
       }
     ]
   }
+
+  let jsonData = JSON.stringify(sampleData);

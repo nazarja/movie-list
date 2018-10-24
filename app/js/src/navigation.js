@@ -62,7 +62,7 @@ function manageSecondaryNav(primary, secondary) {
 
     secondaryNav.innerHTML = `<ul>`
     for (let i of state[primary]) {
-        let secondary = i.toLowerCase().replace(/\s/g, '');
+        let secondary = i.toLowerCase().replace(/\s/g, '_');
         secondaryNav.innerHTML += `
             <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">${i}</li>
         `;

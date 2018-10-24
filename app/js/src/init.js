@@ -5,6 +5,7 @@
 
 function init() {
     setNavClickListener();
-    nav('movies,trending');
+    nav('movies,popular');
+    getLocalStorageLists();
 }
 init();

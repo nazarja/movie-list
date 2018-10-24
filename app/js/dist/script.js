@@ -7,14 +7,12 @@
 const menuBtn = document.querySelector('#menu-btn');
 const primaryNav = document.querySelector('#primary-nav');
 const secondaryNav = document.querySelector('#secondry-nav');
-const navParent = document.querySelectorAll('.nav-parent');
-const navChild = document.querySelectorAll('.nav-child');
 const navItem = document.querySelectorAll('.nav-item');
 
 
 const state = {
-    movies : ['Trending', 'Popular', 'Upcoming', 'In Cinemas'],
-    tvshows : ['Trending', 'Popular', 'On the Air', 'Airing Today'],
+    movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
+    tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
     mylists : [],
     statistics: []
 };
@@ -120,7 +118,7 @@ function manageSecondaryNav(primary, secondary) {
 
     secondaryNav.innerHTML = `<ul>`
     for (let i of state[primary]) {
-        let secondary = i.toLowerCase().replace(/\s/g, '');
+        let secondary = i.toLowerCase().replace(/\s/g, '_');
         secondaryNav.innerHTML += `
             <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">${i}</li>
         `;
@@ -166,22 +164,41 @@ function nav(param) {
 };
 function getLocalStorageLists() {
 }
-// TMDB API Key
-const TMDB_URL = `https://api.themoviedb.org/3/`
-const TMDB_API_KEY = `?api_key=d41fd9978486321b466e29bfec203902`
 
-// TMDB API Variables
-const POSTER = `https://image.tmdb.org/t/p/w500`
-const FANART =  `https://image.tmdb.org/t/p/w500`
-const BACKDROP = `https://image.tmdb.org/t/p/original`
-const PREVIEW = `https://image.tmdb.org/t/p/preview`
+const API_KEY = `?api_key=d41fd9978486321b466e29bfec203902`;
+const MOVIES_URL = 'https://api.themoviedb.org/3/movie/';
+const TVSHOWS_URL = 'https://api.themoviedb.org/3/tv/';
+const EXTRA = "&language=en-US&page=";
 
-function getTMDbData(param) {
-    let nav = param.split(',');
-    let primary = nav[0];
-    let secondary = nav[1];
+let page = 1;
+let url;
+let data;
 
-}
+
+function getTMDbData(primary, secondary) {
+    if (primary == 'movies') url = MOVIES_URL;
+    else if (primary == 'tvshows') url = TVSHOWS_URL;
+
+    fetchMovieData(primary, secondary)
+};
+
+
+function fetchMovieData(primary, secondary) {
+
+    fetch(`${url}${secondary}${API_KEY}${EXTRA}${page}`)
+    .then(response => {
+        data = response.json();
+        buildContent(primary, data)
+    })
+    .catch(err => {
+        console.log(err);
+    }); 
+};
+
+function buildContent(primary, data) {
+    console.log(primary, data)
+};
+
 const sampleData = {
     "page": 1,
     "total_results": 19805,
@@ -600,6 +617,8 @@ const sampleData = {
       }
     ]
   }
+
+  let jsonData = JSON.stringify(sampleData);
 /*========================================
     When page is frst loaded perform
     these actions to initilise the app
@@ -607,6 +626,7 @@ const sampleData = {
 
 function init() {
     setNavClickListener();
-    nav('movies,trending');
+    nav('movies,popular');
+    getLocalStorageLists();
 }
 init();
