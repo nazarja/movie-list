@@ -104,6 +104,7 @@ function nav(param) {
 
 function getSearchInput() {
     if (searchInput.value.length > 3) {
+        searchClear.style.visibility =  'visible';
 
         state.search.push(searchInput.value);
         searchResults.innerHTML = '';

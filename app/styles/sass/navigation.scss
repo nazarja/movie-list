@@ -77,6 +77,19 @@ header {
             outline: none;
         }
 
+        .search-clear {
+            position: absolute;
+            visibility: hidden;
+            top: 5px;
+            right: 5%;
+            font-size: 1.2em;
+            outline: none;
+            cursor: pointer;
+            @include breakpoint {
+                top: 8px;
+            }
+        }
+
         #search-results {
             position: absolute;
             width: 100%;

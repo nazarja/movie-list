@@ -7,6 +7,7 @@
 
 const menuBtn = document.querySelector('#menu-btn');
 const searchInput = document.querySelector('#search-input');
+const searchClear = document.querySelector('.search-clear');
 const searchResults = document.querySelector('#search-results');
 const primaryNav = document.querySelector('#primary-nav');
 const secondaryNav = document.querySelector('#secondry-nav');
@@ -50,6 +51,12 @@ function setEventListeners() {
     // SEARCH INPUT
     searchInput.addEventListener('input', () => {
         getSearchInput();
+    });
+
+    searchClear.addEventListener('click', () => {
+        searchInput.value = '';
+        searchClear.style.visibility =  'hidden';
+        resetElements('searchResults');
     });
 
 
