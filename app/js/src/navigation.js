@@ -41,7 +41,6 @@ function manageActiveClass(primary, secondary) {
 */
 
 function manageSecondaryNav(primary, secondary) {
-    
     if (secondary == 'null') {
         secondaryNav.innerHTML = ``;
         return;
@@ -70,14 +69,13 @@ function nav(param) {
     let primary = nav[0];
     let secondary = nav[1];
 
-
     switch(primary) {
         case 'movies':
-            getTMDbData(primary, secondary);
+            fetchTMDbData(primary, secondary);
             manageSecondaryNav(primary, secondary);
             break;
         case 'tvshows':
-            getTMDbData(primary, secondary);
+            fetchTMDbData(primary, secondary);
             manageSecondaryNav(primary, secondary);
             break;
         case 'mylists':
@@ -90,7 +88,6 @@ function nav(param) {
         default:
             break;
     };
-
     manageActiveClass(primary, secondary);
 };
 
@@ -98,18 +95,24 @@ function nav(param) {
 
 /*
 ==============================
-    SEARCH FUNCTION
+    SEARCH INPUT FUNCTION
 ==============================
 */
 
 function getSearchInput() {
     if (searchInput.value.length > 3) {
         searchClear.style.visibility =  'visible';
-
-        state.search.push(searchInput.value);
-        searchResults.innerHTML = '';
-        state.search.map(result => {
-            searchResults.innerHTML +=   `<p>${result}</p>`;
-        });
+        clickOutsideElement();
+        getTMDbSearchData(searchInput.value.replace(/\s/g, '%20'));
     };
+
+    if (searchInput.value.length < 4) {
+        resetSearchResults();
+    }
 };
+
+
+
+
+
+

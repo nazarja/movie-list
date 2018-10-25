@@ -33,7 +33,12 @@ let state = {
 
 function setEventListeners() {
 
-    // MOBILE MENU BTN CLICK
+    /*
+    ==============================
+        MENU BTN CLICK
+    ==============================
+    */
+
     menuBtn.addEventListener('click', () => { 
         if (menuBtn.innerHTML == 'menu') {
             menuBtn.innerHTML = 'close';
@@ -42,34 +47,59 @@ function setEventListeners() {
         else {
             menuBtn.innerHTML = 'menu';
             primaryNav.style.left = '-140px';
-    
+            
         }
-        resetElements('searchResults');
+        resetSearchResults();
     });
 
 
-    // SEARCH INPUT
+
+    /*
+    ==============================
+    NAV ITEM CLICK
+    ==============================
+    */
+
+    navItem.forEach(navitem => {
+        navitem.addEventListener('click', () => {
+            
+            // Call Nav
+            nav(navitem.dataset.nav);
+            
+            // Close menu on small viewports
+            if (window.innerWidth < 800) {
+                menuBtn.click();
+                }
+                resetSearchResults();
+            })
+    });
+
+    
+
+    /*
+    ==============================
+        SEARCH INPUT / CLEAR
+    ==============================
+    */
+
     searchInput.addEventListener('input', () => {
         getSearchInput();
     });
-
+ 
     searchClear.addEventListener('click', () => {
         searchInput.value = '';
         searchClear.style.visibility =  'hidden';
-        resetElements('searchResults');
+        resetSearchResults();
     });
+    
 
 
-    // NAV CLICKS
-    navItem.forEach(navitem => {
-        navitem.addEventListener('click', () => {
-            nav(navitem.dataset.nav);
-            resetElements('closeMenu');
-        })
-    });
+    /*
+    ==============================
+        WINDOW RESIZE
+    ==============================
+    */
 
-
-    // WINDOW RESIZE
     window.addEventListener("resize", () => {
         if (window.innerWidth > 800 && primaryNav.style.left == '-140px') {
             menuBtn.innerHTML = 'menu';
@@ -79,26 +109,29 @@ function setEventListeners() {
         else if (window.innerWidth < 800) {
             primaryNav.style.left = '-140px';
         }
-        resetElements('searchResults');
+        resetSearchResults();
     });
 };
 
 
+
 /*
-==============================
-    RESET ELEMENTS
-==============================
+==================================================================
+    GLOBAL RESETS
+==================================================================
 */
 
-function resetElements(param) {
-
-    if (param == 'searchResults') {
-        searchResults.innerHTML = ``;
-    }
-    // Close menu on small viewports
-    else if (param == 'closeMenu') {
-        menuBtn.click();
-    }
+function clickOutsideElement() {
+    // Set Event Listener to listen for clicks outside of search results
+    let clickOutsideElement = mainContent.addEventListener('click', () => {
+       resetSearchResults();
+       mainContent.removeEventListener('click', clickOutsideElement);
+   });
 };
+
+function resetSearchResults() {
+   searchResults.innerHTML = '';
+};
+
 
 

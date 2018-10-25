@@ -33,7 +33,12 @@ let state = {
 
 function setEventListeners() {
 
-    // MOBILE MENU BTN CLICK
+    /*
+    ==============================
+        MENU BTN CLICK
+    ==============================
+    */
+
     menuBtn.addEventListener('click', () => { 
         if (menuBtn.innerHTML == 'menu') {
             menuBtn.innerHTML = 'close';
@@ -42,34 +47,59 @@ function setEventListeners() {
         else {
             menuBtn.innerHTML = 'menu';
             primaryNav.style.left = '-140px';
-    
+            
         }
-        resetElements('searchResults');
+        resetSearchResults();
     });
 
 
-    // SEARCH INPUT
+
+    /*
+    ==============================
+    NAV ITEM CLICK
+    ==============================
+    */
+
+    navItem.forEach(navitem => {
+        navitem.addEventListener('click', () => {
+            
+            // Call Nav
+            nav(navitem.dataset.nav);
+            
+            // Close menu on small viewports
+            if (window.innerWidth < 800) {
+                menuBtn.click();
+                }
+                resetSearchResults();
+            })
+    });
+
+    
+
+    /*
+    ==============================
+        SEARCH INPUT / CLEAR
+    ==============================
+    */
+
     searchInput.addEventListener('input', () => {
         getSearchInput();
     });
-
+ 
     searchClear.addEventListener('click', () => {
         searchInput.value = '';
         searchClear.style.visibility =  'hidden';
-        resetElements('searchResults');
+        resetSearchResults();
     });
+    
 
 
-    // NAV CLICKS
-    navItem.forEach(navitem => {
-        navitem.addEventListener('click', () => {
-            nav(navitem.dataset.nav);
-            resetElements('closeMenu');
-        })
-    });
+    /*
+    ==============================
+        WINDOW RESIZE
+    ==============================
+    */
 
-
-    // WINDOW RESIZE
     window.addEventListener("resize", () => {
         if (window.innerWidth > 800 && primaryNav.style.left == '-140px') {
             menuBtn.innerHTML = 'menu';
@@ -79,27 +109,30 @@ function setEventListeners() {
         else if (window.innerWidth < 800) {
             primaryNav.style.left = '-140px';
         }
-        resetElements('searchResults');
+        resetSearchResults();
     });
 };
 
 
+
 /*
-==============================
-    RESET ELEMENTS
-==============================
+==================================================================
+    GLOBAL RESETS
+==================================================================
 */
 
-function resetElements(param) {
-
-    if (param == 'searchResults') {
-        searchResults.innerHTML = ``;
-    }
-    // Close menu on small viewports
-    else if (param == 'closeMenu') {
-        menuBtn.click();
-    }
+function clickOutsideElement() {
+    // Set Event Listener to listen for clicks outside of search results
+    let clickOutsideElement = mainContent.addEventListener('click', () => {
+       resetSearchResults();
+       mainContent.removeEventListener('click', clickOutsideElement);
+   });
 };
+
+function resetSearchResults() {
+   searchResults.innerHTML = '';
+};
+
 
 
 
@@ -146,7 +179,6 @@ function manageActiveClass(primary, secondary) {
 */
 
 function manageSecondaryNav(primary, secondary) {
-    
     if (secondary == 'null') {
         secondaryNav.innerHTML = ``;
         return;
@@ -175,14 +207,13 @@ function nav(param) {
     let primary = nav[0];
     let secondary = nav[1];
 
-
     switch(primary) {
         case 'movies':
-            getTMDbData(primary, secondary);
+            fetchTMDbData(primary, secondary);
             manageSecondaryNav(primary, secondary);
             break;
         case 'tvshows':
-            getTMDbData(primary, secondary);
+            fetchTMDbData(primary, secondary);
             manageSecondaryNav(primary, secondary);
             break;
         case 'mylists':
@@ -195,7 +226,6 @@ function nav(param) {
         default:
             break;
     };
-
     manageActiveClass(primary, secondary);
 };
 
@@ -203,21 +233,28 @@ function nav(param) {
 
 /*
 ==============================
-    SEARCH FUNCTION
+    SEARCH INPUT FUNCTION
 ==============================
 */
 
 function getSearchInput() {
     if (searchInput.value.length > 3) {
         searchClear.style.visibility =  'visible';
-
-        state.search.push(searchInput.value);
-        searchResults.innerHTML = '';
-        state.search.map(result => {
-            searchResults.innerHTML +=   `<p>${result}</p>`;
-        });
+        clickOutsideElement();
+        getTMDbSearchData(searchInput.value.replace(/\s/g, '%20'));
     };
+
+    if (searchInput.value.length < 4) {
+        resetSearchResults();
+    }
 };
+
+
+
+
+
+
+
 
 /*
 ==================================================================
@@ -235,6 +272,12 @@ function getLocalStorageLists() {
 ==================================================================
 */
 
+// Types of data = 
+// 1. Movies
+// 2. TV shows
+// 3. MultiSearch
+
+
 /*
 ==============================
     VARIABLES
@@ -244,28 +287,18 @@ function getLocalStorageLists() {
 const API_KEY = `?api_key=d41fd9978486321b466e29bfec203902`;
 const MOVIES_URL = 'https://api.themoviedb.org/3/movie/';
 const TVSHOWS_URL = 'https://api.themoviedb.org/3/tv/';
-const EXTRA = "&language=en-US&page=";
-
-let page = 1;
+const SEARCH_URL = 'https://api.themoviedb.org/3/search/multi';
+const EXTRA = "&language=en-US";
 let url;
 let data;
 
 
 
 /*
-==============================
-    DECIDE DATA TYPE
-==============================
+==================================================================
+    GET TMDB DATA
+==================================================================
 */
-
-function getTMDbData(primary, secondary) {
-    if (primary == 'movies') url = MOVIES_URL;
-    else if (primary == 'tvshows') url = TVSHOWS_URL;
-
-    /* WORK WITH SAMPLE DATA DURING DEVELOPMENT */
-    buildContent(primary, jsonData);
-    // fetchMovieData(primary, secondary);
-};
 
 
 
@@ -275,16 +308,28 @@ function getTMDbData(primary, secondary) {
 ==============================
 */
 
-function fetchMovieData(primary, secondary) {
+function fetchTMDbData(primary, secondary, page = 1) {
 
-    fetch(`${url}${secondary}${API_KEY}${EXTRA}${page}`)
+    // buildContent(primary, jsonData);
+
+    if (primary == 'movies') url = MOVIES_URL;
+    else if (primary == 'tvshows') url = TVSHOWS_URL;
+
+    fetch(`${url}${secondary}${API_KEY}${EXTRA}&page=${page}`, 
+        {
+            headers: new Headers ({ 'Accept': 'application/json'})
+        })
     .then(response => {
-        data = response.json();
-        buildContent(primary, data)
+        return response.text();
+    })
+    .then(text => {
+        data = JSON.parse(text);
+        showSearchResults(data.results);
     })
     .catch(err => {
+        // TODO: 404 Error
         console.log(err);
-    }); 
+    });
 };
 
 
@@ -295,16 +340,91 @@ function fetchMovieData(primary, secondary) {
 ==============================
 */
 
-function buildContent(primary, data) {
-    mainContent.innerHTML = `<p>I am the main Content</p>`;
-    data = JSON.parse(data);
-    data = data.results;
+function showContentResults(primary, results) {
 
-    // const suggested = Math.floor(Math.random() * data.length) + 1;
-    // console.log(data[suggested]);
-    // mainContent.style.backgroundImage =  `url('https://image.tmdb.org/t/p/original/${data[suggested].backdrop_path}')`
+    if (primary == 'movies') {
+        results.map(result => {
+            console.log(result);
+        });
+    }
+    else {
+        results.map(result => {
+            console.log(result);
+        });
+    }
 
+    
 };
+
+
+
+/*
+==================================================================
+    SEARCH INPUT QUERIES
+==================================================================
+*/
+
+/*
+==============================
+    FETCH SEARCH DATA
+==============================
+*/
+
+function getTMDbSearchData(searchQuery) {
+    fetch(`${SEARCH_URL}${API_KEY}&language=en-US&query=${searchQuery}&page=1&include_adult=false`, 
+        {
+            headers: new Headers ({ 'Accept': 'application/json'})
+        })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        data = JSON.parse(text);
+        resetSearchResults();
+        showSearchResults(data.results);
+    })
+    .catch(err => {
+         // TODO: 404 Error
+        console.log(err);
+    });
+};
+
+
+
+/*
+==============================
+    SHOW SEARCH RESULTS
+==============================
+*/
+
+function showSearchResults(results) {
+    let title;
+    for (let i = 0; i < 6; i++) {
+        if (i > 6) break;
+
+        if (results[i].media_type == 'tv') {
+            title = results[i].name;
+            searchResults.innerHTML += `<p onclick="fetchMediaData(${results[i].id});resetSearchResults()">${title}</p>`;
+        }
+        else if (results[i].media_type == 'movie') {
+            title = results[i].title;
+            searchResults.innerHTML += `<p onclick="fetchMediaData(${results[i].id});resetSearchResults()">${title}</p>`;
+        }
+    };
+};
+
+
+
+/*
+==================================================================
+    FETCH FULL MEDIA DATA
+==================================================================
+*/
+
+function fetchMediaData(tmdbId) {
+    console.log(tmdbId);
+}
+
 
 
 /*

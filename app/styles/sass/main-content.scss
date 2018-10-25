@@ -12,4 +12,8 @@ main {
         left: 15vw;
     }
     padding: $small-padding;
+    
+    #main-content {
+        height: 100vh
+    };
 }
