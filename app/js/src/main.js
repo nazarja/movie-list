@@ -20,7 +20,7 @@ let state = {
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
     mylists : [],
     statistics: [],
-    search: [] 
+    search: []
 };
 
 

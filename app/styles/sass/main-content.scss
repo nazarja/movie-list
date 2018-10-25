@@ -9,7 +9,7 @@
 main {
     @include pos-relative(180px, 0);
     @include breakpoint {
-        left: 12vw;
+        left: 15vw;
         max-width: 75%;
     }
     padding: $small-padding;
@@ -21,15 +21,63 @@ main {
 
         .media-item {
             display: inline-block;
+            position: relative;
             max-width: 200px;
             margin: 2% 1%;
             white-space: nowrap; 
             overflow: hidden;
-            text-overflow: ellipsis;
+            font-family: $roboto-font;
             font-size: 0.7em;
             color: $black-font;
-            font-family: 'Raleway', Helvetica, sans-serif;
             cursor: pointer;
+
+            .is-in-collection {
+                position: relative;
+                float: right;
+                top: -8px;
+                right: -8px;
+                color: $grey-font;
+                cursor: pointer;
+            }
+
+            .add-remove-from-collection {
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            .more-information {
+                display: none;
+                position: absolute;
+                left: 0;
+                bottom: 65px;
+                width: 100%;
+                padding: 5px;
+                z-index: 1;
+                font-size: 0.9em;
+                text-transform: uppercase;
+                color: $white;
+                background-color: rgba(0, 0, 0, 0.5);
+            }
+
+            .title {
+                display: inline-block;
+                max-width: 158px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-transform: uppercase;
+                font-size: 1.2em;
+            }
+
+            .rating {
+                @include pos-relative(-10px, auto);
+                float: right;
+                padding: 5px 6px;
+                border-radius: 20%;
+                z-index: 2;
+                color: $white;
+                background-color: $green;
+            }
         }
 
         @include breakpoint {

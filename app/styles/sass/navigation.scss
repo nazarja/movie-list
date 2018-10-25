@@ -145,19 +145,22 @@ header {
             width: 100%;
             text-align: center;
             li {
-                @include menu-font($julius-font, 0.775em); 
                 display: inline-block;
                 padding: 9px;
+                @include menu-font($julius-font, 0.775em); 
+                @media screen and (max-width: 400px) {
+                    padding: 5px;
+                    font-size: 0.6em;
+                }
                 &:hover {
                     color: $black-font;
                 }
                 &:active {
                     outline: none;
                 }
-                @media screen and (max-width: 400px) {
-                    padding: 5px;
-                    font-size: 0.6em;
-                }
+            }
+            @include breakpoint {
+                padding: 0 2.5%;
             }
         }
     }

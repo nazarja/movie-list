@@ -3,7 +3,7 @@
     FONTS / VARIABLES
 ==================================================================
 */
-@import url("https://fonts.googleapis.com/css?family=Julius+Sans+One|Oswald|Raleway");
+@import url("https://fonts.googleapis.com/css?family=Julius+Sans+One|Oswald|Roboto");
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
@@ -190,23 +190,26 @@ header {
       width: 100%;
       text-align: center; }
       header nav #secondry-nav li {
+        display: inline-block;
+        padding: 9px;
         font-family: "Julius Sans One", sans-serif;
         font-size: 0.775em;
         text-transform: uppercase;
         transition: 0.4s;
-        cursor: pointer;
-        display: inline-block;
-        padding: 9px; }
+        cursor: pointer; }
         header nav #secondry-nav li:hover {
           color: #484539; }
-        header nav #secondry-nav li:hover {
-          color: #000; }
-        header nav #secondry-nav li:active {
-          outline: none; }
         @media screen and (max-width: 400px) {
           header nav #secondry-nav li {
             padding: 5px;
             font-size: 0.6em; } }
+        header nav #secondry-nav li:hover {
+          color: #000; }
+        header nav #secondry-nav li:active {
+          outline: none; }
+      @media (min-width: 800px) {
+        header nav #secondry-nav {
+          padding: 0 2.5%; } }
 
 /*
 ==================================================================
@@ -220,7 +223,7 @@ main {
   padding: 0 5%; }
   @media (min-width: 800px) {
     main {
-      left: 12vw;
+      left: 15vw;
       max-width: 75%; } }
   main #main-content {
     display: flex;
@@ -228,15 +231,53 @@ main {
     justify-content: space-evenly; }
     main #main-content .media-item {
       display: inline-block;
+      position: relative;
       max-width: 200px;
       margin: 2% 1%;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
+      font-family: "Oswald", sans-serif;
       font-size: 0.7em;
       color: #000;
-      font-family: 'Raleway', Helvetica, sans-serif;
       cursor: pointer; }
+      main #main-content .media-item .is-in-collection {
+        position: relative;
+        float: right;
+        top: -8px;
+        right: -8px;
+        color: #484539;
+        cursor: pointer; }
+      main #main-content .media-item .add-remove-from-collection:hover {
+        text-decoration: underline; }
+      main #main-content .media-item .more-information {
+        display: none;
+        position: absolute;
+        left: 0;
+        bottom: 65px;
+        width: 100%;
+        padding: 5px;
+        z-index: 1;
+        font-size: 0.9em;
+        text-transform: uppercase;
+        color: #f9f9f9;
+        background-color: rgba(0, 0, 0, 0.5); }
+      main #main-content .media-item .title {
+        display: inline-block;
+        max-width: 158px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        font-size: 1.2em; }
+      main #main-content .media-item .rating {
+        position: relative;
+        top: -10px;
+        left: auto;
+        float: right;
+        padding: 5px 6px;
+        border-radius: 20%;
+        z-index: 2;
+        color: #f9f9f9;
+        background-color: #009587; }
     @media (min-width: 800px) {
       main #main-content {
         justify-content: flex-start; } }

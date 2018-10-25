@@ -5,11 +5,6 @@
 ==================================================================
 */
 
-// Types of data = 
-// 1. Movies
-// 2. TV shows
-// 3. MultiSearch
-
 
 /*
 ==============================
@@ -32,16 +27,8 @@ let data;
 
 
 /*
-==================================================================
-    GET TMDB DATA
-==================================================================
-*/
-
-
-
-/*
 ==============================
-    FETCH DATA
+    FETCH TMDB DATA
 ==============================
 */
 
@@ -61,7 +48,6 @@ function fetchTMDbData(primary, secondary, page = 1) {
     })
     .then(text => {
         data = JSON.parse(text);
-        console.log(data.results);
         showContentResults(data.results);
     })
     .catch(err => {
@@ -71,40 +57,6 @@ function fetchTMDbData(primary, secondary, page = 1) {
 };
 
 
-
-/*
-==============================
-    SHOW CONTENT RESULTS
-==============================
-*/
-
-function showContentResults(results) {
-
-    resetMediaResults(); 
-
-    results.map(result => {
-        let title = result.title || results.name || 'Unknown';
-        let tmdbId = result.id || 0;
-        let rating = result.vote_average || 0;
-        let poster = POSTER + result.poster_path || '';
-        let fanart = FANART + result.backdrop_path || '';
-
-        mainContent.innerHTML += `
-            <div class="media-item" onclick="fetchMediaData(${tmdbId})">
-                <img src="${poster}" alt="${title}">
-                <p>${title}<span>${rating}</span></p>
-            </div>
-        `;
-    });
-};
-
-
-
-/*
-==================================================================
-    SEARCH INPUT QUERIES
-==================================================================
-*/
 
 /*
 ==============================
@@ -134,27 +86,9 @@ function getTMDbSearchData(searchQuery) {
 
 
 /*
-==============================
-    SHOW SEARCH RESULTS
-==============================
-*/
-
-function showSearchResults(results) {
-    let title;
-    for (let i = 0; i < 6; i++) {
-        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
-            title = results[i].title || results[i].name;
-            searchResults.innerHTML += `<p onclick="fetchMediaData(${results[i].id});resetSearchResults()">${title}</p>`;
-        }
-    };
-};
-
-
-
-/*
-==================================================================
+================================
     FETCH FULL MEDIA DATA
-==================================================================
+================================
 */
 
 function fetchMediaData(tmdbId) {
