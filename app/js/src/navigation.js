@@ -1,12 +1,15 @@
 
-
+/*
+==================================================================
+    NAVIGATION FUNCTIONS
+==================================================================
+*/
 
 /*
 ==============================
     MANAGE ACTIVE CLASS
 ==============================
 */
-
 
 // Iterate over nav items and remove active class
 function manageActiveClass(primary, secondary) {
@@ -17,32 +20,16 @@ function manageActiveClass(primary, secondary) {
         parent.classList.remove('active-parent');
         if (parent.dataset.nav.includes(primary)) {
             parent.classList.add('active-parent');
-        }
+        };
     });
 
     activeChild.forEach(child => {
         child.classList.remove('active-child');
         if (child.dataset.nav.includes(secondary)) {
             child.classList.add('active-child');
-        }
+        };
     });
 
-};
-
-
-
-/*
-==============================
-    NAV CLICK LISTENERS
-==============================
-*/
-
-function setNavClickListener() {
-    navItem.forEach(navitem => {
-        navitem.addEventListener('click', () => {
-            nav(navitem.dataset.nav);
-        })
-    })
 };
 
 
@@ -58,7 +45,7 @@ function manageSecondaryNav(primary, secondary) {
     if (secondary == 'null') {
         secondaryNav.innerHTML = ``;
         return;
-    }
+    };
 
     secondaryNav.innerHTML = `<ul>`
     for (let i of state[primary]) {
@@ -66,7 +53,7 @@ function manageSecondaryNav(primary, secondary) {
         secondaryNav.innerHTML += `
             <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">${i}</li>
         `;
-    }
+    };
     secondaryNav.innerHTML += `</ul>`;
 };
 
@@ -102,7 +89,26 @@ function nav(param) {
             break;
         default:
             break;
-    }
+    };
 
     manageActiveClass(primary, secondary);
+};
+
+
+
+/*
+==============================
+    SEARCH FUNCTION
+==============================
+*/
+
+function getSearchInput() {
+    if (searchInput.value.length > 3) {
+
+        state.search.push(searchInput.value);
+        searchResults.innerHTML = '';
+        state.search.map(result => {
+            searchResults.innerHTML +=   `<p>${result}</p>`;
+        });
+    };
 };

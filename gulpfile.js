@@ -30,6 +30,7 @@ gulp.task('watch-sass', () => {
     gulp.src([
                 'app/styles/sass/main.scss',
                 'app/styles/sass/navigation.scss',
+                'app/styles/sass/main-content.scss'
                 
     ])
     .pipe(concat('style.scss'))
@@ -49,7 +50,7 @@ gulp.task('watch-js', () => {
                 'app/js/src/localStorage.js',
                 'app/js/src/api.js',
                 'app/js/src/sampleData.js',
-                'app/js/src/init.js',
+                'app/js/src/init.js'
     ])
     .pipe(concat('script.js'))
     .pipe(gulp.dest('app/js/dist'));

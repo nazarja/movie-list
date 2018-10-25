@@ -4,17 +4,22 @@
     GLOBAL VARIABLES
 ==================================================================
 */
+
 const menuBtn = document.querySelector('#menu-btn');
+const searchInput = document.querySelector('#search-input');
+const searchResults = document.querySelector('#search-results');
 const primaryNav = document.querySelector('#primary-nav');
 const secondaryNav = document.querySelector('#secondry-nav');
 const navItem = document.querySelectorAll('.nav-item');
+const mainContent = document.querySelector('#main-content');
 
 
-const state = {
+let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
     mylists : [],
-    statistics: []
+    statistics: [],
+    search: [] 
 };
 
 
@@ -25,44 +30,84 @@ const state = {
 ==================================================================
 */
 
-// Event listener to toggle button / menu state
-menuBtn.onclick = () => { 
-    if (menuBtn.innerHTML == 'menu') {
-        menuBtn.innerHTML = 'close';
-        primaryNav.style.left = '0';
-    } 
-    else {
-        menuBtn.innerHTML = 'menu';
-        primaryNav.style.left = '-140px';
+function setEventListeners() {
 
+    // MOBILE MENU BTN CLICK
+    menuBtn.addEventListener('click', () => { 
+        if (menuBtn.innerHTML == 'menu') {
+            menuBtn.innerHTML = 'close';
+            primaryNav.style.left = '0';
+        } 
+        else {
+            menuBtn.innerHTML = 'menu';
+            primaryNav.style.left = '-140px';
+    
+        }
+        resetElements('searchResults');
+    });
+
+
+    // SEARCH INPUT
+    searchInput.addEventListener('input', () => {
+        getSearchInput();
+    });
+
+
+    // NAV CLICKS
+    navItem.forEach(navitem => {
+        navitem.addEventListener('click', () => {
+            nav(navitem.dataset.nav);
+            resetElements('closeMenu');
+        })
+    });
+
+
+    // WINDOW RESIZE
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 800 && primaryNav.style.left == '-140px') {
+            menuBtn.innerHTML = 'menu';
+            primaryNav.style.left = '0';
+            
+        }
+        else if (window.innerWidth < 800) {
+            primaryNav.style.left = '-140px';
+        }
+        resetElements('searchResults');
+    });
+};
+
+
+/*
+==============================
+    RESET ELEMENTS
+==============================
+*/
+
+function resetElements(param) {
+
+    if (param == 'searchResults') {
+        searchResults.innerHTML = ``;
+    }
+    // Close menu on small viewports
+    else if (param == 'closeMenu') {
+        menuBtn.click();
     }
 };
 
-// When window is resized, reset to default position
-// Fix for resize browser window bug
-window.addEventListener("resize", () => {
-    if (window.innerWidth > 800 && primaryNav.style.left == '-140px') {
-        menuBtn.innerHTML = 'menu';
-        primaryNav.style.left = '0';
-        
-    }
-    else if (window.innerWidth < 800) {
-            primaryNav.style.left = '-140px';
-    }
-});
 
 
 
-
-
-
+/*
+==================================================================
+    NAVIGATION FUNCTIONS
+==================================================================
+*/
 
 /*
 ==============================
     MANAGE ACTIVE CLASS
 ==============================
 */
-
 
 // Iterate over nav items and remove active class
 function manageActiveClass(primary, secondary) {
@@ -73,32 +118,16 @@ function manageActiveClass(primary, secondary) {
         parent.classList.remove('active-parent');
         if (parent.dataset.nav.includes(primary)) {
             parent.classList.add('active-parent');
-        }
+        };
     });
 
     activeChild.forEach(child => {
         child.classList.remove('active-child');
         if (child.dataset.nav.includes(secondary)) {
             child.classList.add('active-child');
-        }
+        };
     });
 
-};
-
-
-
-/*
-==============================
-    NAV CLICK LISTENERS
-==============================
-*/
-
-function setNavClickListener() {
-    navItem.forEach(navitem => {
-        navitem.addEventListener('click', () => {
-            nav(navitem.dataset.nav);
-        })
-    })
 };
 
 
@@ -114,7 +143,7 @@ function manageSecondaryNav(primary, secondary) {
     if (secondary == 'null') {
         secondaryNav.innerHTML = ``;
         return;
-    }
+    };
 
     secondaryNav.innerHTML = `<ul>`
     for (let i of state[primary]) {
@@ -122,7 +151,7 @@ function manageSecondaryNav(primary, secondary) {
         secondaryNav.innerHTML += `
             <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">${i}</li>
         `;
-    }
+    };
     secondaryNav.innerHTML += `</ul>`;
 };
 
@@ -158,12 +187,51 @@ function nav(param) {
             break;
         default:
             break;
-    }
+    };
 
     manageActiveClass(primary, secondary);
 };
+
+
+
+/*
+==============================
+    SEARCH FUNCTION
+==============================
+*/
+
+function getSearchInput() {
+    if (searchInput.value.length > 3) {
+
+        state.search.push(searchInput.value);
+        searchResults.innerHTML = '';
+        state.search.map(result => {
+            searchResults.innerHTML +=   `<p>${result}</p>`;
+        });
+    };
+};
+
+/*
+==================================================================
+    LOCAL STORAGE FUNCTIONS
+==================================================================
+*/
+
 function getLocalStorageLists() {
-}
+    
+};
+
+/*
+==================================================================
+    TMDB API ROUTES
+==================================================================
+*/
+
+/*
+==============================
+    VARIABLES
+==============================
+*/
 
 const API_KEY = `?api_key=d41fd9978486321b466e29bfec203902`;
 const MOVIES_URL = 'https://api.themoviedb.org/3/movie/';
@@ -175,13 +243,29 @@ let url;
 let data;
 
 
+
+/*
+==============================
+    DECIDE DATA TYPE
+==============================
+*/
+
 function getTMDbData(primary, secondary) {
     if (primary == 'movies') url = MOVIES_URL;
     else if (primary == 'tvshows') url = TVSHOWS_URL;
 
-    fetchMovieData(primary, secondary)
+    /* WORK WITH SAMPLE DATA DURING DEVELOPMENT */
+    buildContent(primary, jsonData);
+    // fetchMovieData(primary, secondary);
 };
 
+
+
+/*
+==============================
+    FETCH DATA
+==============================
+*/
 
 function fetchMovieData(primary, secondary) {
 
@@ -195,9 +279,31 @@ function fetchMovieData(primary, secondary) {
     }); 
 };
 
+
+
+/*
+==============================
+    BUILD CONTENT
+==============================
+*/
+
 function buildContent(primary, data) {
-    console.log(primary, data)
+    mainContent.innerHTML = `<p>I am the main Content</p>`;
+    data = JSON.parse(data);
+    data = data.results;
+
+    // const suggested = Math.floor(Math.random() * data.length) + 1;
+    // console.log(data[suggested]);
+    // mainContent.style.backgroundImage =  `url('https://image.tmdb.org/t/p/original/${data[suggested].backdrop_path}')`
+
 };
+
+
+/*
+==================================================================
+    SAMPLE DATA FOR DEVELOPMENT PURPOSES
+==================================================================
+*/
 
 const sampleData = {
     "page": 1,
@@ -616,17 +722,25 @@ const sampleData = {
         "release_date": "2018-05-15"
       }
     ]
-  }
+  };
 
+  // Convert to JSON to imitate real api reponse
   let jsonData = JSON.stringify(sampleData);
+
+/*
+==================================================================
+    INIT APP
+==================================================================
+*/
+
 /*========================================
     When page is frst loaded perform
     these actions to initilise the app
 =========================================*/
 
 function init() {
-    setNavClickListener();
+    setEventListeners();
     nav('movies,popular');
     getLocalStorageLists();
-}
+};
 init();

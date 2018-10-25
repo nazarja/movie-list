@@ -78,11 +78,18 @@ i {
 .active-child {
   color: #000; }
 
+/*
+==================================================================
+    NAVIGATION
+==================================================================
+*/
 header {
   position: fixed;
   width: 100%;
   top: 0;
-  left: 0; }
+  left: 0;
+  z-index: 1000;
+  background-color: #f9f9f9; }
   header * {
     background-color: #f9f9f9; }
   header #topbar {
@@ -130,6 +137,11 @@ header {
       border-top: 1px solid #d9d9d9;
       border-bottom: 1px solid #d9d9d9;
       outline: none; }
+    header #search #search-results {
+      position: absolute;
+      width: 100%;
+      padding: 0 5%;
+      z-index: 1; }
   header nav {
     margin-top: 25px; }
     header nav div {
@@ -179,3 +191,17 @@ header {
           header nav #secondry-nav li {
             padding: 5px;
             font-size: 0.6em; } }
+
+/*
+==================================================================
+    MAIN CONTENT
+==================================================================
+*/
+main {
+  position: relative;
+  top: 180px;
+  left: 0;
+  padding: 0 5%; }
+  @media (min-width: 800px) {
+    main {
+      left: 15vw; } }

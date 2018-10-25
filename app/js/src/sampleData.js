@@ -1,3 +1,10 @@
+
+/*
+==================================================================
+    SAMPLE DATA FOR DEVELOPMENT PURPOSES
+==================================================================
+*/
+
 const sampleData = {
     "page": 1,
     "total_results": 19805,
@@ -415,6 +422,7 @@ const sampleData = {
         "release_date": "2018-05-15"
       }
     ]
-  }
+  };
 
+  // Convert to JSON to imitate real api reponse
   let jsonData = JSON.stringify(sampleData);
