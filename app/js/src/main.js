@@ -133,5 +133,9 @@ function resetSearchResults() {
    searchResults.innerHTML = '';
 };
 
+function resetMediaResults() {
+   mainContent.innerHTML = '';
+};
+
 
 

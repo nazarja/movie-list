@@ -220,6 +220,23 @@ main {
   padding: 0 5%; }
   @media (min-width: 800px) {
     main {
-      left: 15vw; } }
+      left: 12vw;
+      max-width: 75%; } }
   main #main-content {
-    height: 100vh; }
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly; }
+    main #main-content .media-item {
+      display: inline-block;
+      max-width: 200px;
+      margin: 2% 1%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.7em;
+      color: #000;
+      font-family: 'Raleway', Helvetica, sans-serif;
+      cursor: pointer; }
+    @media (min-width: 800px) {
+      main #main-content {
+        justify-content: flex-start; } }
