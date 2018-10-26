@@ -294,7 +294,17 @@ main {
     main #main-pagination .pagination-box {
       display: inline-block;
       margin: 5px;
+      padding: 5px 8px;
       transition: 0.4s;
       cursor: pointer; }
       main #main-pagination .pagination-box:hover {
         background: #333; }
+  main #full-media-content {
+    position: fixed;
+    width: 75%;
+    top: 163px;
+    left: auto;
+    display: none;
+    z-index: 3;
+    background-color: #f9f9f9;
+    min-height: calc(100vh - 163px); }

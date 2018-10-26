@@ -5,7 +5,6 @@
 ==================================================================
 */
 
-
 /*
 ==============================
     VARIABLES
@@ -32,7 +31,6 @@ let data;
 */
 
 function fetchTMDbData(primary, secondary, page = 1) {
-
     if (primary == 'movies') url = MOVIES_URL;
     else if (primary == 'tvshows') url = TVSHOWS_URL;
 
@@ -89,7 +87,26 @@ function getTMDbSearchData(searchQuery) {
 ================================
 */
 
-function fetchMediaData(tmdbId) {
-    console.log(tmdbId);
-}
+function fetchMediaData( mediaType,tmdbId) {
+    
+    if (mediaType == 'movie') url = MOVIES_URL;
+    else url = TVSHOWS_URL;
+
+    fetch(`${url}${tmdbId}${API_KEY}${EXTRA}&append_to_response=videos,images,reviews`, 
+    {
+        headers: new Headers ({ 'Accept': 'application/json'})
+    })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        data = JSON.parse(text);
+        showFullMediaContent(mediaType, data);
+    })
+    .catch(err => {
+        // TODO: 404 Error
+        console.log(err);
+    });
+
+};
 

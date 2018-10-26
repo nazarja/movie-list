@@ -5,8 +5,6 @@
 ==================================================================
 */
 
-
-
 /*
 ==============================
     SHOW SEARCH RESULTS
@@ -14,20 +12,18 @@
 */
 
 function showSearchResults(results) {
-    let title;
-    let date;
     for (let i = 0; i < 6; i++) {
         if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
 
-            title = results[i].title || results[i].name;
-            date = results[i].release_date || results[i].first_air_date || '';
+            let title = results[i].title || results[i].name;
+            let date = results[i].release_date || results[i].first_air_date || '';
+            let mediaType = results[i].media_type || 'movie';
 
             if (date) {
                 date = date.slice(0,4);
-            }
-
-            searchResults.innerHTML += `<p onclick="fetchMediaData(${results[i].id});resetSearchResults()">${title} (${date})</p>`;
-        }
+            };
+            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults()">${title} (${date})</p>`;
+        };
     };
 };
 
@@ -39,7 +35,7 @@ function showSearchResults(results) {
 ==============================
 */
 
-function showContentResults(results, page) {
+function showContentResults(results) {
     resetMediaResults();
 
     results.map((result, i) => {
@@ -47,18 +43,23 @@ function showContentResults(results, page) {
         const title = result.title || result.name || 'Unknown';
         const rating = result.vote_average || '0';
         const poster = POSTER + result.poster_path || '';
+        let mediaType;
+
+        // Check if media type is movie or tvshow
+        if (result.hasOwnProperty('adult')) mediaType = 'movie';
+        else  mediaType = 'tv';
 
         // Check if media already already exists in a collection
         let inCollectionColor = '#222';
         if (isInCollection(tmdbId)) {
             inCollectionColor = 'crimson';
-        }
+        };
 
         mainContent.innerHTML += `
             <div class="media-item">
                 <i class="material-icons is-in-collection" style="color: ${inCollectionColor}">collections</i>
-                <img src="${poster}" alt="${title}" onclick="fetchMediaData(${tmdbId})">
-                <span class="more-information" onclick="fetchMediaData(${tmdbId})">More Information</span>
+                <img src="${poster}" alt="${title}" onclick="fetchMediaData('${mediaType}',${tmdbId})">
+                <span class="more-information" onclick="fetchMediaData('${mediaType}',${tmdbId})">More Information</span>
                 <div>
                     <span class="title">${title}</span><span class="rating">${rating}</span>
                 </div>
@@ -68,6 +69,7 @@ function showContentResults(results, page) {
             </div>
         `;
     });
+
     onMediaHover();
 };
 
@@ -75,7 +77,51 @@ function showContentResults(results, page) {
 
 /*
 ==============================
-    PAGINATION FUNCTION
+    PAGINATION 
+==============================
+*/
+
+function showFullMediaContent( mediaType, result) {
+
+    const title = result.title || result.name || 'Unknown';
+    const tagline = result.tagline || `SEASONS: ${result.number_of_episodes} EPISODES:${result.number_of_episodes}` || '';
+    const overview = result.overview || '';
+    const rating = result.vote_average || '0';
+    const poster = POSTER + result.poster_path || '';
+
+    fullMediaContent.innerHTML = `
+        <div style="background-image: url('${BACKDROP}${result.backdrop_path}')">
+            <p id="media-title">${title}</p>
+            <p id="media-tagline">${tagline}</p>
+            <p id="media-overview">${overview}</p>
+        </div>
+    `;
+    fullMediaContent.style.display = 'block';
+    // <div style="background-image: url()"></div>
+    //     <span id="is-in-collection">
+    //         <i class="material-icons">collections</i>
+    //     </span>
+    //     <p id="media-title">${title}</p>
+    //     <p id="media-tagline">${tagline}</p>
+    //     <p id="media-overview">${overview}</p>
+    // </div>
+    // <div>
+    //     <img href="${poster}" alt="title" width="200">
+    //     <div>
+    //         <span>${title}</span>
+    //         <span><a href="${trailer}" target="_blank">Trailer</a></span>
+    //         <span>${studio-network}</span>
+    //         <span>${votes}</span>
+    //         <span>${rating}</span>
+    //     </div>
+    //     <p>Other Info</p>
+    // </div>``
+}
+
+
+/*
+==============================
+    PAGINATION 
 ==============================
 */
 
@@ -95,7 +141,7 @@ function pagination(primary, secondary, page) {
         }
         else {
             mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
-        }
+        };
         i++;
     };
 };
@@ -104,7 +150,7 @@ function pagination(primary, secondary, page) {
 
 /*
 ==============================
-    HOVER FUNCTION
+    HOVER MEDIA POSTER
 ==============================
 */
 
@@ -113,10 +159,10 @@ function onMediaHover() {
     mediaItem.forEach(item => {
         item.onmouseenter = () => {
             item.children[2].style.display = 'inline-block';
-        }
+        };
 
         item.onmouseleave = () => {
             item.children[2].style.display = 'none';
-        }
+        };
     });
 };

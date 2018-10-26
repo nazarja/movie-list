@@ -15,6 +15,7 @@ const navItem = document.querySelectorAll('.nav-item');
 const main = document.querySelector('#main');
 const mainContent = document.querySelector('#main-content');
 const mainPagination = document.querySelector('#main-pagination');
+const fullMediaContent = document.querySelector('#full-media-content');
 
 
 let state = {
@@ -62,16 +63,13 @@ function setEventListeners() {
 
     navItem.forEach(navitem => {
         navitem.addEventListener('click', () => {
-            
-            // Call Nav
             nav(navitem.dataset.nav);
             
-            // Close menu on small viewports
             if (window.innerWidth < 800) {
                 menuBtn.click();
                 }
                 resetSearchResults();
-            })
+            });
     });
 
     
@@ -122,7 +120,6 @@ function setEventListeners() {
 */
 
 function clickOutsideElement() {
-    // Set Event Listener to listen for clicks outside of search results
     let clickOutsideElement = main.addEventListener('click', () => {
        resetSearchResults();
        mainContent.removeEventListener('click', clickOutsideElement);

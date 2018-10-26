@@ -88,7 +88,7 @@ main {
             @extend %small-green-box;
             display: inline-block;
             margin: 5px;
-            padding: 5px 8px
+            padding: 5px 8px;
             transition: 0.4s;
             cursor: pointer;
 
@@ -96,5 +96,13 @@ main {
                 background: $black;
             }
         }
+    }
+
+    #full-media-content {
+        @include pos-fixed(75%, 163px, auto);
+        display: none;
+        z-index: 3;
+        background-color: $white;
+        min-height: calc(100vh - 163px);
     }
 }
