@@ -12,15 +12,15 @@ const searchResults = document.querySelector('#search-results');
 const primaryNav = document.querySelector('#primary-nav');
 const secondaryNav = document.querySelector('#secondry-nav');
 const navItem = document.querySelectorAll('.nav-item');
+const main = document.querySelector('#main');
 const mainContent = document.querySelector('#main-content');
+const mainPagination = document.querySelector('#main-pagination');
 
 
 let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
-    mylists : [],
-    statistics: [],
-    search: []
+    mylists : []
 };
 
 
@@ -123,7 +123,7 @@ function setEventListeners() {
 
 function clickOutsideElement() {
     // Set Event Listener to listen for clicks outside of search results
-    let clickOutsideElement = mainContent.addEventListener('click', () => {
+    let clickOutsideElement = main.addEventListener('click', () => {
        resetSearchResults();
        mainContent.removeEventListener('click', clickOutsideElement);
    });
@@ -135,6 +135,10 @@ function resetSearchResults() {
 
 function resetMediaResults() {
    mainContent.innerHTML = '';
+};
+
+function resetPagination() {
+   mainPagination.innerHTML = '';
 };
 
 
@@ -223,11 +227,13 @@ function nav(param) {
         case 'mylists':
             getLocalStorageLists();
             manageSecondaryNav(primary, secondary);
-            resetMediaResults() 
+            resetMediaResults();
+            resetPagination(); 
             break;
         case 'statistics':
             manageSecondaryNav(primary, secondary);
-            resetMediaResults() 
+            resetMediaResults();
+            resetPagination(); 
             break;
         default:
             break;
@@ -320,24 +326,20 @@ function showSearchResults(results) {
 ==============================
 */
 
-function showContentResults(results) {
+function showContentResults(results, page) {
+    resetMediaResults();
 
-    resetMediaResults(); 
-
-    results.map(result => {
-
+    results.map((result, i) => {
+        const tmdbId = result.id || '0';
         const title = result.title || result.name || 'Unknown';
-        const tmdbId = result.id || 0;
-        const rating = result.vote_average || 0;
+        const rating = result.vote_average || '0';
         const poster = POSTER + result.poster_path || '';
-        const fanart = FANART + result.backdrop_path || '';
 
         // Check if media already already exists in a collection
         let inCollectionColor = '#222';
         if (isInCollection(tmdbId)) {
             inCollectionColor = 'crimson';
         }
-
 
         mainContent.innerHTML += `
             <div class="media-item">
@@ -356,7 +358,43 @@ function showContentResults(results) {
     onMediaHover();
 };
 
-// Show info bar on hover
+
+
+/*
+==============================
+    PAGINATION FUNCTION
+==============================
+*/
+
+function pagination(primary, secondary, page) {
+    resetPagination();
+    let i = 0;
+
+    // Give previous page option unless its the 1st page
+    if (page > 1) {
+        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page - 1})">${page - 1}</span>`;
+    };
+
+    while (i < 5) {
+        // Highlight Active Page
+        if (i == 0) {
+            mainPagination.innerHTML += `<span class="pagination-box" style="background-color: #333;" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
+        }
+        else {
+            mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
+        }
+        i++;
+    };
+};
+
+
+
+/*
+==============================
+    HOVER FUNCTION
+==============================
+*/
+
 function onMediaHover() {
     const mediaItem = document.querySelectorAll('.media-item');
     mediaItem.forEach(item => {
@@ -368,9 +406,8 @@ function onMediaHover() {
             item.children[2].style.display = 'none';
         }
     });
-}
+};
 
-//TODO: PAGINATION
 
 /*
 ==================================================================
@@ -392,8 +429,7 @@ const SEARCH_URL = 'https://api.themoviedb.org/3/search/multi';
 const EXTRA = "&language=en-US";
 const POSTER = 'https://image.tmdb.org/t/p/w200';
 const FANART =  'https://image.tmdb.org/t/p/w500';
-// const BACKDROP = 'https://image.tmdb.org/t/p/original';
-// const PREVIEW = 'https://image.tmdb.org/t/p/preview';
+const BACKDROP = 'https://image.tmdb.org/t/p/w1280/';
 let url;
 let data;
 
@@ -406,8 +442,6 @@ let data;
 */
 
 function fetchTMDbData(primary, secondary, page = 1) {
-
-    // buildContent(primary, jsonData);
 
     if (primary == 'movies') url = MOVIES_URL;
     else if (primary == 'tvshows') url = TVSHOWS_URL;
@@ -422,6 +456,7 @@ function fetchTMDbData(primary, secondary, page = 1) {
     .then(text => {
         data = JSON.parse(text);
         showContentResults(data.results);
+        pagination(primary, secondary, page)
     })
     .catch(err => {
         // TODO: 404 Error

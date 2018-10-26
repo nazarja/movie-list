@@ -81,11 +81,13 @@ function nav(param) {
         case 'mylists':
             getLocalStorageLists();
             manageSecondaryNav(primary, secondary);
-            resetMediaResults() 
+            resetMediaResults();
+            resetPagination(); 
             break;
         case 'statistics':
             manageSecondaryNav(primary, secondary);
-            resetMediaResults() 
+            resetMediaResults();
+            resetPagination(); 
             break;
         default:
             break;

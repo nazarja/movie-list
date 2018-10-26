@@ -19,8 +19,7 @@ const SEARCH_URL = 'https://api.themoviedb.org/3/search/multi';
 const EXTRA = "&language=en-US";
 const POSTER = 'https://image.tmdb.org/t/p/w200';
 const FANART =  'https://image.tmdb.org/t/p/w500';
-// const BACKDROP = 'https://image.tmdb.org/t/p/original';
-// const PREVIEW = 'https://image.tmdb.org/t/p/preview';
+const BACKDROP = 'https://image.tmdb.org/t/p/w1280/';
 let url;
 let data;
 
@@ -33,8 +32,6 @@ let data;
 */
 
 function fetchTMDbData(primary, secondary, page = 1) {
-
-    // buildContent(primary, jsonData);
 
     if (primary == 'movies') url = MOVIES_URL;
     else if (primary == 'tvshows') url = TVSHOWS_URL;
@@ -49,6 +46,7 @@ function fetchTMDbData(primary, secondary, page = 1) {
     .then(text => {
         data = JSON.parse(text);
         showContentResults(data.results);
+        pagination(primary, secondary, page)
     })
     .catch(err => {
         // TODO: 404 Error

@@ -12,15 +12,15 @@ const searchResults = document.querySelector('#search-results');
 const primaryNav = document.querySelector('#primary-nav');
 const secondaryNav = document.querySelector('#secondry-nav');
 const navItem = document.querySelectorAll('.nav-item');
+const main = document.querySelector('#main');
 const mainContent = document.querySelector('#main-content');
+const mainPagination = document.querySelector('#main-pagination');
 
 
 let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
-    mylists : [],
-    statistics: [],
-    search: []
+    mylists : []
 };
 
 
@@ -123,7 +123,7 @@ function setEventListeners() {
 
 function clickOutsideElement() {
     // Set Event Listener to listen for clicks outside of search results
-    let clickOutsideElement = mainContent.addEventListener('click', () => {
+    let clickOutsideElement = main.addEventListener('click', () => {
        resetSearchResults();
        mainContent.removeEventListener('click', clickOutsideElement);
    });
@@ -135,6 +135,10 @@ function resetSearchResults() {
 
 function resetMediaResults() {
    mainContent.innerHTML = '';
+};
+
+function resetPagination() {
+   mainPagination.innerHTML = '';
 };
 
 

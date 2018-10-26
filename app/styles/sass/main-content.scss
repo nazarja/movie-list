@@ -10,7 +10,7 @@ main {
     @include pos-relative(180px, 0);
     @include breakpoint {
         left: 15vw;
-        max-width: 75%;
+        max-width: 74%;
     }
     padding: $small-padding;
 
@@ -29,12 +29,12 @@ main {
             font-family: $roboto-font;
             font-size: 0.7em;
             color: $black-font;
+            order: 1;
             cursor: pointer;
 
             .is-in-collection {
-                position: relative;
+                @include pos-relative(-8px, auto);
                 float: right;
-                top: -8px;
                 right: -8px;
                 color: $grey-font;
                 cursor: pointer;
@@ -47,10 +47,8 @@ main {
             }
 
             .more-information {
+                @include pos-absolute(auto, auto, 65px, 0);
                 display: none;
-                position: absolute;
-                left: 0;
-                bottom: 65px;
                 width: 100%;
                 padding: 5px;
                 z-index: 1;
@@ -71,17 +69,32 @@ main {
 
             .rating {
                 @include pos-relative(-10px, auto);
+                @extend %small-green-box;
                 float: right;
-                padding: 5px 6px;
-                border-radius: 20%;
                 z-index: 2;
-                color: $white;
-                background-color: $green;
             }
         }
 
-        @include breakpoint {
+        @media (min-width: 1800px) {
             justify-content: flex-start;
+        }
+    }
+
+    #main-pagination {
+        margin: 50px auto;
+        text-align: center;
+
+        .pagination-box {
+            @extend %small-green-box;
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 8px
+            transition: 0.4s;
+            cursor: pointer;
+
+            &:hover {
+                background: $black;
+            }
         }
     }
 }

@@ -34,6 +34,7 @@ $oswald-font: 'Oswald', sans-serif;
 $julius-font: 'Julius Sans One', sans-serif;
 $white: #f9f9f9;
 $green: #009587;
+$black: #333;
 $black-font: #000;
 $grey-font: #484539;
 $light-grey-font: #8c8c8c;
@@ -70,6 +71,15 @@ $move-x: translateX(2px);
     color: $light-grey-font;
 }
 
+%small-green-box {
+    font-family: $oswald-font;
+    font-size: 11.2px;
+    padding: 5px 6px;
+    border-radius: 20%;
+    color: $white;
+    background-color: $green;
+}
+
 
 
 /*
@@ -88,6 +98,14 @@ $move-x: translateX(2px);
     position: fixed;
     width: $width;
     top: $top;
+    left: $left;
+}
+
+@mixin pos-absolute ($top, $right, $bottom, $left) {
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
     left: $left;
 }
 
@@ -119,10 +137,9 @@ $move-x: translateX(2px);
 */
 
 body {
+    @extend %no-spacing;
     font-family: $julius-font;
     color: $grey-font;
-    height: 3000px;
-    @extend %no-spacing;
 }
 
 ul {

@@ -39,24 +39,20 @@ function showSearchResults(results) {
 ==============================
 */
 
-function showContentResults(results) {
+function showContentResults(results, page) {
+    resetMediaResults();
 
-    resetMediaResults(); 
-
-    results.map(result => {
-
+    results.map((result, i) => {
+        const tmdbId = result.id || '0';
         const title = result.title || result.name || 'Unknown';
-        const tmdbId = result.id || 0;
-        const rating = result.vote_average || 0;
+        const rating = result.vote_average || '0';
         const poster = POSTER + result.poster_path || '';
-        const fanart = FANART + result.backdrop_path || '';
 
         // Check if media already already exists in a collection
         let inCollectionColor = '#222';
         if (isInCollection(tmdbId)) {
             inCollectionColor = 'crimson';
         }
-
 
         mainContent.innerHTML += `
             <div class="media-item">
@@ -75,7 +71,43 @@ function showContentResults(results) {
     onMediaHover();
 };
 
-// Show info bar on hover
+
+
+/*
+==============================
+    PAGINATION FUNCTION
+==============================
+*/
+
+function pagination(primary, secondary, page) {
+    resetPagination();
+    let i = 0;
+
+    // Give previous page option unless its the 1st page
+    if (page > 1) {
+        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page - 1})">${page - 1}</span>`;
+    };
+
+    while (i < 5) {
+        // Highlight Active Page
+        if (i == 0) {
+            mainPagination.innerHTML += `<span class="pagination-box" style="background-color: #333;" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
+        }
+        else {
+            mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
+        }
+        i++;
+    };
+};
+
+
+
+/*
+==============================
+    HOVER FUNCTION
+==============================
+*/
+
 function onMediaHover() {
     const mediaItem = document.querySelectorAll('.media-item');
     mediaItem.forEach(item => {
@@ -87,6 +119,4 @@ function onMediaHover() {
             item.children[2].style.display = 'none';
         }
     });
-}
-
-//TODO: PAGINATION
+};

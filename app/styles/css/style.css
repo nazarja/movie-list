@@ -46,6 +46,14 @@ header #topbar #ref-link {
   text-transform: uppercase;
   color: #8c8c8c; }
 
+main #main-content .media-item .rating, main #main-pagination .pagination-box {
+  font-family: "Oswald", sans-serif;
+  font-size: 11.2px;
+  padding: 5px 6px;
+  border-radius: 20%;
+  color: #f9f9f9;
+  background-color: #009587; }
+
 /*
 ==================================================================
     MIXINS
@@ -58,8 +66,7 @@ header #topbar #ref-link {
 */
 body {
   font-family: "Julius Sans One", sans-serif;
-  color: #484539;
-  height: 3000px; }
+  color: #484539; }
 
 ul {
   list-style: none;
@@ -171,7 +178,7 @@ header {
       padding-top: 40px;
       transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
       left: -140px;
-      height: calc(100vh - 175px); }
+      height: calc(100vh - 167px); }
       header nav #primary-nav li {
         font-family: "Oswald", sans-serif;
         font-size: 1em;
@@ -224,7 +231,7 @@ main {
   @media (min-width: 800px) {
     main {
       left: 15vw;
-      max-width: 75%; } }
+      max-width: 74%; } }
   main #main-content {
     display: flex;
     flex-flow: row wrap;
@@ -239,21 +246,25 @@ main {
       font-family: "Oswald", sans-serif;
       font-size: 0.7em;
       color: #000;
+      order: 1;
       cursor: pointer; }
       main #main-content .media-item .is-in-collection {
         position: relative;
-        float: right;
         top: -8px;
+        left: auto;
+        float: right;
         right: -8px;
         color: #484539;
         cursor: pointer; }
       main #main-content .media-item .add-remove-from-collection:hover {
         text-decoration: underline; }
       main #main-content .media-item .more-information {
-        display: none;
         position: absolute;
-        left: 0;
+        top: auto;
+        right: auto;
         bottom: 65px;
+        left: 0;
+        display: none;
         width: 100%;
         padding: 5px;
         z-index: 1;
@@ -273,11 +284,17 @@ main {
         top: -10px;
         left: auto;
         float: right;
-        padding: 5px 6px;
-        border-radius: 20%;
-        z-index: 2;
-        color: #f9f9f9;
-        background-color: #009587; }
-    @media (min-width: 800px) {
+        z-index: 2; }
+    @media (min-width: 1800px) {
       main #main-content {
         justify-content: flex-start; } }
+  main #main-pagination {
+    margin: 50px auto;
+    text-align: center; }
+    main #main-pagination .pagination-box {
+      display: inline-block;
+      margin: 5px;
+      transition: 0.4s;
+      cursor: pointer; }
+      main #main-pagination .pagination-box:hover {
+        background: #333; }
