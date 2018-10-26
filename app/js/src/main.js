@@ -138,5 +138,9 @@ function resetPagination() {
    mainPagination.innerHTML = '';
 };
 
+function resetFullMediaContent() {
+   fullMediaContent.style.display = 'none';
+};
+
 
 

@@ -227,7 +227,8 @@ main {
   position: relative;
   top: 180px;
   left: 0;
-  padding: 0 5%; }
+  padding: 0 5%;
+  font-family: "Oswald", sans-serif; }
   @media (min-width: 800px) {
     main {
       left: 15vw;
@@ -289,7 +290,8 @@ main {
       main #main-content {
         justify-content: flex-start; } }
   main #main-pagination {
-    margin: 50px auto;
+    margin: 30px auto;
+    padding: 20px;
     text-align: center; }
     main #main-pagination .pagination-box {
       display: inline-block;
@@ -301,10 +303,46 @@ main {
         background: #333; }
   main #full-media-content {
     position: fixed;
-    width: 75%;
-    top: 163px;
+    width: 90%;
+    top: 150px;
     left: auto;
     display: none;
     z-index: 3;
     background-color: #f9f9f9;
-    min-height: calc(100vh - 163px); }
+    height: calc(100vh - 150px);
+    overflow-y: auto; }
+    main #full-media-content .close-media-content {
+      position: relative;
+      top: -12px;
+      left: auto;
+      float: right;
+      cursor: pointer; }
+      main #full-media-content .close-media-content:hover {
+        color: #333; }
+    main #full-media-content #media-showcase {
+      height: 380px;
+      background-position: center top;
+      background-size: cover; }
+    main #full-media-content h1 {
+      position: relative;
+      top: 85%;
+      left: auto;
+      color: #f9f9f9;
+      text-align: right;
+      text-shadow: 1px 1px #000; }
+    main #full-media-content #media-details img {
+      display: none; }
+      @media (min-width: 800px) {
+        main #full-media-content #media-details img {
+          display: inline-block; } }
+    @media (min-width: 800px) {
+      main #full-media-content {
+        width: 75%; } }
+
+#full-media-content::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; }
+
+#full-media-content::-moz-scrollbar {
+  width: 0px;
+  background: transparent; }

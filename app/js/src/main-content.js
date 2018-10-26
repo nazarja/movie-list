@@ -90,32 +90,21 @@ function showFullMediaContent( mediaType, result) {
     const poster = POSTER + result.poster_path || '';
 
     fullMediaContent.innerHTML = `
-        <div style="background-image: url('${BACKDROP}${result.backdrop_path}')">
-            <p id="media-title">${title}</p>
+        <p>MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
+        <div id="media-showcase" style="background-image: url('${BACKDROP}${result.backdrop_path}')">
+            <h1 id="media-title">${title}</h1>
+        </div>
+
+        <div id="media-details">
+            <img src="${poster}" alt="${title}">
+        </div>
+        
+        <div id="media-extra">
             <p id="media-tagline">${tagline}</p>
             <p id="media-overview">${overview}</p>
         </div>
     `;
     fullMediaContent.style.display = 'block';
-    // <div style="background-image: url()"></div>
-    //     <span id="is-in-collection">
-    //         <i class="material-icons">collections</i>
-    //     </span>
-    //     <p id="media-title">${title}</p>
-    //     <p id="media-tagline">${tagline}</p>
-    //     <p id="media-overview">${overview}</p>
-    // </div>
-    // <div>
-    //     <img href="${poster}" alt="title" width="200">
-    //     <div>
-    //         <span>${title}</span>
-    //         <span><a href="${trailer}" target="_blank">Trailer</a></span>
-    //         <span>${studio-network}</span>
-    //         <span>${votes}</span>
-    //         <span>${rating}</span>
-    //     </div>
-    //     <p>Other Info</p>
-    // </div>``
 }
 
 

@@ -13,6 +13,7 @@ main {
         max-width: 74%;
     }
     padding: $small-padding;
+    font-family: $roboto-font;
 
     #main-content {
         display: flex;
@@ -81,7 +82,8 @@ main {
     }
 
     #main-pagination {
-        margin: 50px auto;
+        margin: 30px auto;
+        padding: 20px;
         text-align: center;
 
         .pagination-box {
@@ -99,10 +101,61 @@ main {
     }
 
     #full-media-content {
-        @include pos-fixed(75%, 163px, auto);
+        @include pos-fixed(90%, 150px, auto);
         display: none;
         z-index: 3;
         background-color: $white;
-        min-height: calc(100vh - 163px);
+        height: calc(100vh - 150px);
+        overflow-y: auto;
+
+
+        .close-media-content {
+            @include pos-relative( -12px, auto);
+            float: right;
+            cursor: pointer;
+
+            &:hover {
+                color: $black;
+            }
+        }
+
+        #media-showcase {
+            height: 380px;
+            background: {
+                position: center top;
+                size: cover;
+            }
+        }
+
+        h1 {
+            @include pos-relative(85%, auto);
+            color: $white;
+            text-align: right;
+            text-shadow: 1px 1px #000;
+        }
+
+        #media-details {
+            img {
+                display: none;
+                @include breakpoint {
+                    display: inline-block;
+                }
+            }
+        }
+
+        @include breakpoint {
+            width: 75%;
+        }
     }
+}
+
+// Not working if nested
+#full-media-content::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+#full-media-content::-moz-scrollbar {
+    width: 0px;
+    background: transparent;
 }
