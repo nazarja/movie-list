@@ -168,6 +168,16 @@ i {
     color: $black-font;
 }
 
+#full-media-content::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+#full-media-content::-moz-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
 
 
 

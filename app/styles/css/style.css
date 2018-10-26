@@ -85,6 +85,14 @@ i {
 .active-child {
   color: #000; }
 
+#full-media-content::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; }
+
+#full-media-content::-moz-scrollbar {
+  width: 0px;
+  background: transparent; }
+
 /*
 ==================================================================
     NAVIGATION
@@ -96,7 +104,22 @@ header {
   top: 0;
   left: 0;
   z-index: 1000;
-  background-color: #f9f9f9; }
+  background-color: #f9f9f9;
+  /*
+    ============================
+        TOPBAR
+    ============================
+    */
+  /*
+    ============================
+        SEARCH 
+    ============================
+    */
+  /*
+    ============================
+        MENUS
+    ============================
+    */ }
   header * {
     background-color: #f9f9f9; }
   header #topbar {
@@ -220,7 +243,7 @@ header {
 
 /*
 ==================================================================
-    MAIN CONTENT
+    MAIN CONTENT AREA
 ==================================================================
 */
 main {
@@ -228,7 +251,12 @@ main {
   top: 180px;
   left: 0;
   padding: 0 5%;
-  font-family: "Oswald", sans-serif; }
+  font-family: "Oswald", sans-serif;
+  /*
+    ============================
+        PAGINATION
+    ============================
+    */ }
   @media (min-width: 800px) {
     main {
       left: 15vw;
@@ -236,10 +264,15 @@ main {
   main #main-content {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-evenly; }
+    justify-content: space-evenly;
+    /*
+        ============================
+            MEDIA POSTERS LAYOUT
+        ============================
+        */ }
     main #main-content .media-item {
-      display: inline-block;
       position: relative;
+      display: inline-block;
       width: 125px;
       margin: 2% 1%;
       white-space: nowrap;
@@ -312,6 +345,13 @@ main {
       cursor: pointer; }
       main #main-pagination .pagination-box:hover {
         background: #333; }
+
+main {
+  /*
+    ============================
+      FULL SCREEN MEDIA DETAILS
+    ============================
+    */ }
   main #full-media-content {
     position: fixed;
     width: 90%;
@@ -327,58 +367,67 @@ main {
       top: -12px;
       left: auto;
       float: right;
+      color: crimson;
       cursor: pointer; }
       main #full-media-content .close-media-content:hover, main #full-media-content .download-icon:hover {
         color: #333; }
-    main #full-media-content .download-fanart {
-      position: relative;
-      top: 16px;
-      left: auto;
-      float: right;
-      right: -34px;
-      font-size: 0.8em;
-      text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
-      transition: 0.4s;
-      color: #f9f9f9;
-      cursor: pointer; }
-      main #full-media-content .download-fanart:hover {
-        text-decoration: underline; }
-    main #full-media-content .download-icon {
-      color: crimson;
-      cursor: pointer; }
-      main #full-media-content .download-icon:hover {
-        color: #f9f9f9; }
     main #full-media-content #media-showcase {
       height: 380px;
       box-shadow: inset 20px -50px 50px 20px rgba(0, 0, 0, 0.5);
       background-position: center top;
       background-size: cover; }
-    main #full-media-content #media-poster {
+      main #full-media-content #media-showcase .download-fanart {
+        position: relative;
+        top: 16px;
+        left: auto;
+        float: right;
+        right: -34px;
+        font-size: 0.8em;
+        text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+        transition: 0.4s;
+        color: #f9f9f9;
+        cursor: pointer; }
+        main #full-media-content #media-showcase .download-fanart:hover {
+          text-decoration: underline; }
+        main #full-media-content #media-showcase .download-fanart .download-icon {
+          color: crimson;
+          cursor: pointer; }
+          main #full-media-content #media-showcase .download-fanart .download-icon:hover {
+            color: #f9f9f9; }
+      main #full-media-content #media-showcase h1 {
+        position: relative;
+        top: 85%;
+        left: auto;
+        right: -120px;
+        color: #f9f9f9;
+        text-align: right;
+        text-shadow: 1px 1px #111; }
+    main #full-media-content #media-details #media-poster {
       position: relative;
-      top: -60px;
+      top: -50px;
       left: 30px;
+      display: none;
+      float: left;
       border: 1px solid #f9f9f9; }
-    main #full-media-content h1 {
-      position: relative;
-      top: 85%;
-      left: auto;
-      right: -120px;
-      color: #f9f9f9;
-      text-align: right;
-      text-shadow: 1px 1px #111; }
-    main #full-media-content #media-details img {
-      display: none; }
       @media (min-width: 800px) {
-        main #full-media-content #media-details img {
+        main #full-media-content #media-details #media-poster {
           display: inline-block; } }
+    main #full-media-content #media-details #media-details-bar {
+      height: 50px;
+      text-align: right;
+      background-color: #000;
+      color: #f9f9f9; }
+    main #full-media-content #media-details p {
+      position: relative;
+      top: auto;
+      left: auto;
+      max-width: 90%; }
+      @media (min-width: 800px) {
+        main #full-media-content #media-details p {
+          left: 10%; } }
+    main #full-media-content #media-details #media-tagline {
+      text-transform: uppercase;
+      color: #000; }
     @media (min-width: 800px) {
       main #full-media-content {
         width: 75%; } }
-
-#full-media-content::-webkit-scrollbar {
-  width: 0px;
-  background: transparent; }
-
-#full-media-content::-moz-scrollbar {
-  width: 0px;
-  background: transparent; }

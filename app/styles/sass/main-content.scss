@@ -2,7 +2,7 @@
 
 /*
 ==================================================================
-    MAIN CONTENT
+    MAIN CONTENT AREA
 ==================================================================
 */
 
@@ -15,14 +15,23 @@ main {
     padding: $small-padding;
     font-family: $roboto-font;
 
+    
     #main-content {
         display: flex;
         flex-flow: row wrap;
         justify-content: space-evenly;
+        
+
+        /*
+        ============================
+            MEDIA POSTERS LAYOUT
+        ============================
+        */
+
 
         .media-item {
-            display: inline-block;
             position: relative;
+            display: inline-block;
             width: 125px;
             margin: 2% 1%;
             white-space: nowrap; 
@@ -96,6 +105,13 @@ main {
         }
     }
 
+    /*
+    ============================
+        PAGINATION
+    ============================
+    */
+
+
     #main-pagination {
         margin: 30px auto;
         padding: 20px;
@@ -114,6 +130,16 @@ main {
             }
         }
     }
+}
+
+main {
+
+    /*
+    ============================
+      FULL SCREEN MEDIA DETAILS
+    ============================
+    */
+
 
     #full-media-content {
         @include pos-fixed(90%, 150px, auto);
@@ -127,6 +153,7 @@ main {
         .close-media-content, .download-icon {
             @include pos-relative( -12px, auto);
             float: right;
+            color: crimson;
             cursor: pointer;
 
             &:hover {
@@ -134,31 +161,7 @@ main {
             }
         }
 
-        .download-fanart {
-            @include pos-relative( 16px, auto);
-            float: right;
-            right: -34px;
-            font-size: 0.8em;
-            text-shadow: 1px 1px rgba(0,0,0,0.2);
-            transition: 0.4s;
-            color: $white;
-            cursor: pointer;
-
-            &:hover {
-                text-decoration: underline;
-            }
-
-        }
-
-        .download-icon {
-            color: crimson;
-            cursor: pointer;
-
-            &:hover {
-                color: $white;
-            }
-        }
-
+        
         #media-showcase {
             height: 380px;
             box-shadow: inset 20px -50px 50px 20px rgba(0,0,0,0.5);
@@ -166,27 +169,71 @@ main {
                 position: center top;
                 size: cover;
             }
+            
+            .download-fanart {
+                @include pos-relative( 16px, auto);
+                float: right;
+                right: -34px;
+                font-size: 0.8em;
+                text-shadow: 1px 1px rgba(0,0,0,0.2);
+                transition: 0.4s;
+                color: $white;
+                cursor: pointer;
+    
+                &:hover {
+                    text-decoration: underline;
+                }
+    
+                .download-icon {
+                    color: crimson;
+                    cursor: pointer;
+        
+                    &:hover {
+                        color: $white;
+                    }
+                }
+            }
+
+            h1 {
+                @include pos-relative(85%, auto);
+                right: -120px;
+                color: $white;
+                text-align: right;
+                text-shadow: 1px 1px #111;
+            }
         }
 
-        #media-poster {
-            @include pos-relative(-60px, 30px);
-            border: 1px solid $white;
-        }
-
-        h1 {
-            @include pos-relative(85%, auto);
-            right: -120px;
-            color: $white;
-            text-align: right;
-            text-shadow: 1px 1px #111;
-        }
-
+        
+        
         #media-details {
-            img {
+            #media-poster {
+                @include pos-relative(-50px, 30px);
                 display: none;
+                float: left;
+                border: 1px solid $white;
                 @include breakpoint {
                     display: inline-block;
                 }
+            }
+
+            #media-details-bar {
+                height: 50px;
+                text-align: right;
+                background-color: $black-font;
+                color: $white;
+            }
+
+            p {
+                @include pos-relative(auto, auto);
+                max-width: 90%;
+                @include breakpoint {
+                    left: 10%;
+                }
+            }
+
+            #media-tagline {
+                text-transform: uppercase;
+                color: #000;
             }
         }
 
@@ -196,13 +243,4 @@ main {
     }
 }
 
-// Not working if nested
-#full-media-content::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-}
 
-#full-media-content::-moz-scrollbar {
-    width: 0px;
-    background: transparent;
-}

@@ -369,11 +369,31 @@ function showContentResults(results) {
 function showFullMediaContent( mediaType, result) {
 
     const title = result.title || result.name || 'Unknown';
-    const tagline = result.tagline || `SEASONS: ${result.number_of_episodes} EPISODES:${result.number_of_episodes}` || '';
+    const tagline = result.tagline || `NO. SEASONS: ${result.number_of_episodes}  ~  NO. EPISODES:${result.number_of_episodes}` || '';
     const overview = result.overview || '';
     const rating = result.vote_average || '0';
+    let date = result.release_date || result.first_air_date || '';
+    let status = result.status || '';
     let backdrop = BACKDROP + result.backdrop_path;
     let poster = POSTER + result.poster_path;
+
+    // Get Trailer and check for undefined
+    // If no trailer exists - search youtube
+    let trailer = []; 
+    if (result.videos.results.length != 0) {
+        trailer = result.videos.results.map(video => {
+            if (video.type == 'Trailer') {
+                return `https://www.youtube.com/watch?v=${video.key}`;
+            }
+        }).filter(video => {
+            if (video != 'undefined') {
+                return video;
+            }
+        });
+    }
+    else {
+        trailer[0] = `https://www.youtube.com/results?search_query=${title}`;
+    }
 
     if (result.backdrop_path == null) backdrop = DEFAULT_BACKDROP;
     if (result.poster_path == null) poster = DEFAULT_POSTER;
@@ -388,6 +408,13 @@ function showFullMediaContent( mediaType, result) {
 
         <div id="media-details">
             <img width="140" id="media-poster" src="${poster}" alt="${title}">
+            <div id="media-details-bar">
+                <a href="${trailer[0]}" target=_blank">Trailer</a>
+                <span>${date}</span>
+                <span>${status}</span>
+                <span>${rating}</span>
+                <span>Add/Remove from Collection</span>
+            </div>
             <p id="media-tagline">${tagline}</p>
             <p id="media-overview">${overview}</p>
         </div>
@@ -423,14 +450,6 @@ function pagination(primary, secondary, page) {
         i++;
     };
 };
-
-
-
-/*
-==============================
-    DOWNLOAD FANART
-==============================
-*/
 
 
 
