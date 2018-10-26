@@ -72,26 +72,23 @@ function nav(param) {
     switch(primary) {
         case 'movies':
             fetchTMDbData(primary, secondary);
-            manageSecondaryNav(primary, secondary);
             break;
         case 'tvshows':
             fetchTMDbData(primary, secondary);
-            manageSecondaryNav(primary, secondary);
             break;
         case 'mylists':
             getLocalStorageLists();
-            manageSecondaryNav(primary, secondary);
-            resetMediaResults();
-            resetPagination(); 
             break;
         case 'statistics':
-            manageSecondaryNav(primary, secondary);
-            resetMediaResults();
-            resetPagination(); 
             break;
         default:
             break;
     };
+
+    resetMediaResults();
+    resetPagination(); 
+    resetFullMediaContent();
+    manageSecondaryNav(primary, secondary);
     manageActiveClass(primary, secondary);
 };
 

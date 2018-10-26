@@ -240,7 +240,7 @@ main {
     main #main-content .media-item {
       display: inline-block;
       position: relative;
-      max-width: 200px;
+      width: 125px;
       margin: 2% 1%;
       white-space: nowrap;
       overflow: hidden;
@@ -249,6 +249,11 @@ main {
       color: #000;
       order: 1;
       cursor: pointer; }
+      main #main-content .media-item .media-poster {
+        width: 125px; }
+        @media (min-width: 800px) {
+          main #main-content .media-item .media-poster {
+            width: 200px; } }
       main #main-content .media-item .is-in-collection {
         position: relative;
         top: -8px;
@@ -275,17 +280,23 @@ main {
         background-color: rgba(0, 0, 0, 0.5); }
       main #main-content .media-item .title {
         display: inline-block;
-        max-width: 158px;
+        max-width: 95px;
         overflow: hidden;
         text-overflow: ellipsis;
         text-transform: uppercase;
         font-size: 1.2em; }
+        @media (min-width: 800px) {
+          main #main-content .media-item .title {
+            max-width: 158px; } }
       main #main-content .media-item .rating {
         position: relative;
         top: -10px;
         left: auto;
         float: right;
         z-index: 2; }
+      @media (min-width: 800px) {
+        main #main-content .media-item {
+          width: 200px; } }
     @media (min-width: 1800px) {
       main #main-content {
         justify-content: flex-start; } }
@@ -311,25 +322,50 @@ main {
     background-color: #f9f9f9;
     height: calc(100vh - 150px);
     overflow-y: auto; }
-    main #full-media-content .close-media-content {
+    main #full-media-content .close-media-content, main #full-media-content .download-icon {
       position: relative;
       top: -12px;
       left: auto;
       float: right;
       cursor: pointer; }
-      main #full-media-content .close-media-content:hover {
+      main #full-media-content .close-media-content:hover, main #full-media-content .download-icon:hover {
         color: #333; }
+    main #full-media-content .download-fanart {
+      position: relative;
+      top: 16px;
+      left: auto;
+      float: right;
+      right: -34px;
+      font-size: 0.8em;
+      text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+      transition: 0.4s;
+      color: #f9f9f9;
+      cursor: pointer; }
+      main #full-media-content .download-fanart:hover {
+        text-decoration: underline; }
+    main #full-media-content .download-icon {
+      color: crimson;
+      cursor: pointer; }
+      main #full-media-content .download-icon:hover {
+        color: #f9f9f9; }
     main #full-media-content #media-showcase {
       height: 380px;
+      box-shadow: inset 20px -50px 50px 20px rgba(0, 0, 0, 0.5);
       background-position: center top;
       background-size: cover; }
+    main #full-media-content #media-poster {
+      position: relative;
+      top: -60px;
+      left: 30px;
+      border: 1px solid #f9f9f9; }
     main #full-media-content h1 {
       position: relative;
       top: 85%;
       left: auto;
+      right: -120px;
       color: #f9f9f9;
       text-align: right;
-      text-shadow: 1px 1px #000; }
+      text-shadow: 1px 1px #111; }
     main #full-media-content #media-details img {
       display: none; }
       @media (min-width: 800px) {

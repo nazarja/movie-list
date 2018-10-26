@@ -38,18 +38,18 @@ function showSearchResults(results) {
 function showContentResults(results) {
     resetMediaResults();
 
-    results.map((result, i) => {
+    results.map(result => {
         const tmdbId = result.id || '0';
         const title = result.title || result.name || 'Unknown';
         const rating = result.vote_average || '0';
-        const poster = POSTER + result.poster_path || '';
+        let poster = POSTER + result.poster_path;
         let mediaType;
-
-        // Check if media type is movie or tvshow
+        
+        if (result.poster_path == null) poster = DEFAULT_POSTER;
         if (result.hasOwnProperty('adult')) mediaType = 'movie';
         else  mediaType = 'tv';
 
-        // Check if media already already exists in a collection
+        // CHECK COLLECTIONS
         let inCollectionColor = '#222';
         if (isInCollection(tmdbId)) {
             inCollectionColor = 'crimson';
@@ -58,7 +58,7 @@ function showContentResults(results) {
         mainContent.innerHTML += `
             <div class="media-item">
                 <i class="material-icons is-in-collection" style="color: ${inCollectionColor}">collections</i>
-                <img src="${poster}" alt="${title}" onclick="fetchMediaData('${mediaType}',${tmdbId})">
+                <img class="media-poster" src="${poster}" alt="${title}" onclick="fetchMediaData('${mediaType}',${tmdbId})">
                 <span class="more-information" onclick="fetchMediaData('${mediaType}',${tmdbId})">More Information</span>
                 <div>
                     <span class="title">${title}</span><span class="rating">${rating}</span>
@@ -87,25 +87,29 @@ function showFullMediaContent( mediaType, result) {
     const tagline = result.tagline || `SEASONS: ${result.number_of_episodes} EPISODES:${result.number_of_episodes}` || '';
     const overview = result.overview || '';
     const rating = result.vote_average || '0';
-    const poster = POSTER + result.poster_path || '';
+    let backdrop = BACKDROP + result.backdrop_path;
+    let poster = POSTER + result.poster_path;
+
+    if (result.backdrop_path == null) backdrop = DEFAULT_BACKDROP;
+    if (result.poster_path == null) poster = DEFAULT_POSTER;
+
 
     fullMediaContent.innerHTML = `
         <p>MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
-        <div id="media-showcase" style="background-image: url('${BACKDROP}${result.backdrop_path}')">
+        <div id="media-showcase" style="background-image: url('${backdrop}')">
+            <a class="download-fanart" href="${backdrop}"target="_blank">DOWNLOAD FANART<br /><i class="material-icons download-icon">cloud_download</i></a>
             <h1 id="media-title">${title}</h1>
         </div>
 
         <div id="media-details">
-            <img src="${poster}" alt="${title}">
-        </div>
-        
-        <div id="media-extra">
+            <img width="140" id="media-poster" src="${poster}" alt="${title}">
             <p id="media-tagline">${tagline}</p>
             <p id="media-overview">${overview}</p>
         </div>
     `;
     fullMediaContent.style.display = 'block';
 }
+
 
 
 /*
@@ -134,6 +138,14 @@ function pagination(primary, secondary, page) {
         i++;
     };
 };
+
+
+
+/*
+==============================
+    DOWNLOAD FANART
+==============================
+*/
 
 
 
