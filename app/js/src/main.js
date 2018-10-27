@@ -131,6 +131,11 @@ function resetSearchResults() {
    searchResults.innerHTML = '';
 };
 
+function resetSearchInputValue() {
+   searchInput.value = '';
+   searchClear.style.visibility = 'hidden';
+};
+
 function resetMediaResults() {
    mainContent.innerHTML = '';
 };

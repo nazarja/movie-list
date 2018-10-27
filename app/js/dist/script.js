@@ -131,6 +131,11 @@ function resetSearchResults() {
    searchResults.innerHTML = '';
 };
 
+function resetSearchInputValue() {
+   searchInput.value = '';
+   searchClear.style.visibility = 'hidden';
+};
+
 function resetMediaResults() {
    mainContent.innerHTML = '';
 };
@@ -263,7 +268,13 @@ function getSearchInput() {
         getTMDbSearchData(searchInput.value.replace(/\s/g, '%20'));
     };
 
-    if (searchInput.value.length < 4) resetSearchResults();
+    if (searchInput.value.length < 4) {
+        resetSearchResults();
+    }
+
+    if (searchInput.value.length == 0) {
+        searchClear.style.visibility = 'hidden';
+    }
 };
 
 
@@ -388,7 +399,7 @@ function showSearchResults(results) {
             let mediaType = results[i].media_type || 'movie';
 
             if (date)  date = date.slice(0,4);
-            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults()">${title} (${date})</p>`;
+            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
         };
     };
 };

@@ -107,7 +107,13 @@ function getSearchInput() {
         getTMDbSearchData(searchInput.value.replace(/\s/g, '%20'));
     };
 
-    if (searchInput.value.length < 4) resetSearchResults();
+    if (searchInput.value.length < 4) {
+        resetSearchResults();
+    }
+
+    if (searchInput.value.length == 0) {
+        searchClear.style.visibility = 'hidden';
+    }
 };
 
 

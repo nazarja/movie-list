@@ -535,8 +535,29 @@ main {
       margin: -15px 0;
       width: 100%; }
       #main-mylists #user-lists .list-item div {
-        display: inline-block; }
+        display: inline-block;
+        font-size: 0.8em; }
+        @media (min-width: 800px) {
+          #main-mylists #user-lists .list-item div {
+            font-size: inherit; } }
       #main-mylists #user-lists .list-item .list-item-rating, #main-mylists #user-lists .list-item .list-item-delete {
-        width: 40px; }
-      #main-mylists #user-lists .list-item .list-item-title:hover {
-        color: #222; }
+        width: 20px; }
+        @media (min-width: 800px) {
+          #main-mylists #user-lists .list-item .list-item-rating, #main-mylists #user-lists .list-item .list-item-delete {
+            width: 40px; } }
+      #main-mylists #user-lists .list-item .list-item-title {
+        display: inline-block;
+        position: relative;
+        max-width: 200px;
+        top: 3px;
+        height: 1.4em;
+        overflow: hidden;
+        text-overflow: ellipsis; }
+        #main-mylists #user-lists .list-item .list-item-title:hover {
+          color: #222; }
+        @media (min-width: 800px) {
+          #main-mylists #user-lists .list-item .list-item-title {
+            max-width: 800px;
+            height: auto;
+            top: 5px;
+            font-size: inherit; } }

@@ -19,7 +19,7 @@ function showSearchResults(results) {
             let mediaType = results[i].media_type || 'movie';
 
             if (date)  date = date.slice(0,4);
-            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults()">${title} (${date})</p>`;
+            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
         };
     };
 };
