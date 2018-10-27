@@ -195,11 +195,17 @@ main {
             }
 
             h1 {
-                @include pos-relative(85%, auto);
-                right: -120px;
+                @include pos-relative(250px, auto);
+                float: right;
+                right: 20px;
+                clear: both;
                 color: $white;
-                text-align: right;
                 text-shadow: 1px 1px #111;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 80vw;
+                max-height: 50px;
+                padding-left: 30px;
             }
         }
 
@@ -219,9 +225,12 @@ main {
             #media-details-bar {
                 min-height: 50px;
                 padding-right: 10px;
-                text-align: right;
-                background-color: $black-font;
+                text-align: center;
                 color: $white;
+                background-color: $black-font;
+                @include breakpoint {
+                    text-align: right;
+                }
 
                 * {
                     display: inline-block;

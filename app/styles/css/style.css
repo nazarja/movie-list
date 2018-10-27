@@ -66,7 +66,8 @@ main #main-content .media-item .rating, main #main-pagination .pagination-box {
 */
 body {
   font-family: "Julius Sans One", sans-serif;
-  color: #484539; }
+  color: #484539;
+  background-color: #f9f9f9; }
 
 ul {
   list-style: none;
@@ -396,12 +397,18 @@ main {
             color: #f9f9f9; }
       main #full-media-content #media-showcase h1 {
         position: relative;
-        top: 85%;
+        top: 250px;
         left: auto;
-        right: -120px;
+        float: right;
+        right: 20px;
+        clear: both;
         color: #f9f9f9;
-        text-align: right;
-        text-shadow: 1px 1px #111; }
+        text-shadow: 1px 1px #111;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80vw;
+        max-height: 50px;
+        padding-left: 30px; }
     main #full-media-content #media-details #media-poster {
       position: relative;
       top: -50px;
@@ -415,9 +422,12 @@ main {
     main #full-media-content #media-details #media-details-bar {
       min-height: 50px;
       padding-right: 10px;
-      text-align: right;
-      background-color: #000;
-      color: #f9f9f9; }
+      text-align: center;
+      color: #f9f9f9;
+      background-color: #000; }
+      @media (min-width: 800px) {
+        main #full-media-content #media-details #media-details-bar {
+          text-align: right; } }
       main #full-media-content #media-details #media-details-bar * {
         display: inline-block;
         position: relative;
