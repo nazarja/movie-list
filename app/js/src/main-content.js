@@ -149,14 +149,15 @@ function showMyLists() {
 
     if (Object.keys(state.mylists).length !== 0) {
          // Iterate over lists
+         let i = 1;
          for(let lists in state.mylists) {
             let list = state.mylists[lists];
 
             let userList = `
-            <div class="userlist">
+            <div class="userlist"  id="list-${lists}-${i}">
                 <div class="list-titlebar">
                     <h2>${lists}</h2>
-                    <p class="delete-list">Delete List<i class="material-icons delete-list-icon">delete</i></p>
+                    <p class="delete-list" onclick="deleteList('${lists}', 'list-${lists}-${i}')">Delete List<i class="material-icons delete-list-icon">delete</i></p>
                 </div>
             `;
 
@@ -173,15 +174,16 @@ function showMyLists() {
                 else  mediaType = 'tv'; 
 
                 userList += `
-                    <p class="list-item">
-                        <span class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})">${title}  (${date})</span>
-                        <span class="rating">${rating}</span>
-                        <i class="material-icons delete-list-icon">delete</i>
-                    </p>
+                    <div class="list-item">
+                        <div><i class="list-item-delete material-icons delete-list-icon">delete</i></div>
+                        <div class="list-item-rating">${rating}</div>
+                        <div class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})"><span class="list-title">${title}</span>  (${date})</div>
+                    </div>
                 `;
             } ;
             userList += `</div>`;
-            userLists.innerHTML += userList; 
+            userLists.innerHTML += userList;
+            i++; 
         };
 
     }

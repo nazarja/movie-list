@@ -14,6 +14,7 @@ main {
     }
     padding: $small-padding;
     font-family: $roboto-font;
+    padding-bottom: 40px;
 
     
     #main-content {
@@ -155,6 +156,12 @@ main {
             }
         }
 
+        /*
+        ============================
+            FANART DISPLAY SECTION
+        ============================
+        */
+
         #media-showcase {
             height: 380px;
             box-shadow: inset 20px -50px 50px 20px rgba(0,0,0,0.5);
@@ -197,7 +204,11 @@ main {
             }
         }
 
-        
+        /*
+        ============================
+            MEDIA DETAILS
+        ============================
+        */
         
         #media-details {
             #media-poster {

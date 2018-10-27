@@ -43,6 +43,12 @@
         }
     }
 
+    /*
+    ============================
+        LISTS
+    ============================
+    */
+
     #user-lists {
 
         .list-titlebar {
@@ -64,33 +70,39 @@
             }
         }
 
-        .rating {
-            @include pos-relative(-10px, auto);
-            @extend %small-green-box;
-        }
-
         .delete-list {
             @extend %underline;
             float: right;
         }
 
-        .list-item:first-of-type {
-            width: 100%;
-        }
+        /*
+        ============================
+            LIST ITEM
+        ============================
+        */
+
 
         .list-item {
             margin: -15px 0;
+            width: 100%;
 
-            // .list-item-title {
-            //     width: 70%;
-            //     text-align: left;
-            //     color: #111;
-            //     &:hover {
-            //         text-decoration: underline;
-            //         cursor: pointer;
-            //     }
-            // }
-        }
+            div {
+                display: inline-block;
+            }
+
+            .list-item-rating, .list-item-delete {
+                width: 40px;
+            }
+
+            .list-item-title {
+                @extend %underline;
+                &:hover {
+                    color: #222;
+                }
+            }
+
+            
+        } 
     }
 }
 

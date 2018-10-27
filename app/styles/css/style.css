@@ -47,7 +47,7 @@ header #topbar #ref-link {
   text-transform: uppercase;
   color: #8c8c8c; }
 
-main #main-content .media-item .rating, main #main-pagination .pagination-box, #main-mylists #user-lists .rating {
+main #main-content .media-item .rating, main #main-pagination .pagination-box {
   font-family: "Oswald", sans-serif;
   font-size: 11.2px;
   padding: 5px 6px;
@@ -55,7 +55,7 @@ main #main-content .media-item .rating, main #main-pagination .pagination-box, #
   color: #f9f9f9;
   background-color: #009587; }
 
-header #topbar #ref-link a:hover, header #search #search-results p:hover, main #main-content .media-item .add-remove-from-collection:hover, main #full-media-content #media-showcase .download-fanart:hover, main #full-media-content #media-details #media-details-bar a:hover, main #full-media-content #media-details #media-details-bar .from-collection:hover, #main-mylists .create-new-list:hover, #main-mylists #user-lists .delete-list:hover {
+header #topbar #ref-link a:hover, header #search #search-results p:hover, main #main-content .media-item .add-remove-from-collection:hover, main #full-media-content #media-showcase .download-fanart:hover, main #full-media-content #media-details #media-details-bar a:hover, main #full-media-content #media-details #media-details-bar .from-collection:hover, #main-mylists .create-new-list:hover, #main-mylists #user-lists .delete-list:hover, #main-mylists #user-lists .list-item .list-item-title:hover {
   transition: 0.4s;
   text-decoration: underline;
   cursor: pointer; }
@@ -263,6 +263,7 @@ main {
   left: 0;
   padding: 0 5%;
   font-family: "Oswald", sans-serif;
+  padding-bottom: 40px;
   /*
     ============================
         PAGINATION
@@ -370,7 +371,17 @@ main {
     z-index: 3;
     background-color: #f9f9f9;
     height: calc(100vh - 150px);
-    overflow-y: auto; }
+    overflow-y: auto;
+    /*
+        ============================
+            FANART DISPLAY SECTION
+        ============================
+        */
+    /*
+        ============================
+            MEDIA DETAILS
+        ============================
+        */ }
     main #full-media-content .close-media-content, main #full-media-content .download-icon {
       position: relative;
       top: -12px;
@@ -466,7 +477,12 @@ main {
 ==================================================================
 */
 #main-mylists {
-  display: none; }
+  display: none;
+  /*
+    ============================
+        LISTS
+    ============================
+    */ }
   #main-mylists i {
     position: relative;
     top: 5px;
@@ -492,27 +508,34 @@ main {
     #main-mylists .create-new-list .new-list-icon {
       color: #b91335;
       padding-right: 0; }
-  #main-mylists #user-lists .list-titlebar {
-    margin: 50px 0 50px;
-    text-transform: uppercase; }
-  #main-mylists #user-lists h2 {
-    position: relative;
-    top: 30px;
-    left: auto;
-    display: inline-block;
-    font-size: 1.2rem; }
-  #main-mylists #user-lists i {
-    cursor: pointer; }
-    #main-mylists #user-lists i:hover {
-      transition: 0.4s;
-      color: #b91335; }
-  #main-mylists #user-lists .rating {
-    position: relative;
-    top: -10px;
-    left: auto; }
-  #main-mylists #user-lists .delete-list {
-    float: right; }
-  #main-mylists #user-lists .list-item:first-of-type {
-    width: 100%; }
-  #main-mylists #user-lists .list-item {
-    margin: -15px 0; }
+  #main-mylists #user-lists {
+    /*
+        ============================
+            LIST ITEM
+        ============================
+        */ }
+    #main-mylists #user-lists .list-titlebar {
+      margin: 50px 0 50px;
+      text-transform: uppercase; }
+    #main-mylists #user-lists h2 {
+      position: relative;
+      top: 30px;
+      left: auto;
+      display: inline-block;
+      font-size: 1.2rem; }
+    #main-mylists #user-lists i {
+      cursor: pointer; }
+      #main-mylists #user-lists i:hover {
+        transition: 0.4s;
+        color: #b91335; }
+    #main-mylists #user-lists .delete-list {
+      float: right; }
+    #main-mylists #user-lists .list-item {
+      margin: -15px 0;
+      width: 100%; }
+      #main-mylists #user-lists .list-item div {
+        display: inline-block; }
+      #main-mylists #user-lists .list-item .list-item-rating, #main-mylists #user-lists .list-item .list-item-delete {
+        width: 40px; }
+      #main-mylists #user-lists .list-item .list-item-title:hover {
+        color: #222; }

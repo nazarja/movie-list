@@ -44,3 +44,23 @@ function checkIfInCollection(tmdbId) {
     return arr;
 };
 
+
+/*
+==============================
+    CRUD FUNCTIONS
+==============================
+*/
+
+function deleteList(list, id) {
+    if (state.mylists[list]) {
+        let confirmDelete = confirm('Are you sure you want to delete this list?');
+
+        if (confirmDelete) {
+            delete state.mylists[list];
+            let userlists = JSON.stringify(state.mylists);
+            localStorage.setItem('movielist:userlists', userlists);
+            let element = document.querySelector(`#${id}`);
+            element.remove();
+        };
+    };
+};
