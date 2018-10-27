@@ -14,14 +14,11 @@
 function showSearchResults(results) {
     for (let i = 0; i < 6; i++) {
         if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
-
             let title = results[i].title || results[i].name;
             let date = results[i].release_date || results[i].first_air_date || '';
             let mediaType = results[i].media_type || 'movie';
 
-            if (date) {
-                date = date.slice(0,4);
-            };
+            if (date)  date = date.slice(0,4);
             searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults()">${title} (${date})</p>`;
         };
     };
@@ -49,11 +46,11 @@ function showContentResults(results) {
         if (result.hasOwnProperty('adult')) mediaType = 'movie';
         else  mediaType = 'tv';
 
+
         // CHECK COLLECTIONS
         let inCollectionColor = '#222';
-        if (isInCollection(tmdbId)) {
-            inCollectionColor = 'crimson';
-        };
+        if (isInCollection(tmdbId)) inCollectionColor = 'crimson';
+
 
         mainContent.innerHTML += `
             <div class="media-item">
@@ -69,7 +66,6 @@ function showContentResults(results) {
             </div>
         `;
     });
-
     onMediaHover();
 };
 
@@ -92,14 +88,13 @@ function showFullMediaContent( mediaType, result) {
     let status = result.status || '';
     let backdrop = BACKDROP + result.backdrop_path;
     let poster = POSTER + result.poster_path;
+    let trailer = []; 
 
-    if (date) {
-        date = date.split('-').reverse().join('-');
-    }
+    if (date) date = date.split('-').reverse().join('-');
+    if (result.backdrop_path == null) backdrop = DEFAULT_BACKDROP;
+    if (result.poster_path == null) poster = DEFAULT_POSTER;
 
     // Get Trailer and check for undefined
-    // If no trailer exists - search youtube
-    let trailer = []; 
     if (result.videos.results.length != 0) {
         trailer = result.videos.results.map(video => {
             if (video.type == 'Trailer') {
@@ -110,13 +105,11 @@ function showFullMediaContent( mediaType, result) {
                 return video;
             }
         });
-    }
+    } 
+    // If no trailer exists - search youtube
     else {
         trailer[0] = `https://www.youtube.com/results?search_query=${title}`;
     }
-
-    if (result.backdrop_path == null) backdrop = DEFAULT_BACKDROP;
-    if (result.poster_path == null) poster = DEFAULT_POSTER;
 
 
     fullMediaContent.innerHTML = `
@@ -125,7 +118,6 @@ function showFullMediaContent( mediaType, result) {
             <a class="download-fanart" href="${backdrop}"target="_blank">DOWNLOAD FANART<br /><i class="material-icons download-icon">cloud_download</i></a>
             <h1 id="media-title">${title}</h1>
         </div>
-
         <div id="media-details">
             <img width="140" id="media-poster" src="${poster}" alt="${title}">
             <div id="media-details-bar">
@@ -140,7 +132,7 @@ function showFullMediaContent( mediaType, result) {
         </div>
     `;
     fullMediaContent.style.display = 'block';
-}
+};
 
 
 
@@ -155,18 +147,12 @@ function pagination(primary, secondary, page) {
     let i = 0;
 
     // Give previous page option unless its the 1st page
-    if (page > 1) {
-        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page - 1})">${page - 1}</span>`;
-    };
+    if (page > 1) mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page - 1})">${page - 1}</span>`;
 
     while (i < 5) {
         // Highlight Active Page
-        if (i == 0) {
-            mainPagination.innerHTML += `<span class="pagination-box" style="background-color: #333;" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
-        }
-        else {
-            mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
-        };
+        if (i == 0) mainPagination.innerHTML += `<span class="pagination-box" style="background-color: #333;" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
+        else mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
         i++;
     };
 };
@@ -182,12 +168,7 @@ function pagination(primary, secondary, page) {
 function onMediaHover() {
     const mediaItem = document.querySelectorAll('.media-item');
     mediaItem.forEach(item => {
-        item.onmouseenter = () => {
-            item.children[2].style.display = 'inline-block';
-        };
-
-        item.onmouseleave = () => {
-            item.children[2].style.display = 'none';
-        };
+        item.onmouseenter = () => item.children[2].style.display = 'inline-block';
+        item.onmouseleave = () => item.children[2].style.display = 'none';
     });
 };

@@ -82,7 +82,6 @@ main {
                 text-overflow: ellipsis;
                 text-transform: uppercase;
                 font-size: 1.2em;
-
                 @include breakpoint {
                     max-width: 158px;
                 }
@@ -99,7 +98,6 @@ main {
                 width: 200px;
             }
         }
-
         @media (min-width: 1800px) {
             justify-content: flex-start;
         }
@@ -124,7 +122,6 @@ main {
             padding: 5px 8px;
             transition: 0.4s;
             cursor: pointer;
-
             &:hover {
                 background: $black;
             }
@@ -149,19 +146,16 @@ main {
         height: calc(100vh - 150px);
         overflow-y: auto;
 
-
         .close-media-content, .download-icon {
             @include pos-relative( -12px, auto);
             float: right;
             color: crimson;
             cursor: pointer;
-
             &:hover {
                 color: $black;
             }
         }
 
-        
         #media-showcase {
             height: 380px;
             box-shadow: inset 20px -50px 50px 20px rgba(0,0,0,0.5);
@@ -179,7 +173,6 @@ main {
                 transition: 0.4s;
                 color: $white;
                 cursor: pointer;
-    
                 &:hover {
                     text-decoration: underline;
                 }
@@ -187,7 +180,6 @@ main {
                 .download-icon {
                     color: crimson;
                     cursor: pointer;
-        
                     &:hover {
                         color: $white;
                     }
@@ -238,7 +230,6 @@ main {
                     padding: 2px 5px;
                     color: #ddd;
                     font-size: 0.9rem;
-
                     @media (min-width: 449px) {
                         top: 12px;
                     }
@@ -269,7 +260,6 @@ main {
                 color: #000;
             }
         }
-
         @include breakpoint {
             width: 75%;
         }

@@ -108,6 +108,5 @@ function fetchMediaData( mediaType,tmdbId) {
         // TODO: 404 Error
         console.log(err);
     });
-
 };
 
