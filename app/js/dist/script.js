@@ -16,12 +16,13 @@ const main = document.querySelector('#main');
 const mainContent = document.querySelector('#main-content');
 const mainPagination = document.querySelector('#main-pagination');
 const fullMediaContent = document.querySelector('#full-media-content');
+const userLists = document.querySelector('#user-lists');
 
 
 let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
-    mylists : []
+    mylists : {}
 };
 
 
@@ -270,17 +271,56 @@ function getSearchInput() {
 ==================================================================
 */
 
-function getLocalStorageLists() {
-    
+/*
+==============================
+    CHECK/GET USER LISTS
+==============================
+*/
+
+function parseLocalStorageLists() {
+    if ('movielist:userlists' in localStorage) {
+        let userlists = localStorage.getItem('movielist:userlists');
+        userlists = JSON.parse(userlists);
+        let keys = Object.keys(userlists);
+
+        for (let list in userlists) {
+            state.mylists[list] = userlists[list];
+        };
+    };
 };
 
-function isInCollection(imdbId) {
-    // console.log(imdbId);
-}
+function checkIfInCollection(tmdbId) {
 
-function addRemoveFromCollection(imdbId) {
-    console.log(imdbId);
-}
+    let arr= [[],[]];
+    if (Object.keys(state.mylists).length !== 0) {
+
+        // Iterate over lists
+        for(let lists in state.mylists) {
+            let list = state.mylists[lists];
+            arr[0].push(lists);
+
+            for (let i = 0; i < list.length; i++) {
+                if (tmdbId == list[i].id) {
+                    arr[1].push(true, lists);
+                    break;
+                };
+                
+            } 
+        }
+    }
+    console.log(arr);
+    return arr;
+};
+
+
+
+
+
+
+// else {
+//     // userLists.innerHTML = `<p class="list-heading">You don't have any created lists</p>`;
+//     // let userlists = localStorage.setItem('movielist:userlists', sampleData);
+// };
 
 /*
 ==================================================================
@@ -330,9 +370,10 @@ function showContentResults(results) {
         else  mediaType = 'tv';
 
 
-        // CHECK COLLECTIONS
+        // CHECK IF IN COLLECTION
         let inCollectionColor = '#222';
-        if (isInCollection(tmdbId)) inCollectionColor = 'crimson';
+        let collections = checkIfInCollection(tmdbId);
+        if (collections[1][0]) inCollectionColor = 'crimson';
 
 
         mainContent.innerHTML += `
@@ -576,11 +617,8 @@ function fetchMediaData( mediaType,tmdbId) {
 ==================================================================
 */
 
-const sampleData = {
-    "page": 1,
-    "total_results": 19805,
-    "total_pages": 991,
-    "results": [
+const mylists = {
+    list1: [
       {
         "vote_count": 1497,
         "id": 335983,
@@ -785,7 +823,9 @@ const sampleData = {
         "adult": false,
         "overview": "Audrey and Morgan are best friends who unwittingly become entangled in an international conspiracy when one of the women discovers the boyfriend who dumped her was actually a spy.",
         "release_date": "2018-08-02"
-      },
+      }
+    ],
+    list2: [
       {
         "vote_count": 139,
         "id": 347375,
@@ -996,7 +1036,7 @@ const sampleData = {
   };
 
   // Convert to JSON to imitate real api reponse
-  let jsonData = JSON.stringify(sampleData);
+  let sampleData = JSON.stringify(mylists);
 
 /*
 ==================================================================
@@ -1007,7 +1047,11 @@ const sampleData = {
 
 
 function init() {
+    parseLocalStorageLists();
     setEventListeners();
     nav('movies,popular');
+
+    // This is temp for development
+    // getLocalStorageLists();
 };
 init();

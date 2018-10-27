@@ -16,12 +16,13 @@ const main = document.querySelector('#main');
 const mainContent = document.querySelector('#main-content');
 const mainPagination = document.querySelector('#main-pagination');
 const fullMediaContent = document.querySelector('#full-media-content');
+const userLists = document.querySelector('#user-lists');
 
 
 let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
-    mylists : []
+    mylists : {}
 };
 
 

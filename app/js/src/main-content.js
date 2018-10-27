@@ -47,9 +47,10 @@ function showContentResults(results) {
         else  mediaType = 'tv';
 
 
-        // CHECK COLLECTIONS
+        // CHECK IF IN COLLECTION
         let inCollectionColor = '#222';
-        if (isInCollection(tmdbId)) inCollectionColor = 'crimson';
+        let collections = checkIfInCollection(tmdbId);
+        if (collections[1][0]) inCollectionColor = 'crimson';
 
 
         mainContent.innerHTML += `

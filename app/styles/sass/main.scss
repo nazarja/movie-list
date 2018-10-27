@@ -27,13 +27,16 @@
     direction: ltr;
     -webkit-font-feature-settings: 'liga';
     -webkit-font-smoothing: antialiased;
+    font-feature-settings: 'liga';
 }
 
 $roboto-font: 'Oswald', sans-serif;
 $oswald-font: 'Oswald', sans-serif;
 $julius-font: 'Julius Sans One', sans-serif;
+$red: rgb(185, 19, 53);
 $white: #f9f9f9;
 $green: #009587;
+$blue : #006b95;
 $black: #333;
 $black-font: #000;
 $grey-font: #484539;
@@ -161,13 +164,12 @@ i {
     padding: 12px;
 }
 
-.active-parent {
-    color: $grey-font;
-}
+.active-parent {color: $grey-font;}
+.active-child {color: $black-font;}
 
-.active-child {
-    color: $black-font;
-}
+.new-list-icon { color: $red;}
+.edit-list-icon {color: $green;}
+.delete-list-icon{color: $blue;}
 
 #full-media-content::-webkit-scrollbar {
     width: 0px;

@@ -23,7 +23,8 @@
   word-wrap: normal;
   direction: ltr;
   -webkit-font-feature-settings: 'liga';
-  -webkit-font-smoothing: antialiased; }
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'liga'; }
 
 /*
 ==================================================================
@@ -34,7 +35,7 @@ body, h1, h2, h3, h4, header nav ul {
   margin: 0;
   padding: 0; }
 
-header * {
+header *, #main-mylists .list-heading, #main-mylists .list-edit-heading {
   font-family: "Oswald", sans-serif;
   font-size: 1em;
   text-transform: uppercase;
@@ -85,6 +86,15 @@ i {
 
 .active-child {
   color: #000; }
+
+.new-list-icon {
+  color: #b91335; }
+
+.edit-list-icon {
+  color: #009587; }
+
+.delete-list-icon {
+  color: #006b95; }
 
 #full-media-content::-webkit-scrollbar {
   width: 0px;
@@ -368,7 +378,7 @@ main {
       top: -12px;
       left: auto;
       float: right;
-      color: crimson;
+      color: #b91335;
       cursor: pointer; }
       main #full-media-content .close-media-content:hover, main #full-media-content .download-icon:hover {
         color: #333; }
@@ -457,3 +467,35 @@ main {
     @media (min-width: 800px) {
       main #full-media-content {
         width: 75%; } }
+
+/*
+==================================================================
+    MY LISTS
+==================================================================
+*/
+#main-mylists {
+  display: none; }
+  #main-mylists .list-heading {
+    position: relative;
+    top: 13px;
+    left: auto;
+    display: inline-block;
+    font-size: 1.2rem; }
+  #main-mylists i {
+    position: relative;
+    top: 5px;
+    left: auto; }
+  #main-mylists .list-edit-heading {
+    float: right;
+    position: relative;
+    margin: 0;
+    cursor: pointer; }
+    #main-mylists .list-edit-heading:hover {
+      text-decoration: underline; }
+    #main-mylists .list-edit-heading .new-list-icon {
+      color: #b91335;
+      padding-right: 0; }
+  #main-mylists hr {
+    margin: 0;
+    width: 100%;
+    color: #ddd; }

@@ -5,11 +5,8 @@
 ==================================================================
 */
 
-const sampleData = {
-    "page": 1,
-    "total_results": 19805,
-    "total_pages": 991,
-    "results": [
+const mylists = {
+    list1: [
       {
         "vote_count": 1497,
         "id": 335983,
@@ -214,7 +211,9 @@ const sampleData = {
         "adult": false,
         "overview": "Audrey and Morgan are best friends who unwittingly become entangled in an international conspiracy when one of the women discovers the boyfriend who dumped her was actually a spy.",
         "release_date": "2018-08-02"
-      },
+      }
+    ],
+    list2: [
       {
         "vote_count": 139,
         "id": 347375,
@@ -425,4 +424,4 @@ const sampleData = {
   };
 
   // Convert to JSON to imitate real api reponse
-  let jsonData = JSON.stringify(sampleData);
+  let sampleData = JSON.stringify(mylists);
