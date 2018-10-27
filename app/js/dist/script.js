@@ -324,7 +324,7 @@ function showContentResults(results) {
     resetMediaResults();
 
     results.map(result => {
-        const tmdbId = result.id || '0';
+        const tmdbId = result.id;
         const title = result.title || result.name || 'Unknown';
         const rating = result.vote_average || '0';
         let poster = POSTER + result.poster_path;
@@ -362,20 +362,25 @@ function showContentResults(results) {
 
 /*
 ==============================
-    PAGINATION 
+    SHOW FULL MEDIA CONTENT 
 ==============================
 */
 
 function showFullMediaContent( mediaType, result) {
 
+    const tmdbId = result.id || '0';
     const title = result.title || result.name || 'Unknown';
-    const tagline = result.tagline || `NO. SEASONS: ${result.number_of_episodes}  ~  NO. EPISODES:${result.number_of_episodes}` || '';
+    const tagline = result.tagline || `NO. SEASONS: ${result.number_of_seasons}  ~  NO. EPISODES: ${result.number_of_episodes}` || '';
     const overview = result.overview || '';
     const rating = result.vote_average || '0';
     let date = result.release_date || result.first_air_date || '';
     let status = result.status || '';
     let backdrop = BACKDROP + result.backdrop_path;
     let poster = POSTER + result.poster_path;
+
+    if (date) {
+        date = date.split('-').reverse().join('-');
+    }
 
     // Get Trailer and check for undefined
     // If no trailer exists - search youtube
@@ -410,10 +415,10 @@ function showFullMediaContent( mediaType, result) {
             <img width="140" id="media-poster" src="${poster}" alt="${title}">
             <div id="media-details-bar">
                 <a href="${trailer[0]}" target=_blank">Trailer</a>
-                <span>${date}</span>
-                <span>${status}</span>
                 <span>${rating}</span>
-                <span>Add/Remove from Collection</span>
+                <span>${status}</span>
+                <span>${date}</span>
+                <span class="from-collection" onclick="addRemoveFromCollection(${tmdbId})">Add/Remove from Collection</span>
             </div>
             <p id="media-tagline">${tagline}</p>
             <p id="media-overview">${overview}</p>

@@ -217,10 +217,34 @@ main {
             }
 
             #media-details-bar {
-                height: 50px;
+                min-height: 50px;
+                padding-right: 10px;
                 text-align: right;
                 background-color: $black-font;
                 color: $white;
+
+                * {
+                    display: inline-block;
+                    position: relative;
+                    padding: 2px 5px;
+                    color: #ddd;
+                    font-size: 0.9rem;
+
+                    @media (min-width: 449px) {
+                        top: 12px;
+                    }
+                }
+
+                div {
+                    display: inline-block;
+                }
+
+                a, .from-collection {
+                    cursor: pointer;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                }
             }
 
             p {

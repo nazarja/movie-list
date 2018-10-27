@@ -413,10 +413,26 @@ main {
         main #full-media-content #media-details #media-poster {
           display: inline-block; } }
     main #full-media-content #media-details #media-details-bar {
-      height: 50px;
+      min-height: 50px;
+      padding-right: 10px;
       text-align: right;
       background-color: #000;
       color: #f9f9f9; }
+      main #full-media-content #media-details #media-details-bar * {
+        display: inline-block;
+        position: relative;
+        padding: 2px 5px;
+        color: #ddd;
+        font-size: 0.9rem; }
+        @media (min-width: 449px) {
+          main #full-media-content #media-details #media-details-bar * {
+            top: 12px; } }
+      main #full-media-content #media-details #media-details-bar div {
+        display: inline-block; }
+      main #full-media-content #media-details #media-details-bar a, main #full-media-content #media-details #media-details-bar .from-collection {
+        cursor: pointer; }
+        main #full-media-content #media-details #media-details-bar a:hover, main #full-media-content #media-details #media-details-bar .from-collection:hover {
+          text-decoration: underline; }
     main #full-media-content #media-details p {
       position: relative;
       top: auto;
