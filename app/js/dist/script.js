@@ -91,7 +91,6 @@ function setEventListeners() {
         searchClear.style.visibility =  'hidden';
         resetSearchResults();
     });
-    
 
 
     /*
@@ -146,6 +145,10 @@ function resetFullMediaContent() {
 
 function resetMyLists() {
    myLists.style.display = 'none';
+};
+
+function resetUserLists() {
+    userLists.innerHTML = '';
 };
 
 
@@ -294,6 +297,14 @@ function parseLocalStorageLists() {
     };
 };
 
+
+
+/*
+==============================
+    CHECK IF IN LIST
+==============================
+*/
+
 function checkIfInCollection(tmdbId) {
 
     let arr= [[],[]];
@@ -323,18 +334,38 @@ function checkIfInCollection(tmdbId) {
 */
 
 function deleteList(list, id) {
-    if (state.mylists[list]) {
-        let confirmDelete = confirm('Are you sure you want to delete this list?');
+    let confirmDelete = confirm('Are you sure you want to delete this list?');
 
-        if (confirmDelete) {
-            delete state.mylists[list];
-            let userlists = JSON.stringify(state.mylists);
-            localStorage.setItem('movielist:userlists', userlists);
-            let element = document.querySelector(`#${id}`);
-            element.remove();
-        };
+    if (confirmDelete) {
+        delete state.mylists[list];
+        let userlists = JSON.stringify(state.mylists);
+        let element = document.querySelector(`#${id}`);
+        localStorage.setItem('movielist:userlists', userlists);
+        element.remove();
     };
+
+    if (Object.keys(state.mylists).length == 0) {
+        showNoListsText();
+    }
 };
+
+function deleteItemFromList(list, tmdbId, id) {
+
+    for(let i in state.mylists[list]) {
+        if (state.mylists[list][i].id == tmdbId) {
+            state.mylists[list].splice(i, 1);
+        }
+    }
+
+    let userlists = JSON.stringify(state.mylists);
+    let element = document.querySelector(`#${id}`);
+    localStorage.setItem('movielist:userlists', userlists);
+    element.remove();
+}
+
+function createNewList(list) {
+    console.log('yup');
+}
 
 
 /*
@@ -483,6 +514,7 @@ function showFullMediaContent(mediaType, result) {
 */
 
 function showMyLists() {
+    resetUserLists();
     myLists.style.display = 'block';
 
     if (Object.keys(state.mylists).length !== 0) {
@@ -512,8 +544,8 @@ function showMyLists() {
                 else  mediaType = 'tv'; 
 
                 userList += `
-                    <div class="list-item">
-                        <div><i class="list-item-delete material-icons delete-list-icon">delete</i></div>
+                    <div class="list-item" id="list-item-${lists}-${i}">
+                        <div onclick="deleteItemFromList('${lists}','${tmdbId}','list-item-${lists}-${i}')"><i class="list-item-delete material-icons delete-list-icon">delete</i></div>
                         <div class="list-item-rating">${rating}</div>
                         <div class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})"><span class="list-title">${title}</span>  (${date})</div>
                     </div>
@@ -526,8 +558,7 @@ function showMyLists() {
 
     }
     else {
-        userLists.innerHTML = `<p class="list-heading">You don't have any created lists</p>`;
-        let userlists = localStorage.setItem('movielist:userlists', sampleData);
+        showNoListsText();
     }
 };
 
@@ -569,6 +600,19 @@ function onMediaHover() {
         item.onmouseleave = () => item.children[2].style.display = 'none';
     });
 };
+
+
+
+/*
+==============================
+    SAMPLE LIST DATA
+==============================
+*/
+
+function showNoListsText() {
+    userLists.innerHTML = `<p class="list-heading">You don't have any created lists,<br />Refresh your browser for sample lists.</p>`;
+    let userlists = localStorage.setItem('movielist:userlists', sampleData);
+}
 
 
 /*

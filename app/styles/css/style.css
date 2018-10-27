@@ -515,7 +515,8 @@ main {
         ============================
         */ }
     #main-mylists #user-lists .list-titlebar {
-      margin: 50px 0 50px;
+      margin: 0 0 50px;
+      padding-top: 30px;
       text-transform: uppercase; }
     #main-mylists #user-lists h2 {
       position: relative;

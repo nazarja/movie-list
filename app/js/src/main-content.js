@@ -145,6 +145,7 @@ function showFullMediaContent(mediaType, result) {
 */
 
 function showMyLists() {
+    resetUserLists();
     myLists.style.display = 'block';
 
     if (Object.keys(state.mylists).length !== 0) {
@@ -174,8 +175,8 @@ function showMyLists() {
                 else  mediaType = 'tv'; 
 
                 userList += `
-                    <div class="list-item">
-                        <div><i class="list-item-delete material-icons delete-list-icon">delete</i></div>
+                    <div class="list-item" id="list-item-${lists}-${i}">
+                        <div onclick="deleteItemFromList('${lists}','${tmdbId}','list-item-${lists}-${i}')"><i class="list-item-delete material-icons delete-list-icon">delete</i></div>
                         <div class="list-item-rating">${rating}</div>
                         <div class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})"><span class="list-title">${title}</span>  (${date})</div>
                     </div>
@@ -188,8 +189,7 @@ function showMyLists() {
 
     }
     else {
-        userLists.innerHTML = `<p class="list-heading">You don't have any created lists</p>`;
-        let userlists = localStorage.setItem('movielist:userlists', sampleData);
+        showNoListsText();
     }
 };
 
@@ -231,3 +231,16 @@ function onMediaHover() {
         item.onmouseleave = () => item.children[2].style.display = 'none';
     });
 };
+
+
+
+/*
+==============================
+    SAMPLE LIST DATA
+==============================
+*/
+
+function showNoListsText() {
+    userLists.innerHTML = `<p class="list-heading">You don't have any created lists,<br />Refresh your browser for sample lists.</p>`;
+    let userlists = localStorage.setItem('movielist:userlists', sampleData);
+}

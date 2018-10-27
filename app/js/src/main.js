@@ -91,7 +91,6 @@ function setEventListeners() {
         searchClear.style.visibility =  'hidden';
         resetSearchResults();
     });
-    
 
 
     /*
@@ -146,6 +145,10 @@ function resetFullMediaContent() {
 
 function resetMyLists() {
    myLists.style.display = 'none';
+};
+
+function resetUserLists() {
+    userLists.innerHTML = '';
 };
 
 
