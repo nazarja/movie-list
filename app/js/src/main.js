@@ -16,6 +16,7 @@ const main = document.querySelector('#main');
 const mainContent = document.querySelector('#main-content');
 const mainPagination = document.querySelector('#main-pagination');
 const fullMediaContent = document.querySelector('#full-media-content');
+const myLists = document.querySelector('#main-mylists');
 const userLists = document.querySelector('#user-lists');
 
 
@@ -141,6 +142,10 @@ function resetPagination() {
 
 function resetFullMediaContent() {
    fullMediaContent.style.display = 'none';
+};
+
+function resetMyLists() {
+   myLists.style.display = 'none';
 };
 
 

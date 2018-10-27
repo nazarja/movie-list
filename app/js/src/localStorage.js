@@ -38,20 +38,9 @@ function checkIfInCollection(tmdbId) {
                     arr[1].push(true, lists);
                     break;
                 };
-                
-            } 
-        }
-    }
-    console.log(arr);
+            } ;
+        };
+    };
     return arr;
 };
 
-
-
-
-
-
-// else {
-//     // userLists.innerHTML = `<p class="list-heading">You don't have any created lists</p>`;
-//     // let userlists = localStorage.setItem('movielist:userlists', sampleData);
-// };

@@ -16,6 +16,7 @@ const main = document.querySelector('#main');
 const mainContent = document.querySelector('#main-content');
 const mainPagination = document.querySelector('#main-pagination');
 const fullMediaContent = document.querySelector('#full-media-content');
+const myLists = document.querySelector('#main-mylists');
 const userLists = document.querySelector('#user-lists');
 
 
@@ -143,6 +144,10 @@ function resetFullMediaContent() {
    fullMediaContent.style.display = 'none';
 };
 
+function resetMyLists() {
+   myLists.style.display = 'none';
+};
+
 
 
 
@@ -225,7 +230,7 @@ function nav(param) {
             fetchTMDbData(primary, secondary);
             break;
         case 'mylists':
-            getLocalStorageLists();
+            showMyLists();
             break;
         case 'statistics':
             break;
@@ -304,23 +309,13 @@ function checkIfInCollection(tmdbId) {
                     arr[1].push(true, lists);
                     break;
                 };
-                
-            } 
-        }
-    }
-    console.log(arr);
+            } ;
+        };
+    };
     return arr;
 };
 
 
-
-
-
-
-// else {
-//     // userLists.innerHTML = `<p class="list-heading">You don't have any created lists</p>`;
-//     // let userlists = localStorage.setItem('movielist:userlists', sampleData);
-// };
 
 /*
 ==================================================================
@@ -357,6 +352,7 @@ function showSearchResults(results) {
 
 function showContentResults(results) {
     resetMediaResults();
+    resetMyLists();
 
     results.map(result => {
         const tmdbId = result.id;
@@ -401,7 +397,7 @@ function showContentResults(results) {
 ==============================
 */
 
-function showFullMediaContent( mediaType, result) {
+function showFullMediaContent(mediaType, result) {
 
     const tmdbId = result.id || '0';
     const title = result.title || result.name || 'Unknown';
@@ -437,7 +433,7 @@ function showFullMediaContent( mediaType, result) {
 
 
     fullMediaContent.innerHTML = `
-        <p>MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
+        <p class="content-title">MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
         <div id="media-showcase" style="background-image: url('${backdrop}')">
             <a class="download-fanart" href="${backdrop}"target="_blank">DOWNLOAD FANART<br /><i class="material-icons download-icon">cloud_download</i></a>
             <h1 id="media-title">${title}</h1>
@@ -456,6 +452,61 @@ function showFullMediaContent( mediaType, result) {
         </div>
     `;
     fullMediaContent.style.display = 'block';
+};
+
+
+
+/*
+==============================
+    GET & Show USER LISTS
+==============================
+*/
+
+function showMyLists() {
+    myLists.style.display = 'block';
+
+    if (Object.keys(state.mylists).length !== 0) {
+         // Iterate over lists
+         for(let lists in state.mylists) {
+            let list = state.mylists[lists];
+
+            let userList = `
+            <div class="userlist">
+                <div class="list-titlebar">
+                    <h2>${lists}</h2>
+                    <p class="delete-list">Delete List<i class="material-icons delete-list-icon">delete</i></p>
+                </div>
+            `;
+
+            for (let i = 0; i < list.length; i++) {
+                const tmdbId = list[i].id;
+                const title = list[i].title || list[i].name || 'Unknown';
+                const rating = list[i].vote_average || '0';
+
+                let date = list[i].release_date || list[i].first_air_date || '';
+                if (date)  date = date.slice(0,4);
+
+                let mediaType;
+                if (list[i].hasOwnProperty('adult')) mediaType = 'movie';
+                else  mediaType = 'tv'; 
+
+                userList += `
+                    <p class="list-item">
+                        <span class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})">${title}  (${date})</span>
+                        <span class="rating">${rating}</span>
+                        <i class="material-icons delete-list-icon">delete</i>
+                    </p>
+                `;
+            } ;
+            userList += `</div>`;
+            userLists.innerHTML += userList; 
+        };
+
+    }
+    else {
+        userLists.innerHTML = `<p class="list-heading">You don't have any created lists</p>`;
+        let userlists = localStorage.setItem('movielist:userlists', sampleData);
+    }
 };
 
 
@@ -518,7 +569,7 @@ const EXTRA = "&language=en-US";
 const POSTER = 'https://image.tmdb.org/t/p/w200';
 const BACKDROP = 'https://image.tmdb.org/t/p/w1280/';
 const DEFAULT_BACKDROP = 'https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-blue-10d3d41d2a0af9ebcb85f7fb62ffb6671c15ae8ea9bc82a2c6941f223143409e.png'
-const DEFAULT_POSTER= 'https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-blue-10d3d41d2a0af9ebcb85f7fb62ffb6671c15ae8ea9bc82a2c6941f223143409e.png'
+const DEFAULT_POSTER = 'https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-blue-10d3d41d2a0af9ebcb85f7fb62ffb6671c15ae8ea9bc82a2c6941f223143409e.png'
 let url;
 let data;
 
@@ -587,7 +638,7 @@ function getTMDbSearchData(searchQuery) {
 ================================
 */
 
-function fetchMediaData( mediaType,tmdbId) {
+function fetchMediaData(mediaType,tmdbId) {
     
     if (mediaType == 'movie') url = MOVIES_URL;
     else url = TVSHOWS_URL;
@@ -618,7 +669,7 @@ function fetchMediaData( mediaType,tmdbId) {
 */
 
 const mylists = {
-    list1: [
+    movies: [
       {
         "vote_count": 1497,
         "id": 335983,
@@ -825,212 +876,170 @@ const mylists = {
         "release_date": "2018-08-02"
       }
     ],
-    list2: [
+    tvshows: [
       {
-        "vote_count": 139,
-        "id": 347375,
-        "video": false,
-        "vote_average": 5.5,
-        "title": "Mile 22",
-        "popularity": 103.946,
-        "poster_path": "/dT1XzjxRDR56xOm4Ph0INV4EmWJ.jpg",
-        "original_language": "en",
-        "original_title": "Mile 22",
+        "original_name": "The Flash",
         "genre_ids": [
-          28
+          18,
+          10765
         ],
-        "backdrop_path": "/eTwftrInxzZTSLUkX5hoifOczKJ.jpg",
-        "adult": false,
-        "overview": "A CIA field officer and an Indonesian police officer are forced to work together in confronting political corruption. An informant must be moved twenty-two miles to safety.",
-        "release_date": "2018-08-16"
+        "name": "The Flash",
+        "popularity": 186.911,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 2304,
+        "first_air_date": "2014-10-07",
+        "backdrop_path": "/mmxxEpTqVdwBlu5Pii7tbedBkPC.jpg",
+        "original_language": "en",
+        "id": 60735,
+        "vote_average": 6.7,
+        "overview": "After a particle accelerator causes a freak storm, CSI Investigator Barry Allen is struck by lightning and falls into a coma. Months later he awakens with the power of super speed, granting him the ability to move through Central City like an unseen guardian angel. Though initially excited by his newfound powers, Barry is shocked to discover he is not the only \"meta-human\" who was created in the wake of the accelerator explosion -- and not everyone is using their new powers for good. Barry partners with S.T.A.R. Labs and dedicates his life to protect the innocent. For now, only a few close friends and associates know that Barry is literally the fastest man alive, but it won't be long before the world learns what Barry Allen has become...The Flash.",
+        "poster_path": "/fki3kBlwJzFp8QohL43g9ReV455.jpg"
       },
       {
-        "vote_count": 211,
-        "id": 463272,
-        "video": false,
-        "vote_average": 6.2,
-        "title": "Johnny English Strikes Again",
-        "popularity": 102.101,
-        "poster_path": "/tCBxnZwLiY1BOKw3tH6AxHZdqPh.jpg",
-        "original_language": "en",
-        "original_title": "Johnny English Strikes Again",
+        "original_name": "The Walking Dead",
         "genre_ids": [
-          12,
-          10751,
-          28,
+          18,
+          10759,
+          10765
+        ],
+        "name": "The Walking Dead",
+        "popularity": 111.067,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 3725,
+        "first_air_date": "2010-10-31",
+        "backdrop_path": "/xVzvD5BPAU4HpleFSo8QOdHkndo.jpg",
+        "original_language": "en",
+        "id": 1402,
+        "vote_average": 7.3,
+        "overview": "Sheriff's deputy Rick Grimes awakens from a coma to find a post-apocalyptic world dominated by flesh-eating zombies. He sets out to find his family and encounters many other survivors along the way.",
+        "poster_path": "/yn7psGTZsHumHOkLUmYpyrIcA2G.jpg"
+      },
+      {
+        "original_name": "Marvel's Iron Fist",
+        "genre_ids": [
+          80,
+          18,
+          10759,
+          10765
+        ],
+        "name": "Marvel's Iron Fist",
+        "popularity": 101.916,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 695,
+        "first_air_date": "2017-03-17",
+        "backdrop_path": "/xHCfWGlxwbtMeeOnTvxUCZRGnkk.jpg",
+        "original_language": "en",
+        "id": 62127,
+        "vote_average": 6.1,
+        "overview": "Danny Rand resurfaces 15 years after being presumed dead. Now, with the power of the Iron Fist, he seeks to reclaim his past and fulfill his destiny.",
+        "poster_path": "/nv4nLXbDhcISPP8C1mgaxKU50KO.jpg"
+      },
+      {
+        "original_name": "The Big Bang Theory",
+        "genre_ids": [
           35
         ],
-        "backdrop_path": "/yCOLqh5MOGyYdo58Ap0aWvKop9h.jpg",
-        "adult": false,
-        "overview": "Disaster strikes when a criminal mastermind reveals the identities of all active undercover agents in Britain. The secret service can now rely on only one man—Johnny English. Currently teaching at a minor prep school, Johnny springs back into action to find the mysterious hacker. For this mission to succeed, he’ll need all of his skills—what few he has—as the man with yesterday’s analogue methods faces off against tomorrow’s digital technology.",
-        "release_date": "2018-09-13"
-      },
-      {
-        "vote_count": 8645,
-        "id": 284054,
-        "video": false,
-        "vote_average": 7.3,
-        "title": "Black Panther",
-        "popularity": 91.585,
-        "poster_path": "/uxzzxijgPIY7slzFvMotPv8wjKA.jpg",
-        "original_language": "en",
-        "original_title": "Black Panther",
-        "genre_ids": [
-          28,
-          12,
-          14,
-          878
+        "name": "The Big Bang Theory",
+        "popularity": 100.293,
+        "origin_country": [
+          "US"
         ],
-        "backdrop_path": "/b6ZJZHUdMEFECvGiDpJjlfUWela.jpg",
-        "adult": false,
-        "overview": "King T'Challa returns home from America to the reclusive, technologically advanced African nation of Wakanda to serve as his country's new leader. However, T'Challa soon finds that he is challenged for the throne by factions within his own country as well as without. Using powers reserved to Wakandan kings, T'Challa assumes the Black Panther mantel to join with girlfriend Nakia, the queen-mother, his princess-kid sister, members of the Dora Milaje (the Wakandan 'special forces') and an American secret agent, to prevent Wakanda from being dragged into a world war.",
-        "release_date": "2018-02-13"
+        "vote_count": 3335,
+        "first_air_date": "2007-09-24",
+        "backdrop_path": "/nGsNruW3W27V6r4gkyc3iiEGsKR.jpg",
+        "original_language": "en",
+        "id": 1418,
+        "vote_average": 6.8,
+        "overview": "The Big Bang Theory is centered on five characters living in Pasadena, California: roommates Leonard Hofstadter and Sheldon Cooper; Penny, a waitress and aspiring actress who lives across the hall; and Leonard and Sheldon's equally geeky and socially awkward friends and co-workers, mechanical engineer Howard Wolowitz and astrophysicist Raj Koothrappali. The geekiness and intellect of the four guys is contrasted for comic effect with Penny's social skills and common sense.",
+        "poster_path": "/ooBGRQBdbGzBxAVfExiO8r7kloA.jpg"
       },
       {
-        "vote_count": 1258,
-        "id": 345940,
-        "video": false,
+        "original_name": "Grey's Anatomy",
+        "genre_ids": [
+          18
+        ],
+        "name": "Grey's Anatomy",
+        "popularity": 91.075,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 802,
+        "first_air_date": "2005-03-27",
+        "backdrop_path": "/y6JABtgWMVYPx84Rvy7tROU5aNH.jpg",
+        "original_language": "en",
+        "id": 1416,
+        "vote_average": 6.3,
+        "overview": "Follows the personal and professional lives of a group of doctors at Seattle’s Grey Sloan Memorial Hospital.",
+        "poster_path": "/mgOZSS2FFIGtfVeac1buBw3Cx5w.jpg"
+      },
+      {
+        "original_name": "Arrow",
+        "genre_ids": [
+          80,
+          18,
+          9648,
+          10759
+        ],
+        "name": "Arrow",
+        "popularity": 90.244,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 1989,
+        "first_air_date": "2012-10-10",
+        "backdrop_path": "/dKxkwAJfGuznW8Hu0mhaDJtna0n.jpg",
+        "original_language": "en",
+        "id": 1412,
         "vote_average": 6,
-        "title": "The Meg",
-        "popularity": 78.962,
-        "poster_path": "/eyWICPcxOuTcDDDbTMOZawoOn8d.jpg",
-        "original_language": "en",
-        "original_title": "The Meg",
-        "genre_ids": [
-          28,
-          878,
-          53
-        ],
-        "backdrop_path": "/rH79sB6Nkx4cMW3JzsUy7wK0rhX.jpg",
-        "adult": false,
-        "overview": "A deep sea submersible pilot revisits his past fears in the Mariana Trench, and accidentally unleashes the seventy foot ancestor of the Great White Shark believed to be extinct.",
-        "release_date": "2018-08-09"
+        "overview": "Spoiled billionaire playboy Oliver Queen is missing and presumed dead when his yacht is lost at sea. He returns five years later a changed man, determined to clean up the city as a hooded vigilante armed with a bow.",
+        "poster_path": "/mo0FP1GxOFZT4UDde7RFDz5APXF.jpg"
       },
       {
-        "vote_count": 2955,
-        "id": 260513,
-        "video": false,
-        "vote_average": 7.7,
-        "title": "Incredibles 2",
-        "popularity": 75.501,
-        "poster_path": "/x1txcDXkcM65gl7w20PwYSxAYah.jpg",
-        "original_language": "en",
-        "original_title": "Incredibles 2",
+        "original_name": "Supernatural",
         "genre_ids": [
-          28,
-          12,
+          18,
+          9648,
+          10765
+        ],
+        "name": "Supernatural",
+        "popularity": 78.692,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 1587,
+        "first_air_date": "2005-09-13",
+        "backdrop_path": "/koMUCyGWNtH5LXYbGqjsUwvgtsT.jpg",
+        "original_language": "en",
+        "id": 1622,
+        "vote_average": 7.2,
+        "overview": "When they were boys, Sam and Dean Winchester lost their mother to a mysterious and demonic supernatural force. Subsequently, their father raised them to be soldiers. He taught them about the paranormal evil that lives in the dark corners and on the back roads of America ... and he taught them how to kill it. Now, the Winchester brothers crisscross the country in their '67 Chevy Impala, battling every kind of supernatural threat they encounter along the way. ",
+        "poster_path": "/3iFm6Kz7iYoFaEcj4fLyZHAmTQA.jpg"
+      },
+      {
+        "original_name": "The Simpsons",
+        "genre_ids": [
           16,
-          10751
+          35
         ],
-        "backdrop_path": "/mabuNsGJgRuCTuGqjFkWe1xdu19.jpg",
-        "adult": false,
-        "overview": "Elastigirl springs into action to save the day, while Mr. Incredible faces his greatest challenge yet – taking care of the problems of his three children.",
-        "release_date": "2018-06-14"
-      },
-      {
-        "vote_count": 4012,
-        "id": 351286,
-        "video": false,
-        "vote_average": 6.5,
-        "title": "Jurassic World: Fallen Kingdom",
-        "popularity": 72.623,
-        "poster_path": "/c9XxwwhPHdaImA2f1WEfEsbhaFB.jpg",
+        "name": "The Simpsons",
+        "popularity": 72.094,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 1722,
+        "first_air_date": "1989-12-17",
+        "backdrop_path": "/lnnrirKFGwFW18GiH3AmuYy40cz.jpg",
         "original_language": "en",
-        "original_title": "Jurassic World: Fallen Kingdom",
-        "genre_ids": [
-          28,
-          12,
-          878
-        ],
-        "backdrop_path": "/3s9O5af2xWKWR5JzP2iJZpZeQQg.jpg",
-        "adult": false,
-        "overview": "Three years after the demise of Jurassic World, a volcanic eruption threatens the remaining dinosaurs on the isla Nublar, so Claire Dearing, the former park manager, recruits Owen Grady to help prevent the extinction of the dinosaurs once again.",
-        "release_date": "2018-06-06"
-      },
-      {
-        "vote_count": 34,
-        "id": 442062,
-        "video": false,
-        "vote_average": 5.8,
-        "title": "Goosebumps 2: Haunted Halloween",
-        "popularity": 70.443,
-        "poster_path": "/8bcpki9GfXdXj9esFpPtlate8v0.jpg",
-        "original_language": "en",
-        "original_title": "Goosebumps 2: Haunted Halloween",
-        "genre_ids": [
-          12,
-          35,
-          14,
-          27,
-          10751
-        ],
-        "backdrop_path": "/9xYg9ScjGaO2HrLfOfYZirTrB3o.jpg",
-        "adult": false,
-        "overview": "Two boys face an onslaught from witches, monsters, ghouls and a talking dummy after they discover a mysterious book by author R. L. Stine.",
-        "release_date": "2018-10-11"
-      },
-      {
-        "vote_count": 119,
-        "id": 446894,
-        "video": false,
-        "vote_average": 6.4,
-        "title": "Smallfoot",
-        "popularity": 70.281,
-        "poster_path": "/4nKoB6wMVXfsYgRZK5lHZ5VMQ6J.jpg",
-        "original_language": "en",
-        "original_title": "Smallfoot",
-        "genre_ids": [
-          35,
-          16,
-          10751,
-          12,
-          14
-        ],
-        "backdrop_path": "/7t88SoT3Dd8DhGnQuVoSbMNUl3W.jpg",
-        "adult": false,
-        "overview": "A bright young yeti finds something he thought didn't exist—a human. News of this “smallfoot” throws the simple yeti community into an uproar over what else might be out there in the big world beyond their snowy village.",
-        "release_date": "2018-09-20"
-      },
-      {
-        "vote_count": 1068,
-        "id": 442249,
-        "video": false,
-        "vote_average": 5.8,
-        "title": "The First Purge",
-        "popularity": 67.486,
-        "poster_path": "/litjsBoiydO6JlO70uOX4N3WnNL.jpg",
-        "original_language": "en",
-        "original_title": "The First Purge",
-        "genre_ids": [
-          28,
-          878,
-          53,
-          27
-        ],
-        "backdrop_path": "/1hJbE72WiRuWH11QPNiHsvt29xA.jpg",
-        "adult": false,
-        "overview": "To push the crime rate below one percent for the rest of the year, the New Founding Fathers of America test a sociological theory that vents aggression for one night in one isolated community. But when the violence of oppressors meets the rage of the others, the contagion will explode from the trial-city borders and spread across the nation.",
-        "release_date": "2018-07-04"
-      },
-      {
-        "vote_count": 5702,
-        "id": 383498,
-        "video": false,
-        "vote_average": 7.5,
-        "title": "Deadpool 2",
-        "popularity": 67.311,
-        "poster_path": "/to0spRl1CMDvyUbOnbb4fTk3VAd.jpg",
-        "original_language": "en",
-        "original_title": "Deadpool 2",
-        "genre_ids": [
-          28,
-          35,
-          878
-        ],
-        "backdrop_path": "/3P52oz9HPQWxcwHOwxtyrVV1LKi.jpg",
-        "adult": false,
-        "overview": "Wisecracking mercenary Deadpool battles the evil and powerful Cable and other bad guys to save a boy's life.",
-        "release_date": "2018-05-15"
+        "id": 456,
+        "vote_average": 7.1,
+        "overview": "Set in Springfield, the average American town, the show focuses on the antics and everyday adventures of the Simpson family; Homer, Marge, Bart, Lisa and Maggie, as well as a virtual cast of thousands. Since the beginning, the series has been a pop culture icon, attracting hundreds of celebrities to guest star. The show has also made name for itself in its fearless satirical take on politics, media and American life in general.",
+        "poster_path": "/yTZQkSsxUFJZJe67IenRM0AEklc.jpg"
       }
     ]
   };
@@ -1050,8 +1059,5 @@ function init() {
     parseLocalStorageLists();
     setEventListeners();
     nav('movies,popular');
-
-    // This is temp for development
-    // getLocalStorageLists();
 };
 init();

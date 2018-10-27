@@ -7,6 +7,21 @@
 
 #main-mylists {
     display: none;
+
+    i {
+        @include pos-relative(5px, auto);
+        cursor: pointer;
+        &:hover {
+            transition: 0.4s;
+            color: $red;
+        }
+    }
+
+    hr {
+        margin: 0;
+        width: 100%;
+        color: #ddd;
+    }
     
     .list-heading {
         @include pos-relative(13px, auto);
@@ -16,33 +31,66 @@
 
     }
 
-    i {
-        @include pos-relative(5px, auto);
-    }
-
-    .list-edit-heading {
+    .create-new-list {
         @extend %title-font;
-        float: right;
+        @extend %underline;
         position: relative;
+        float: right;
         margin: 0;
-        cursor: pointer;
-        &:hover {
-            text-decoration: underline;
-        }
         .new-list-icon { 
             color: $red; 
             padding-right: 0;
         }
     }
 
-    .list-heading {
-        @extend %title-font;
-    }
+    #user-lists {
 
-    hr {
-        margin: 0;
-        width: 100%;
-        color: #ddd;
+        .list-titlebar {
+            margin: 50px 0 50px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            @include pos-relative(30px, auto);
+            display: inline-block;
+            font-size: 1.2rem;
+        }
+
+        i {
+            cursor: pointer;
+            &:hover {
+                transition: 0.4s;
+                color: $red;
+            }
+        }
+
+        .rating {
+            @include pos-relative(-10px, auto);
+            @extend %small-green-box;
+        }
+
+        .delete-list {
+            @extend %underline;
+            float: right;
+        }
+
+        .list-item:first-of-type {
+            width: 100%;
+        }
+
+        .list-item {
+            margin: -15px 0;
+
+            // .list-item-title {
+            //     width: 70%;
+            //     text-align: left;
+            //     color: #111;
+            //     &:hover {
+            //         text-decoration: underline;
+            //         cursor: pointer;
+            //     }
+            // }
+        }
     }
 }
 

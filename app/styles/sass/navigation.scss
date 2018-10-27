@@ -8,6 +8,7 @@
 
 header {
     @include pos-fixed(100%, 0, 0);
+    padding-bottom: 20px;
     z-index: 1000;
     background-color: $white;
     
@@ -53,9 +54,8 @@ header {
             display: none;
             float: right;
             a {
-                transition: 0.4s;
+                @extend %underline;
                 &:hover {
-                    text-decoration: underline;
                     color: $light-grey-font;
                 }
             }
@@ -109,12 +109,9 @@ header {
             padding: $small-padding;
             z-index: 1;
             box-shadow: 0px 4px 15px 1px rgba(0,0,0,0.2);
-            cursor: pointer;
 
             p {
-                &:hover {
-                    text-decoration: underline;
-                }
+                @extend %underline;
             }
         }
     }

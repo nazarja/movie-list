@@ -83,6 +83,13 @@ $move-x: translateX(2px);
     background-color: $green;
 }
 
+%underline {
+    &:hover {
+        transition: 0.4s;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+}
 
 
 /*

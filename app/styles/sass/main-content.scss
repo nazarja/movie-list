@@ -44,8 +44,10 @@ main {
 
             .media-poster {
                 width: 125px;
+                min-height: 187.5px;
                 @include breakpoint {
                     width: 200px;
+                    min-height: 300px;
                 }
             }
 
@@ -58,9 +60,7 @@ main {
             }
 
             .add-remove-from-collection {
-                &:hover {
-                    text-decoration: underline;
-                }
+                @extend %underline;
             }
 
             .more-information {
@@ -111,9 +111,6 @@ main {
 
 
     #main-pagination {
-        // display: none;
-        margin: 30px auto;
-        padding: 20px;
         text-align: center;
 
         .pagination-box {
@@ -147,6 +144,7 @@ main {
         height: calc(100vh - 150px);
         overflow-y: auto;
 
+
         .close-media-content, .download-icon {
             @include pos-relative( -12px, auto);
             float: right;
@@ -167,16 +165,13 @@ main {
             
             .download-fanart {
                 @include pos-relative( 16px, auto);
+                @extend %underline;
                 float: right;
                 right: -34px;
                 font-size: 0.8em;
                 text-shadow: 1px 1px rgba(0,0,0,0.2);
                 transition: 0.4s;
                 color: $white;
-                cursor: pointer;
-                &:hover {
-                    text-decoration: underline;
-                }
     
                 .download-icon {
                     color: crimson;
@@ -208,6 +203,7 @@ main {
             #media-poster {
                 @include pos-relative(-50px, 30px);
                 display: none;
+                min-height: 187.5px;
                 float: left;
                 border: 1px solid $white;
                 @include breakpoint {
@@ -241,10 +237,7 @@ main {
                 }
 
                 a, .from-collection {
-                    cursor: pointer;
-                    &:hover {
-                        text-decoration: underline;
-                    }
+                    @extend %underline;
                 }
             }
 

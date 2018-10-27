@@ -34,6 +34,7 @@ function showSearchResults(results) {
 
 function showContentResults(results) {
     resetMediaResults();
+    resetMyLists();
 
     results.map(result => {
         const tmdbId = result.id;
@@ -78,7 +79,7 @@ function showContentResults(results) {
 ==============================
 */
 
-function showFullMediaContent( mediaType, result) {
+function showFullMediaContent(mediaType, result) {
 
     const tmdbId = result.id || '0';
     const title = result.title || result.name || 'Unknown';
@@ -114,7 +115,7 @@ function showFullMediaContent( mediaType, result) {
 
 
     fullMediaContent.innerHTML = `
-        <p>MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
+        <p class="content-title">MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
         <div id="media-showcase" style="background-image: url('${backdrop}')">
             <a class="download-fanart" href="${backdrop}"target="_blank">DOWNLOAD FANART<br /><i class="material-icons download-icon">cloud_download</i></a>
             <h1 id="media-title">${title}</h1>
@@ -133,6 +134,61 @@ function showFullMediaContent( mediaType, result) {
         </div>
     `;
     fullMediaContent.style.display = 'block';
+};
+
+
+
+/*
+==============================
+    GET & Show USER LISTS
+==============================
+*/
+
+function showMyLists() {
+    myLists.style.display = 'block';
+
+    if (Object.keys(state.mylists).length !== 0) {
+         // Iterate over lists
+         for(let lists in state.mylists) {
+            let list = state.mylists[lists];
+
+            let userList = `
+            <div class="userlist">
+                <div class="list-titlebar">
+                    <h2>${lists}</h2>
+                    <p class="delete-list">Delete List<i class="material-icons delete-list-icon">delete</i></p>
+                </div>
+            `;
+
+            for (let i = 0; i < list.length; i++) {
+                const tmdbId = list[i].id;
+                const title = list[i].title || list[i].name || 'Unknown';
+                const rating = list[i].vote_average || '0';
+
+                let date = list[i].release_date || list[i].first_air_date || '';
+                if (date)  date = date.slice(0,4);
+
+                let mediaType;
+                if (list[i].hasOwnProperty('adult')) mediaType = 'movie';
+                else  mediaType = 'tv'; 
+
+                userList += `
+                    <p class="list-item">
+                        <span class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})">${title}  (${date})</span>
+                        <span class="rating">${rating}</span>
+                        <i class="material-icons delete-list-icon">delete</i>
+                    </p>
+                `;
+            } ;
+            userList += `</div>`;
+            userLists.innerHTML += userList; 
+        };
+
+    }
+    else {
+        userLists.innerHTML = `<p class="list-heading">You don't have any created lists</p>`;
+        let userlists = localStorage.setItem('movielist:userlists', sampleData);
+    }
 };
 
 

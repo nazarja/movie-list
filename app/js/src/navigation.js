@@ -77,7 +77,7 @@ function nav(param) {
             fetchTMDbData(primary, secondary);
             break;
         case 'mylists':
-            getLocalStorageLists();
+            showMyLists();
             break;
         case 'statistics':
             break;

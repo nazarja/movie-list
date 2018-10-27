@@ -35,7 +35,7 @@ body, h1, h2, h3, h4, header nav ul {
   margin: 0;
   padding: 0; }
 
-header *, #main-mylists .list-heading, #main-mylists .list-edit-heading {
+header *, #main-mylists .list-heading, #main-mylists .create-new-list {
   font-family: "Oswald", sans-serif;
   font-size: 1em;
   text-transform: uppercase;
@@ -47,13 +47,18 @@ header #topbar #ref-link {
   text-transform: uppercase;
   color: #8c8c8c; }
 
-main #main-content .media-item .rating, main #main-pagination .pagination-box {
+main #main-content .media-item .rating, main #main-pagination .pagination-box, #main-mylists #user-lists .rating {
   font-family: "Oswald", sans-serif;
   font-size: 11.2px;
   padding: 5px 6px;
   border-radius: 20%;
   color: #f9f9f9;
   background-color: #009587; }
+
+header #topbar #ref-link a:hover, header #search #search-results p:hover, main #main-content .media-item .add-remove-from-collection:hover, main #full-media-content #media-showcase .download-fanart:hover, main #full-media-content #media-details #media-details-bar a:hover, main #full-media-content #media-details #media-details-bar .from-collection:hover, #main-mylists .create-new-list:hover, #main-mylists #user-lists .delete-list:hover {
+  transition: 0.4s;
+  text-decoration: underline;
+  cursor: pointer; }
 
 /*
 ==================================================================
@@ -114,6 +119,7 @@ header {
   width: 100%;
   top: 0;
   left: 0;
+  padding-bottom: 20px;
   z-index: 1000;
   background-color: #f9f9f9;
   /*
@@ -156,11 +162,8 @@ header {
       @media (min-width: 800px) {
         header #topbar #ref-link {
           display: inline-block; } }
-      header #topbar #ref-link a {
-        transition: 0.4s; }
-        header #topbar #ref-link a:hover {
-          text-decoration: underline;
-          color: #8c8c8c; }
+      header #topbar #ref-link a:hover {
+        color: #8c8c8c; }
     header #topbar #menu-btn {
       float: right;
       outline: none;
@@ -195,10 +198,7 @@ header {
       width: 100%;
       padding: 0 5%;
       z-index: 1;
-      box-shadow: 0px 4px 15px 1px rgba(0, 0, 0, 0.2);
-      cursor: pointer; }
-      header #search #search-results p:hover {
-        text-decoration: underline; }
+      box-shadow: 0px 4px 15px 1px rgba(0, 0, 0, 0.2); }
   header nav {
     margin-top: 25px; }
     header nav div {
@@ -294,10 +294,12 @@ main {
       order: 1;
       cursor: pointer; }
       main #main-content .media-item .media-poster {
-        width: 125px; }
+        width: 125px;
+        min-height: 187.5px; }
         @media (min-width: 800px) {
           main #main-content .media-item .media-poster {
-            width: 200px; } }
+            width: 200px;
+            min-height: 300px; } }
       main #main-content .media-item .is-in-collection {
         position: relative;
         top: -8px;
@@ -306,8 +308,6 @@ main {
         right: -8px;
         color: #484539;
         cursor: pointer; }
-      main #main-content .media-item .add-remove-from-collection:hover {
-        text-decoration: underline; }
       main #main-content .media-item .more-information {
         position: absolute;
         top: auto;
@@ -345,8 +345,6 @@ main {
       main #main-content {
         justify-content: flex-start; } }
   main #main-pagination {
-    margin: 30px auto;
-    padding: 20px;
     text-align: center; }
     main #main-pagination .pagination-box {
       display: inline-block;
@@ -396,10 +394,7 @@ main {
         font-size: 0.8em;
         text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
         transition: 0.4s;
-        color: #f9f9f9;
-        cursor: pointer; }
-        main #full-media-content #media-showcase .download-fanart:hover {
-          text-decoration: underline; }
+        color: #f9f9f9; }
         main #full-media-content #media-showcase .download-fanart .download-icon {
           color: crimson;
           cursor: pointer; }
@@ -424,6 +419,7 @@ main {
       top: -50px;
       left: 30px;
       display: none;
+      min-height: 187.5px;
       float: left;
       border: 1px solid #f9f9f9; }
       @media (min-width: 800px) {
@@ -449,10 +445,6 @@ main {
             top: 12px; } }
       main #full-media-content #media-details #media-details-bar div {
         display: inline-block; }
-      main #full-media-content #media-details #media-details-bar a, main #full-media-content #media-details #media-details-bar .from-collection {
-        cursor: pointer; }
-        main #full-media-content #media-details #media-details-bar a:hover, main #full-media-content #media-details #media-details-bar .from-collection:hover {
-          text-decoration: underline; }
     main #full-media-content #media-details p {
       position: relative;
       top: auto;
@@ -475,27 +467,52 @@ main {
 */
 #main-mylists {
   display: none; }
+  #main-mylists i {
+    position: relative;
+    top: 5px;
+    left: auto;
+    cursor: pointer; }
+    #main-mylists i:hover {
+      transition: 0.4s;
+      color: #b91335; }
+  #main-mylists hr {
+    margin: 0;
+    width: 100%;
+    color: #ddd; }
   #main-mylists .list-heading {
     position: relative;
     top: 13px;
     left: auto;
     display: inline-block;
     font-size: 1.2rem; }
-  #main-mylists i {
+  #main-mylists .create-new-list {
     position: relative;
-    top: 5px;
-    left: auto; }
-  #main-mylists .list-edit-heading {
     float: right;
-    position: relative;
-    margin: 0;
-    cursor: pointer; }
-    #main-mylists .list-edit-heading:hover {
-      text-decoration: underline; }
-    #main-mylists .list-edit-heading .new-list-icon {
+    margin: 0; }
+    #main-mylists .create-new-list .new-list-icon {
       color: #b91335;
       padding-right: 0; }
-  #main-mylists hr {
-    margin: 0;
-    width: 100%;
-    color: #ddd; }
+  #main-mylists #user-lists .list-titlebar {
+    margin: 50px 0 50px;
+    text-transform: uppercase; }
+  #main-mylists #user-lists h2 {
+    position: relative;
+    top: 30px;
+    left: auto;
+    display: inline-block;
+    font-size: 1.2rem; }
+  #main-mylists #user-lists i {
+    cursor: pointer; }
+    #main-mylists #user-lists i:hover {
+      transition: 0.4s;
+      color: #b91335; }
+  #main-mylists #user-lists .rating {
+    position: relative;
+    top: -10px;
+    left: auto; }
+  #main-mylists #user-lists .delete-list {
+    float: right; }
+  #main-mylists #user-lists .list-item:first-of-type {
+    width: 100%; }
+  #main-mylists #user-lists .list-item {
+    margin: -15px 0; }
