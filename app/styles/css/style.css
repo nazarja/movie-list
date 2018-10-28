@@ -55,7 +55,7 @@ main #main-content .media-item .rating, main #main-pagination .pagination-box {
   color: #f9f9f9;
   background-color: #009587; }
 
-header #topbar #ref-link a:hover, header #search #search-results p:hover, main #main-content .media-item .add-remove-from-collection:hover, main #full-media-content #media-showcase .download-fanart:hover, main #full-media-content #media-details #media-details-bar a:hover, main #full-media-content #media-details #media-details-bar .from-collection:hover, #main-mylists .create-new-list:hover, #main-mylists #user-lists .delete-list:hover, #main-mylists #user-lists .list-item .list-item-title:hover {
+header #topbar #ref-link a:hover, header #search #search-results p:hover, main #main-content .media-item .add-remove-from-collection:hover, main #full-media-content #media-showcase .download-fanart:hover, main #full-media-content #media-details #media-details-bar a:hover, main #full-media-content #media-details #media-details-bar .from-collection:hover, #main-mylists .create-new-list:hover, #main-mylists .show-sample-lists:hover, #main-mylists #user-lists .delete-list:hover, #main-mylists #user-lists .list-item .list-item-title:hover {
   transition: 0.4s;
   text-decoration: underline;
   cursor: pointer; }
@@ -508,6 +508,8 @@ main {
     #main-mylists .create-new-list .new-list-icon {
       color: #b91335;
       padding-right: 0; }
+  #main-mylists .show-sample-lists {
+    color: #111; }
   #main-mylists #user-lists {
     /*
         ============================

@@ -71,12 +71,15 @@ function nav(param) {
 
     switch(primary) {
         case 'movies':
+            fadeIn('#main-content');
             fetchTMDbData(primary, secondary);
             break;
         case 'tvshows':
+            fadeIn('#main-content');    
             fetchTMDbData(primary, secondary);
             break;
         case 'mylists':
+            fadeIn('#main-mylists');
             showMyLists();
             break;
         case 'statistics':

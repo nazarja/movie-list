@@ -80,7 +80,7 @@ function showContentResults(results) {
 */
 
 function showFullMediaContent(mediaType, result) {
-
+    
     const tmdbId = result.id || '0';
     const title = result.title || result.name || 'Unknown';
     const tagline = result.tagline || `NO. SEASONS: ${result.number_of_seasons}  ~  NO. EPISODES: ${result.number_of_episodes}` || '';
@@ -134,6 +134,7 @@ function showFullMediaContent(mediaType, result) {
         </div>
     `;
     fullMediaContent.style.display = 'block';
+    fadeIn('#full-media-content');
 };
 
 
@@ -186,7 +187,6 @@ function showMyLists() {
             userLists.innerHTML += userList;
             i++; 
         };
-
     }
     else {
         showNoListsText();
@@ -220,8 +220,30 @@ function pagination(primary, secondary, page) {
 
 /*
 ==============================
-    HOVER MEDIA POSTER
+    SAMPLE LIST DATA
 ==============================
+*/
+
+function showNoListsText() {
+    userLists.innerHTML = `
+        <p class="list-heading">You don't have any created lists<br />
+        <span class="show-sample-lists" onclick="sampleLists()">Click here</span> for sample lists</p>
+        `;
+}
+
+function sampleLists() {
+    let userlists = localStorage.setItem('movielist:userlists', sampleData);
+    parseLocalStorageLists();
+    showMyLists();
+    fadeIn('#user-lists');
+}
+
+
+
+/*
+==================================================================
+    ANIMATION FUNCTION
+==================================================================
 */
 
 function onMediaHover() {
@@ -232,15 +254,14 @@ function onMediaHover() {
     });
 };
 
-
-
-/*
-==============================
-    SAMPLE LIST DATA
-==============================
-*/
-
-function showNoListsText() {
-    userLists.innerHTML = `<p class="list-heading">You don't have any created lists,<br />Refresh your browser for sample lists.</p>`;
-    let userlists = localStorage.setItem('movielist:userlists', sampleData);
-}
+function fadeIn(id) {
+    const element = document.querySelector(`${id}`);
+    element.style.opacity = 0;
+    
+    let opacity = 0;
+    const interval = setInterval(() => {
+        opacity += .05; 
+        element.style.opacity = opacity;
+        if (opacity >= 1) clearInterval(interval);
+    }, 15);
+};
