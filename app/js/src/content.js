@@ -230,7 +230,7 @@ function showMyLists() {
 
 /*
 ==============================
-    SAMPLE LIST DATA
+    LIST DATA
 ==============================
 */
 
@@ -242,11 +242,12 @@ function showNoListsText() {
 };
 
 function sampleLists() {
-    let userlists = localStorage.setItem('movielist:userlists', sampleData);
+    localStorage.setItem('movielist:userlists', sampleData);
     parseLocalStorageLists();
     showMyLists();
     fadeIn('#user-lists');
 };
+
 
 
 

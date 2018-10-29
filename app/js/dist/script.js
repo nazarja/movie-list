@@ -18,9 +18,6 @@ const mainPagination = document.querySelector('#main-pagination');
 const fullMediaContent = document.querySelector('#full-media-content');
 const myLists = document.querySelector('#main-mylists');
 const userLists = document.querySelector('#user-lists');
-const listEditorDiv = document.querySelector('#list-editor-div');
-const newListEditor = document.querySelector('#new-list-editor');
-const newListInput = document.querySelector('#new-list-input');
 
 
 let state = {
@@ -221,6 +218,23 @@ function onMediaHover() {
 };
 
 
+/*
+==============================
+    OPEN/CLOSE ADD NEW LIST/ITEM
+==============================
+*/
+
+function openAddNewList(id) {
+    console.log('openList');
+    document.querySelector(id).style.visibility = 'visible';
+};
+
+function closeAddNewList(id) {
+    console.log('closeList');
+    document.querySelector(id).style.visibility = 'hidden';
+}
+
+
 
 
 
@@ -402,16 +416,6 @@ function checkIfInCollection(tmdbId) {
 };
 
 
-/*
-==============================
-    OPEN LIST EDITOR
-==============================
-*/
-
-function listEditor() {
-    console.log('Create New List');
-};
-
 
 /*
 ==================================================================
@@ -425,8 +429,21 @@ function listEditor() {
 ==============================
 */
 
-function createNewList() {
+function addNewList(divId,inputId) {
 
+    // Get input - return if empty
+    let input = document.querySelector(inputId);
+    if (!input.value.length) return;
+
+    // Add to local state
+    let title = input.value.toLowerCase().replace(/\s/g, '_');
+    state.mylists[title] = [];
+    input.value = '';
+
+    // Add to local storage
+    localStorage.setItem('movielist:userlists', JSON.stringify(state.mylists));
+    showMyLists();
+    closeAddNewList(divId);
 };
 
 
@@ -726,7 +743,7 @@ function showMyLists() {
 
 /*
 ==============================
-    SAMPLE LIST DATA
+    LIST DATA
 ==============================
 */
 
@@ -738,11 +755,12 @@ function showNoListsText() {
 };
 
 function sampleLists() {
-    let userlists = localStorage.setItem('movielist:userlists', sampleData);
+    localStorage.setItem('movielist:userlists', sampleData);
     parseLocalStorageLists();
     showMyLists();
     fadeIn('#user-lists');
 };
+
 
 
 

@@ -59,19 +59,27 @@
         <!-- MY LISTS -->
         <div id="main-mylists">
             <h1 class="list-heading">My Lists</h1>
-            <p class="create-new-list" onclick="listEditor('newList')">Create New List<i class="material-icons new-list-icon">fiber_new</i></p>
+            <p class="create-new-list" onclick="openAddNewList('#mylists-add-new-list')">
+                Create New List
+                <i class="material-icons new-list-icon">fiber_new</i>
+
+                <!-- ADD NEW LIST INPUT -->
+                <div id="mylists-add-new-list" class="add-new-list">
+                    <p class="list-p">
+                        Create New List
+                        <i class="material-icons close-icon" onclick="closeAddNewList('#mylists-add-new-list')">close</i>
+                    </p>
+                    <input id="mylists-add-new-list-input" type="text" class="new-list-input" maxlength="20">
+                    <i class="material-icons playlist-add-icon" onclick="addNewList('#mylists-add-new-list','#mylists-add-new-list-input')">playlist_add</i>
+                </div>
+            </p>
+
+            <!-- HR -->
             <hr />
             <div id="user-lists"></div>
         </div>
 
-        <!-- LIST EDITOR -->
-        <div id="list-editor-div">
-            <div id="new-list-editor">
-                <p>Create a new list</p>
-                <input type="text" id="new-list-input">
-            </div>
-            <div id="add-to-list"></div>
-        </div>
+       
     </main>
     
     <!-- JAVASCRIPT -->

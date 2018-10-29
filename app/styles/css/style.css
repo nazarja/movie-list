@@ -31,11 +31,11 @@
     PLACEHOLDERS
 ==================================================================
 */
-body, h1, h2, h3, h4, header nav ul {
+body, h1, h2, h3, h4, header nav ul, #mylists-add-new-list .list-p {
   margin: 0;
   padding: 0; }
 
-header *, #main-mylists .list-heading, #main-mylists .create-new-list {
+header *, #main-mylists .list-heading, #main-mylists .create-new-list, #mylists-add-new-list .list-p {
   font-family: "Oswald", sans-serif;
   font-size: 1em;
   text-transform: uppercase;
@@ -567,5 +567,41 @@ main {
             top: 5px;
             font-size: inherit; } }
 
-#list-editor {
-  display: none; }
+/*
+==================================================================
+    LIST EDITORS 
+==================================================================
+*/
+#mylists-add-new-list {
+  position: absolute;
+  top: 60px;
+  right: 5%;
+  bottom: auto;
+  left: auto;
+  visibility: hidden;
+  background-color: #f9f9f9;
+  border: 1px solid #bbb;
+  border-top: 0;
+  border-radius: 5px;
+  z-index: 4;
+  padding: 10px 10px 20px 20px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }
+  #mylists-add-new-list .close-icon {
+    position: relative;
+    top: 5px;
+    left: 77px;
+    display: inline-block;
+    color: #b91335; }
+    #mylists-add-new-list .close-icon:hover {
+      transition: 0s; }
+  #mylists-add-new-list .playlist-add-icon {
+    color: #009587; }
+    #mylists-add-new-list .playlist-add-icon:hover {
+      color: #009587; }
+  #mylists-add-new-list .new-list-input {
+    height: 25px;
+    border-radius: 5px;
+    border: 1px solid #999;
+    padding: 0 10px;
+    font-family: monospace; }

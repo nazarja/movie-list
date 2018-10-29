@@ -18,9 +18,6 @@ const mainPagination = document.querySelector('#main-pagination');
 const fullMediaContent = document.querySelector('#full-media-content');
 const myLists = document.querySelector('#main-mylists');
 const userLists = document.querySelector('#user-lists');
-const listEditorDiv = document.querySelector('#list-editor-div');
-const newListEditor = document.querySelector('#new-list-editor');
-const newListInput = document.querySelector('#new-list-input');
 
 
 let state = {
@@ -219,6 +216,23 @@ function onMediaHover() {
         item.onmouseleave = () => item.children[2].style.display = 'none';
     });
 };
+
+
+/*
+==============================
+    OPEN/CLOSE ADD NEW LIST/ITEM
+==============================
+*/
+
+function openAddNewList(id) {
+    console.log('openList');
+    document.querySelector(id).style.visibility = 'visible';
+};
+
+function closeAddNewList(id) {
+    console.log('closeList');
+    document.querySelector(id).style.visibility = 'hidden';
+}
 
 
 

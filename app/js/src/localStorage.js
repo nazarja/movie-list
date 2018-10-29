@@ -53,16 +53,6 @@ function checkIfInCollection(tmdbId) {
 };
 
 
-/*
-==============================
-    OPEN LIST EDITOR
-==============================
-*/
-
-function listEditor() {
-    console.log('Create New List');
-};
-
 
 /*
 ==================================================================
@@ -76,8 +66,21 @@ function listEditor() {
 ==============================
 */
 
-function createNewList() {
+function addNewList(divId,inputId) {
 
+    // Get input - return if empty
+    let input = document.querySelector(inputId);
+    if (!input.value.length) return;
+
+    // Add to local state
+    let title = input.value.toLowerCase().replace(/\s/g, '_');
+    state.mylists[title] = [];
+    input.value = '';
+
+    // Add to local storage
+    localStorage.setItem('movielist:userlists', JSON.stringify(state.mylists));
+    showMyLists();
+    closeAddNewList(divId);
 };
 
 
