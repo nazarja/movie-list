@@ -64,7 +64,7 @@ function fetchMediaData(mediaType,tmdbId) {
     if (mediaType == 'movie') url = MOVIES_URL;
     else url = TVSHOWS_URL;
 
-    fetch(`${url}${tmdbId}${API_KEY}${EXTRA}&append_to_response=videos,images,reviews`, 
+    fetch(`${url}${tmdbId}${API_KEY}${EXTRA}&append_to_response=videos`, 
     {
         headers: new Headers ({ 'Accept': 'application/json'})
     })

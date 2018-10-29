@@ -35,6 +35,7 @@ $oswald-font: 'Oswald', sans-serif;
 $julius-font: 'Julius Sans One', sans-serif;
 $red: rgb(185, 19, 53);
 $white: #f9f9f9;
+$cream: #ddd;
 $green: #009587;
 $blue : #006b95;
 $black: #333;
@@ -152,60 +153,6 @@ $box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
         color: $grey-font;
     }
 }
-
-
-/*
-==================================================================
-    FOR LOOPS
-==================================================================
-*/
-
-$update-list: 'update-list';
-@for $i from 0 through 19 {
-    ##{$update-list}-#{$i} {
-        @include pos-absolute (230px, 1.5%, auto, auto);
-        @extend %add-media-list;
-        color: $grey-font;
-        width: 194px;
-        padding: 10px;
-        text-align: left;
-
-        .close-add-item {
-            text-align: right;
-            margin-right: 4px;
-            margin-bottom: 10px;
-        }
-
-        i {
-            padding: 0;
-        }
-
-        p {
-            @extend %underline;
-            display: block;
-            margin: 5px;
-            text-transform: uppercase;
-
-            &:hover {
-                transition: 0s;
-            }
-
-            .material-icons {
-                float: right;
-                font-size: 1rem;
-            }
-
-            .close-icon {
-                color: $red;
-                font-weight: bold;
-                font-size: 1.2rem;
-                padding-left: 6px;
-            }
-        }
-    }
-};
-
-
 
 
 /*

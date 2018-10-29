@@ -120,6 +120,7 @@ main {
             margin: 5px;
             padding: 5px 8px;
             transition: 0.4s;
+            text-transform: uppercase;
             cursor: pointer;
             &:hover {
                 background: $black;
@@ -228,7 +229,7 @@ main {
                 min-height: 50px;
                 padding-right: 10px;
                 text-align: center;
-                color:#ddd;
+                color: $cream;
                 background-color: $black-font;
                 @include breakpoint {
                     text-align: right;
@@ -250,7 +251,11 @@ main {
 
                 a, .from-collection {
                     @extend %underline;
-                    color: #ddd;
+                    color: $cream;
+                }
+
+                .from-collection {
+                    color: $red;
                 }
             }
 

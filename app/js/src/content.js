@@ -54,18 +54,15 @@ function showContentResults(results) {
 
 
         mainContent.innerHTML += `
-            <div class="media-item">
-                <i class="material-icons is-in-collection" style="color: ${isInCollectionColor}">collections</i>
-                <img class="media-poster" src="${poster}" alt="${title}" onclick="fetchMediaData('${mediaType}',${tmdbId})">
-                <span class="more-information" onclick="fetchMediaData('${mediaType}',${tmdbId})">More Information</span>
+            <div class="media-item" onclick="fetchMediaData('${mediaType}',${tmdbId})">
+                <i class="material-icons is-in-collection"  style="color: ${isInCollectionColor}">collections</i>
+                <img class="media-poster" src="${poster}" alt="${title}">
+                <span class="more-information">More Information</span>
                 <div>
                     <span class="title">${title}</span><span class="rating">${rating}</span>
                 </div>
                 <div>
-                    <p class="add-remove-from-collection" onclick="updateList(${tmdbId}, '#update-list-${i}')">Add/Remove from Collection</p>
-                    
-                    <!-- ADD REMOVE ITEM FROM COLLECTION -->
-                    <div id="update-list-${i}"></div>
+                    <p class="add-remove-from-collection">Add/Remove from Collection</p>
                 </div>
             </div>
         `;

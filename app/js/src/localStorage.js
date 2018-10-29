@@ -116,7 +116,7 @@ function updateList(tmdbId, id) {
         isInList.forEach(item => {
             if (item[0]) {
                 element.innerHTML += `
-                    <p onclick="deleteItemFromList('${item[1]}', '${tmdbId}', '${id}', true)">
+                    <p onclick="deleteItemFromList('${item[1]}', '${tmdbId}', '${id}', false)">
                         ${item[1]}
                         <i class="material-icons remove-circle-icon">remove_circle</i>
                     </p>
@@ -166,7 +166,7 @@ function addNewList(divId, inputId) {
 
 function addItemToList(list, tmdbId, id) {
     state.mylists[list].push(state.media);
-    let userlists  =JSON.stringify(state.mylists);
+    let userlists = JSON.stringify(state.mylists);
     localStorage.setItem('movielist:userlists', userlists);
     updateList(tmdbId, id);
 }
@@ -207,7 +207,7 @@ function deleteList(list, id) {
 ==============================
 */
 
-function deleteItemFromList(list, tmdbId, id, noRemove) {
+function deleteItemFromList(list, tmdbId, id, remove) {
 
     for (let i in state.mylists[list]) {
         if (state.mylists[list][i].id == tmdbId) {
@@ -218,13 +218,13 @@ function deleteItemFromList(list, tmdbId, id, noRemove) {
         };
     };
 
-    if (id && !noRemove) {
+    if (id && remove) {
         let element = document.querySelector(id);
         fadeOut(id);
         setTimeout(() => element.remove(), 200);
     };
 
-    if (noRemove) {
+    if (!remove) {
         updateList(tmdbId, id);
     }
 };

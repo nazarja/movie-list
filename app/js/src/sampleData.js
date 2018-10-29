@@ -50,25 +50,23 @@ const mylists = {
         "release_date": "2018-10-03"
       },
       {
-        "vote_count": 42,
-        "id": 507569,
+        "vote_count": 533,
+        "id": 445651,
         "video": false,
-        "vote_average": 5.8,
-        "title": "The Seven Deadly Sins: Prisoners of the Sky",
-        "popularity": 169.734,
-        "poster_path": "/r6pPUVUKU5eIpYj4oEzidk5ZibB.jpg",
-        "original_language": "ja",
-        "original_title": "劇場版 七つの大罪 天空の囚われ人",
+        "vote_average": 6.8,
+        "title": "The Darkest Minds",
+        "popularity": 83.035,
+        "poster_path": "/94RaS52zmsqaiAe1TG20pdbJCZr.jpg",
+        "original_language": "en",
+        "original_title": "The Darkest Minds",
         "genre_ids": [
-          28,
-          12,
-          14,
-          16
+          878,
+          53
         ],
-        "backdrop_path": "/uKwOX7MtKlAaGeCQe6c4jc1vZpj.jpg",
+        "backdrop_path": "/5BxrMNGl3YDiWgHCVJu8iLQoJDM.jpg",
         "adult": false,
-        "overview": "Traveling in search of the rare ingredient, “sky fish”  Meliodas and Hawk arrive at a palace that floats above the clouds. The people there are busy preparing a ceremony, meant to protect their home from a ferocious beast that awakens once every 3,000 years. But before the ritual is complete, the Six Knights of Black—a Demon Clan army—removes the seal on the beast, threatening the lives of everyone in the Sky Palace.",
-        "release_date": "2018-08-18"
+        "overview": "After a disease kills 98% of America's children, the surviving 2% develop superpowers and are placed in internment camps. A 16-year-old girl escapes her camp and joins a group of other teens on the run from the government.",
+        "release_date": "2018-08-02"
       },
       {
         "vote_count": 639,
@@ -379,26 +377,46 @@ const mylists = {
         "poster_path": "/yTZQkSsxUFJZJe67IenRM0AEklc.jpg"
       },
       {
-        "vote_count": 1497,
-        "id": 335983,
-        "video": false,
-        "vote_average": 6.6,
-        "title": "Venom",
-        "popularity": 401.758,
-        "poster_path": "/2uNW4WbgBXL25BAbXGLnLqX71Sw.jpg",
-        "original_language": "en",
-        "original_title": "Venom",
+        "original_name": "Game of Thrones",
         "genre_ids": [
-          878,
-          28,
-          80,
-          28,
-          27
+          18,
+          10759,
+          10765
         ],
-        "backdrop_path": "/VuukZLgaCrho2Ar8Scl9HtV3yD.jpg",
-        "adult": false,
-        "overview": "When Eddie Brock acquires the powers of a symbiote, he will have to release his alter-ego \"Venom\" to save his life.",
-        "release_date": "2018-10-03"
+        "name": "Game of Thrones",
+        "popularity": 56.138,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 4952,
+        "first_air_date": "2011-04-17",
+        "backdrop_path": "/gX8SYlnL9ZznfZwEH4KJUePBFUM.jpg",
+        "original_language": "en",
+        "id": 1399,
+        "vote_average": 8.2,
+        "overview": "Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and icy horrors beyond.",
+        "poster_path": "/gwPSoYUHAKmdyVywgLpKKA4BjRr.jpg"
+      },
+      {
+        "original_name": "American Horror Story",
+        "genre_ids": [
+          18,
+          9648,
+          10765
+        ],
+        "name": "American Horror Story",
+        "popularity": 55.545,
+        "origin_country": [
+          "US"
+        ],
+        "vote_count": 922,
+        "first_air_date": "2011-10-05",
+        "backdrop_path": "/ilKE2RPD8tkynAOHefX9ZclG1yq.jpg",
+        "original_language": "en",
+        "id": 1413,
+        "vote_average": 6.9,
+        "overview": "An anthology horror drama series centering on different characters and locations, including a house with a murderous past, an asylum, a witch coven, a freak show, a hotel, a farmhouse in Roanoke and a cult.",
+        "poster_path": "/zheiOgPKDMvYjrCSrMLv8FSNJn4.jpg"
       }
     ]
   };

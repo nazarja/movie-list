@@ -8,7 +8,6 @@
 function init() {
     parseLocalStorageLists();
     setEventListeners();
-    // nav('movies,popular');
-    nav('mylists,null');
+    nav('movies,popular');
 };
 init();
