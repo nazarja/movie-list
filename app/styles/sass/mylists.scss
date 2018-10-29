@@ -49,7 +49,7 @@
     }
 
 
-    
+
 
     /*
     ============================
@@ -82,6 +82,13 @@
         .delete-list {
             @extend %underline;
             float: right;
+            
+            &:hover {
+                .delete-list-icon {
+                    transition: 0.4s;
+                    color: $red;
+                }
+            }
         }
 
         /*

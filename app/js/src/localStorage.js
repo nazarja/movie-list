@@ -34,7 +34,7 @@ function parseLocalStorageLists() {
 function checkIfInCollection(tmdbId) {
 
     let arr= [[],[]];
-    if (Object.keys(state.mylists).length !== 0) {
+    if (Object.keys(state.mylists).length) {
 
         // Iterate over lists
         for(let lists in state.mylists) {
@@ -54,8 +54,14 @@ function checkIfInCollection(tmdbId) {
 
 
 /*
-==============================
+==================================================================
     CRUD FUNCTIONS
+==================================================================
+*/
+
+/*
+==============================
+    DELETE A LIST
 ==============================
 */
 
@@ -67,13 +73,23 @@ function deleteList(list, id) {
         let userlists = JSON.stringify(state.mylists);
         let element = document.querySelector(`#${id}`);
         localStorage.setItem('movielist:userlists', userlists);
-        element.remove();
+
+        fadeOut(`#${id}`);
+        setTimeout(() => element.remove(), 200);
     };
 
-    if (Object.keys(state.mylists).length == 0) {
+    if (!Object.keys(state.mylists).length) {
         showNoListsText();
     }
 };
+
+
+
+/*
+==============================
+    DELETE LIST ITEM
+==============================
+*/
 
 function deleteItemFromList(list, tmdbId, id) {
 
@@ -86,9 +102,31 @@ function deleteItemFromList(list, tmdbId, id) {
     let userlists = JSON.stringify(state.mylists);
     let element = document.querySelector(`#${id}`);
     localStorage.setItem('movielist:userlists', userlists);
-    element.remove();
+
+    fadeOut(`#${id}`);
+    setTimeout(() => element.remove(), 200);
 }
 
+
+
+/*
+==============================
+    CREATE NEW LIST
+==============================
+*/
+
 function createNewList(list) {
-    console.log('yup');
-}
+
+};
+
+
+
+/*
+==============================
+    ADD ITEM TO LIST
+==============================
+*/
+
+function addItemToList() {
+
+};

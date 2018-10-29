@@ -45,7 +45,7 @@ function fetchTMDbData(primary, secondary, page = 1) {
     .then(text => {
         data = JSON.parse(text);
         showContentResults(data.results);
-        pagination(primary, secondary, page)
+        pagination(primary, secondary, data.total_pages, page);
     })
     .catch(err => {
         // TODO: 404 Error

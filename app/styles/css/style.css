@@ -533,6 +533,9 @@ main {
         color: #b91335; }
     #main-mylists #user-lists .delete-list {
       float: right; }
+      #main-mylists #user-lists .delete-list:hover .delete-list-icon {
+        transition: 0.4s;
+        color: #b91335; }
     #main-mylists #user-lists .list-item {
       margin: -15px 0;
       width: 100%; }

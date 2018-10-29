@@ -12,6 +12,9 @@
 */
 
 function showSearchResults(results) {
+
+    if (!results.length) return;
+    
     for (let i = 0; i < 6; i++) {
         if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
             let title = results[i].title || results[i].name;
@@ -33,6 +36,9 @@ function showSearchResults(results) {
 */
 
 function showContentResults(results) {
+
+    if (!results.length) return;
+
     resetMediaResults();
     resetMyLists();
 
@@ -80,7 +86,7 @@ function showContentResults(results) {
 */
 
 function showFullMediaContent(mediaType, result) {
-    
+
     const tmdbId = result.id || '0';
     const title = result.title || result.name || 'Unknown';
     const tagline = result.tagline || `NO. SEASONS: ${result.number_of_seasons}  ~  NO. EPISODES: ${result.number_of_episodes}` || '';
@@ -141,7 +147,7 @@ function showFullMediaContent(mediaType, result) {
 
 /*
 ==============================
-    GET & Show USER LISTS
+    GET & SHOW USER LISTS
 ==============================
 */
 
@@ -201,18 +207,53 @@ function showMyLists() {
 ==============================
 */
 
-function pagination(primary, secondary, page) {
+function pagination(primary, secondary, totalPages, page) {
     resetPagination();
+
+    // Indexes
+    let totalBoxes = 5;
+    let start;
+    let end;
+
+    // Index Logic
+    if (totalPages <= totalBoxes) {
+        start = 1;
+        end = totalPages;
+    } 
+    else {
+        if (page <= 3) {
+            start = 1;
+            end = 5
+        }
+        else if (page > 3 && page < (totalPages - 2)) {
+            start = page - 2;
+            end = page + 2;
+        }
+        else {
+            start = totalPages - 4;
+            end = totalPages;
+        };
+    };
+
+    // First Page Element 
+    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${1})">first</span>`;
+
+    
     let i = 0;
-
-    // Give previous page option unless its the 1st page
-    if (page > 1) mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page - 1})">${page - 1}</span>`;
-
-    while (i < 5) {
-        // Highlight Active Page
-        if (i == 0) mainPagination.innerHTML += `<span class="pagination-box" style="background-color: #333;" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
-        else mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${page + i})">${page + i}</span>`;
+    while ((start + i) <= end) {
+        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${start + i})">${start + i}</span>`;
         i++;
+    };
+    
+    // Last page element
+    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${totalPages})">last</span>`;
+
+    // Highlight current page
+    const paginationBox = document.querySelectorAll('.pagination-box');
+    for (let i in paginationBox) {
+        if (page == paginationBox[i].innerText) {
+            paginationBox[i].style.backgroundColor = '#333';
+        };
     };
 };
 
@@ -242,7 +283,7 @@ function sampleLists() {
 
 /*
 ==================================================================
-    ANIMATION FUNCTION
+    ANIMATION FUNCTIONS
 ==================================================================
 */
 
@@ -265,3 +306,17 @@ function fadeIn(id) {
         if (opacity >= 1) clearInterval(interval);
     }, 15);
 };
+
+function fadeOut(id) {
+    const element = document.querySelector(`${id}`);
+    element.style.opacity = 1;
+    
+    let opacity = 1;
+    const interval = setInterval(() => {
+        opacity -= .05; 
+        element.style.opacity = opacity;
+        if (opacity <= 0) {
+            clearInterval(interval);
+        };
+    }, 15);
+}
