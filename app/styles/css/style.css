@@ -566,3 +566,6 @@ main {
             height: auto;
             top: 5px;
             font-size: inherit; } }
+
+#list-editor {
+  display: none; }

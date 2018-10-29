@@ -5,8 +5,6 @@
 ==================================================================
 */
 
-
-
 function init() {
     parseLocalStorageLists();
     setEventListeners();

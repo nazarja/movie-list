@@ -24,10 +24,9 @@ let url;
 let data;
 
 
-
 /*
 ==============================
-    FETCH TMDB DATA
+    FETCH MAIN TMDB DATA
 ==============================
 */
 
@@ -52,34 +51,6 @@ function fetchTMDbData(primary, secondary, page = 1) {
         console.log(err);
     });
 };
-
-
-
-/*
-==============================
-    FETCH SEARCH DATA
-==============================
-*/
-
-function getTMDbSearchData(searchQuery) {
-    fetch(`${SEARCH_URL}${API_KEY}&language=en-US&query=${searchQuery}&page=1&include_adult=false`, 
-        {
-            headers: new Headers ({ 'Accept': 'application/json'})
-        })
-    .then(response => {
-        return response.text();
-    })
-    .then(text => {
-        data = JSON.parse(text);
-        resetSearchResults();
-        showSearchResults(data.results);
-    })
-    .catch(err => {
-         // TODO: 404 Error
-        console.log(err);
-    });
-};
-
 
 
 /*
@@ -109,4 +80,31 @@ function fetchMediaData(mediaType,tmdbId) {
         console.log(err);
     });
 };
+
+
+/*
+==============================
+    FETCH SEARCH DATA
+==============================
+*/
+
+function getTMDbSearchData(searchQuery) {
+    fetch(`${SEARCH_URL}${API_KEY}&language=en-US&query=${searchQuery}&page=1&include_adult=false`, 
+        {
+            headers: new Headers ({ 'Accept': 'application/json'})
+        })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        data = JSON.parse(text);
+        resetSearchResults();
+        showSearchResults(data.results);
+    })
+    .catch(err => {
+         // TODO: 404 Error
+        console.log(err);
+    });
+};
+
 

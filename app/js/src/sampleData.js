@@ -1,7 +1,7 @@
 
 /*
 ==================================================================
-    SAMPLE DATA FOR DEVELOPMENT PURPOSES
+    SAMPLE LIST DATA
 ==================================================================
 */
 
@@ -381,5 +381,5 @@ const mylists = {
     ]
   };
 
-  // Convert to JSON to imitate real api reponse
+  // CONVERT TO JSON 
   let sampleData = JSON.stringify(mylists);

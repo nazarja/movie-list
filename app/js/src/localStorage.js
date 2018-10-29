@@ -7,7 +7,7 @@
 
 /*
 ==============================
-    CHECK/GET USER LISTS
+    CHECK / GET USER LISTS
 ==============================
 */
 
@@ -54,10 +54,45 @@ function checkIfInCollection(tmdbId) {
 
 
 /*
+==============================
+    OPEN LIST EDITOR
+==============================
+*/
+
+function listEditor() {
+    console.log('Create New List');
+};
+
+
+/*
 ==================================================================
     CRUD FUNCTIONS
 ==================================================================
 */
+
+/*
+==============================
+    CREATE NEW LIST
+==============================
+*/
+
+function createNewList() {
+
+};
+
+
+
+/*
+==============================
+    ADD ITEM TO LIST
+==============================
+*/
+
+function addItemToList() {
+
+};
+
+
 
 /*
 ==============================
@@ -80,7 +115,7 @@ function deleteList(list, id) {
 
     if (!Object.keys(state.mylists).length) {
         showNoListsText();
-    }
+    };
 };
 
 
@@ -96,8 +131,8 @@ function deleteItemFromList(list, tmdbId, id) {
     for(let i in state.mylists[list]) {
         if (state.mylists[list][i].id == tmdbId) {
             state.mylists[list].splice(i, 1);
-        }
-    }
+        };
+    };
 
     let userlists = JSON.stringify(state.mylists);
     let element = document.querySelector(`#${id}`);
@@ -109,24 +144,3 @@ function deleteItemFromList(list, tmdbId, id) {
 
 
 
-/*
-==============================
-    CREATE NEW LIST
-==============================
-*/
-
-function createNewList(list) {
-
-};
-
-
-
-/*
-==============================
-    ADD ITEM TO LIST
-==============================
-*/
-
-function addItemToList() {
-
-};

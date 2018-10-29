@@ -1,38 +1,9 @@
 
+
 /*
 ==================================================================
-    MAIN CONTENT
+    SHOW MAIN CONTENT RESULTS
 ==================================================================
-*/
-
-/*
-==============================
-    SHOW SEARCH RESULTS
-==============================
-*/
-
-function showSearchResults(results) {
-
-    if (!results.length) return;
-    
-    for (let i = 0; i < 6; i++) {
-        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
-            let title = results[i].title || results[i].name;
-            let date = results[i].release_date || results[i].first_air_date || '';
-            let mediaType = results[i].media_type || 'movie';
-
-            if (date)  date = date.slice(0,4);
-            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
-        };
-    };
-};
-
-
-
-/*
-==============================
-    SHOW CONTENT RESULTS
-==============================
 */
 
 function showContentResults(results) {
@@ -69,7 +40,7 @@ function showContentResults(results) {
                     <span class="title">${title}</span><span class="rating">${rating}</span>
                 </div>
                 <div>
-                    <p class="add-remove-from-collection" onclick="addRemoveFromCollection(${tmdbId})">Add/Remove from Collection</p>
+                    <p class="add-remove-from-collection" onclick="listEditor('addRemove',${tmdbId})">Add/Remove from Collection</p>
                 </div>
             </div>
         `;
@@ -78,11 +49,68 @@ function showContentResults(results) {
 };
 
 
-
 /*
 ==============================
-    SHOW FULL MEDIA CONTENT 
+    PAGINATION 
 ==============================
+*/
+
+function pagination(primary, secondary, totalPages, page) {
+    resetPagination();
+
+    // Indexes
+    let totalBoxes = 5;
+    let start;
+    let end;
+
+    // Index Logic
+    if (totalPages <= totalBoxes) {
+        start = 1;
+        end = totalPages;
+    } 
+    else {
+        if (page <= 3) {
+            start = 1;
+            end = 5
+        }
+        else if (page > 3 && page < (totalPages - 2)) {
+            start = page - 2;
+            end = page + 2;
+        }
+        else {
+            start = totalPages - 4;
+            end = totalPages;
+        };
+    };
+
+    // First Page Element 
+    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${1})">first</span>`;
+
+    
+    let i = 0;
+    while ((start + i) <= end) {
+        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${start + i})">${start + i}</span>`;
+        i++;
+    };
+
+    // Last page element
+    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${totalPages})">last</span>`;
+
+    // Highlight current page
+    const paginationBox = document.querySelectorAll('.pagination-box');
+    for (let i in paginationBox) {
+        if (page == paginationBox[i].innerText) {
+            paginationBox[i].style.backgroundColor = '#333';
+        };
+    };
+};
+
+
+
+/*
+==================================================================
+    SHOW FULL MEDIA CONTENT 
+==================================================================
 */
 
 function showFullMediaContent(mediaType, result) {
@@ -133,7 +161,7 @@ function showFullMediaContent(mediaType, result) {
                 <span>${rating}</span>
                 <span>${status}</span>
                 <span>${date}</span>
-                <span class="from-collection" onclick="addRemoveFromCollection(${tmdbId})">Add/Remove from Collection</span>
+                <span class="from-collection" onclick="listEditor('addRemove',${tmdbId})">Add/Remove from Collection</span>
             </div>
             <p id="media-tagline">${tagline}</p>
             <p id="media-overview">${overview}</p>
@@ -146,9 +174,9 @@ function showFullMediaContent(mediaType, result) {
 
 
 /*
-==============================
+==================================================================
     GET & SHOW USER LISTS
-==============================
+==================================================================
 */
 
 function showMyLists() {
@@ -200,65 +228,6 @@ function showMyLists() {
 };
 
 
-
-/*
-==============================
-    PAGINATION 
-==============================
-*/
-
-function pagination(primary, secondary, totalPages, page) {
-    resetPagination();
-
-    // Indexes
-    let totalBoxes = 5;
-    let start;
-    let end;
-
-    // Index Logic
-    if (totalPages <= totalBoxes) {
-        start = 1;
-        end = totalPages;
-    } 
-    else {
-        if (page <= 3) {
-            start = 1;
-            end = 5
-        }
-        else if (page > 3 && page < (totalPages - 2)) {
-            start = page - 2;
-            end = page + 2;
-        }
-        else {
-            start = totalPages - 4;
-            end = totalPages;
-        };
-    };
-
-    // First Page Element 
-    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${1})">first</span>`;
-
-    
-    let i = 0;
-    while ((start + i) <= end) {
-        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${start + i})">${start + i}</span>`;
-        i++;
-    };
-    
-    // Last page element
-    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${totalPages})">last</span>`;
-
-    // Highlight current page
-    const paginationBox = document.querySelectorAll('.pagination-box');
-    for (let i in paginationBox) {
-        if (page == paginationBox[i].innerText) {
-            paginationBox[i].style.backgroundColor = '#333';
-        };
-    };
-};
-
-
-
 /*
 ==============================
     SAMPLE LIST DATA
@@ -270,53 +239,47 @@ function showNoListsText() {
         <p class="list-heading">You don't have any created lists<br />
         <span class="show-sample-lists" onclick="sampleLists()">Click here</span> for sample lists</p>
         `;
-}
+};
 
 function sampleLists() {
     let userlists = localStorage.setItem('movielist:userlists', sampleData);
     parseLocalStorageLists();
     showMyLists();
     fadeIn('#user-lists');
-}
+};
 
 
 
 /*
 ==================================================================
-    ANIMATION FUNCTIONS
+    SHOW SEARCH RESULTS
 ==================================================================
 */
 
-function onMediaHover() {
-    const mediaItem = document.querySelectorAll('.media-item');
-    mediaItem.forEach(item => {
-        item.onmouseenter = () => item.children[2].style.display = 'inline-block';
-        item.onmouseleave = () => item.children[2].style.display = 'none';
-    });
-};
+function showSearchResults(results) {
 
-function fadeIn(id) {
-    const element = document.querySelector(`${id}`);
-    element.style.opacity = 0;
+    if (!results.length) return;
     
-    let opacity = 0;
-    const interval = setInterval(() => {
-        opacity += .05; 
-        element.style.opacity = opacity;
-        if (opacity >= 1) clearInterval(interval);
-    }, 15);
-};
+    for (let i = 0; i < 6; i++) {
+        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
+            let title = results[i].title || results[i].name;
+            let date = results[i].release_date || results[i].first_air_date || '';
+            let mediaType = results[i].media_type || 'movie';
 
-function fadeOut(id) {
-    const element = document.querySelector(`${id}`);
-    element.style.opacity = 1;
-    
-    let opacity = 1;
-    const interval = setInterval(() => {
-        opacity -= .05; 
-        element.style.opacity = opacity;
-        if (opacity <= 0) {
-            clearInterval(interval);
+            if (date)  date = date.slice(0,4);
+            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
         };
-    }, 15);
-}
+    };
+};
+
+
+
+
+
+
+
+
+
+
+
+

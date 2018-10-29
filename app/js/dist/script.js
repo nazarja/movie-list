@@ -18,6 +18,9 @@ const mainPagination = document.querySelector('#main-pagination');
 const fullMediaContent = document.querySelector('#full-media-content');
 const myLists = document.querySelector('#main-mylists');
 const userLists = document.querySelector('#user-lists');
+const listEditorDiv = document.querySelector('#list-editor-div');
+const newListEditor = document.querySelector('#new-list-editor');
+const newListInput = document.querySelector('#new-list-input');
 
 
 let state = {
@@ -36,9 +39,27 @@ let state = {
 
 function setEventListeners() {
 
+
     /*
     ==============================
-        MENU BTN CLICK
+    NAV ITEM CLICK
+    ==============================
+    */
+
+    navItem.forEach(navitem => {
+        navitem.addEventListener('click', () => {
+            nav(navitem.dataset.nav);
+            
+            if (window.innerWidth < 800) {
+                menuBtn.click();
+            }
+            resetSearchResults();
+        });
+    });
+
+    /*
+    ==============================
+        MENU TOGGLE CLICK
     ==============================
     */
 
@@ -53,25 +74,6 @@ function setEventListeners() {
             
         }
         resetSearchResults();
-    });
-
-
-
-    /*
-    ==============================
-    NAV ITEM CLICK
-    ==============================
-    */
-
-    navItem.forEach(navitem => {
-        navitem.addEventListener('click', () => {
-            nav(navitem.dataset.nav);
-            
-            if (window.innerWidth < 800) {
-                menuBtn.click();
-                }
-                resetSearchResults();
-            });
     });
 
     
@@ -159,70 +161,74 @@ function resetUserLists() {
 
 
 
-
 /*
 ==================================================================
-    NAVIGATION FUNCTIONS
+    ANIMATION FUNCTIONS
 ==================================================================
 */
 
 /*
 ==============================
-    MANAGE ACTIVE CLASS
+    FADE IN ELEMENT BY ID
 ==============================
 */
 
-// Iterate over nav items and remove active class
-function manageActiveClass(primary, secondary) {
-    let activeParent = document.querySelectorAll('.nav-parent');
-    let activeChild = document.querySelectorAll('.nav-child');
+function fadeIn(id) {
+    const element = document.querySelector(`${id}`);
+    element.style.opacity = 0;
+    
+    let opacity = 0;
+    const interval = setInterval(() => {
+        opacity += .05; 
+        element.style.opacity = opacity;
+        if (opacity >= 1) clearInterval(interval);
+    }, 15);
+};
 
-    activeParent.forEach(parent => {
-        parent.classList.remove('active-parent');
-        if (parent.dataset.nav.includes(primary)) {
-            parent.classList.add('active-parent');
+
+/*
+==============================
+    FADE OUT ELEMENT BY ID
+==============================
+*/
+
+function fadeOut(id) {
+    const element = document.querySelector(`${id}`);
+    element.style.opacity = 1;
+    
+    let opacity = 1;
+    const interval = setInterval(() => {
+        opacity -= .05; 
+        element.style.opacity = opacity;
+        if (opacity <= 0) {
+            clearInterval(interval);
         };
-    });
+    }, 15);
+};
 
-    activeChild.forEach(child => {
-        child.classList.remove('active-child');
-        if (child.dataset.nav.includes(secondary)) {
-            child.classList.add('active-child');
-        };
-    });
 
+/*
+==============================
+    HOVER POSTER BOX
+==============================
+*/
+function onMediaHover() {
+    const mediaItem = document.querySelectorAll('.media-item');
+    mediaItem.forEach(item => {
+        item.onmouseenter = () => item.children[2].style.display = 'inline-block';
+        item.onmouseleave = () => item.children[2].style.display = 'none';
+    });
 };
 
 
 
-/*
-==============================
-    MANAGE SECONDARY NAV
-==============================
-*/
-
-function manageSecondaryNav(primary, secondary) {
-    if (secondary == 'null') {
-        secondaryNav.innerHTML = ``;
-        return;
-    };
-
-    secondaryNav.innerHTML = `<ul>`
-    for (let i of state[primary]) {
-        let secondary = i.toLowerCase().replace(/\s/g, '_');
-        secondaryNav.innerHTML += `
-            <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">${i}</li>
-        `;
-    };
-    secondaryNav.innerHTML += `</ul>`;
-};
 
 
 
 /*
-==============================
-    MAIN NAIGATION FUNCTION
-==============================
+==================================================================
+    MAIN NAIGATION FUNCTIONS
+==================================================================
 */
 
 function nav(param) {
@@ -257,11 +263,62 @@ function nav(param) {
 };
 
 
+/*
+==============================
+    MANAGE SECONDARY NAV
+==============================
+*/
+
+function manageSecondaryNav(primary, secondary) {
+    if (secondary == 'null') {
+        secondaryNav.innerHTML = ``;
+        return;
+    };
+
+    secondaryNav.innerHTML = `<ul>`
+    for (let i of state[primary]) {
+        let secondary = i.toLowerCase().replace(/\s/g, '_');
+        secondaryNav.innerHTML += `
+            <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">${i}</li>
+        `;
+    };
+    secondaryNav.innerHTML += `</ul>`;
+};
+
+
 
 /*
 ==============================
-    SEARCH INPUT FUNCTION
+    MANAGE ACTIVE CLASS
 ==============================
+*/
+
+// Iterate over nav items and remove active class
+function manageActiveClass(primary, secondary) {
+    let activeParent = document.querySelectorAll('.nav-parent');
+    let activeChild = document.querySelectorAll('.nav-child');
+
+    activeParent.forEach(parent => {
+        parent.classList.remove('active-parent');
+        if (parent.dataset.nav.includes(primary)) {
+            parent.classList.add('active-parent');
+        };
+    });
+
+    activeChild.forEach(child => {
+        child.classList.remove('active-child');
+        if (child.dataset.nav.includes(secondary)) {
+            child.classList.add('active-child');
+        };
+    });
+
+};
+
+
+/*
+==================================================================
+    SEARCH INPUT FUNCTION
+==================================================================
 */
 
 function getSearchInput() {
@@ -287,6 +344,10 @@ function getSearchInput() {
 
 
 
+
+
+
+
 /*
 ==================================================================
     LOCAL STORAGE FUNCTIONS
@@ -295,7 +356,7 @@ function getSearchInput() {
 
 /*
 ==============================
-    CHECK/GET USER LISTS
+    CHECK / GET USER LISTS
 ==============================
 */
 
@@ -342,10 +403,45 @@ function checkIfInCollection(tmdbId) {
 
 
 /*
+==============================
+    OPEN LIST EDITOR
+==============================
+*/
+
+function listEditor() {
+    console.log('Create New List');
+};
+
+
+/*
 ==================================================================
     CRUD FUNCTIONS
 ==================================================================
 */
+
+/*
+==============================
+    CREATE NEW LIST
+==============================
+*/
+
+function createNewList() {
+
+};
+
+
+
+/*
+==============================
+    ADD ITEM TO LIST
+==============================
+*/
+
+function addItemToList() {
+
+};
+
+
 
 /*
 ==============================
@@ -368,7 +464,7 @@ function deleteList(list, id) {
 
     if (!Object.keys(state.mylists).length) {
         showNoListsText();
-    }
+    };
 };
 
 
@@ -384,8 +480,8 @@ function deleteItemFromList(list, tmdbId, id) {
     for(let i in state.mylists[list]) {
         if (state.mylists[list][i].id == tmdbId) {
             state.mylists[list].splice(i, 1);
-        }
-    }
+        };
+    };
 
     let userlists = JSON.stringify(state.mylists);
     let element = document.querySelector(`#${id}`);
@@ -397,62 +493,13 @@ function deleteItemFromList(list, tmdbId, id) {
 
 
 
-/*
-==============================
-    CREATE NEW LIST
-==============================
-*/
-
-function createNewList(list) {
-
-};
 
 
-
-/*
-==============================
-    ADD ITEM TO LIST
-==============================
-*/
-
-function addItemToList() {
-
-};
 
 /*
 ==================================================================
-    MAIN CONTENT
+    SHOW MAIN CONTENT RESULTS
 ==================================================================
-*/
-
-/*
-==============================
-    SHOW SEARCH RESULTS
-==============================
-*/
-
-function showSearchResults(results) {
-
-    if (!results.length) return;
-    
-    for (let i = 0; i < 6; i++) {
-        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
-            let title = results[i].title || results[i].name;
-            let date = results[i].release_date || results[i].first_air_date || '';
-            let mediaType = results[i].media_type || 'movie';
-
-            if (date)  date = date.slice(0,4);
-            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
-        };
-    };
-};
-
-
-
-/*
-==============================
-    SHOW CONTENT RESULTS
-==============================
 */
 
 function showContentResults(results) {
@@ -489,7 +536,7 @@ function showContentResults(results) {
                     <span class="title">${title}</span><span class="rating">${rating}</span>
                 </div>
                 <div>
-                    <p class="add-remove-from-collection" onclick="addRemoveFromCollection(${tmdbId})">Add/Remove from Collection</p>
+                    <p class="add-remove-from-collection" onclick="listEditor('addRemove',${tmdbId})">Add/Remove from Collection</p>
                 </div>
             </div>
         `;
@@ -498,11 +545,68 @@ function showContentResults(results) {
 };
 
 
-
 /*
 ==============================
-    SHOW FULL MEDIA CONTENT 
+    PAGINATION 
 ==============================
+*/
+
+function pagination(primary, secondary, totalPages, page) {
+    resetPagination();
+
+    // Indexes
+    let totalBoxes = 5;
+    let start;
+    let end;
+
+    // Index Logic
+    if (totalPages <= totalBoxes) {
+        start = 1;
+        end = totalPages;
+    } 
+    else {
+        if (page <= 3) {
+            start = 1;
+            end = 5
+        }
+        else if (page > 3 && page < (totalPages - 2)) {
+            start = page - 2;
+            end = page + 2;
+        }
+        else {
+            start = totalPages - 4;
+            end = totalPages;
+        };
+    };
+
+    // First Page Element 
+    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${1})">first</span>`;
+
+    
+    let i = 0;
+    while ((start + i) <= end) {
+        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${start + i})">${start + i}</span>`;
+        i++;
+    };
+
+    // Last page element
+    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${totalPages})">last</span>`;
+
+    // Highlight current page
+    const paginationBox = document.querySelectorAll('.pagination-box');
+    for (let i in paginationBox) {
+        if (page == paginationBox[i].innerText) {
+            paginationBox[i].style.backgroundColor = '#333';
+        };
+    };
+};
+
+
+
+/*
+==================================================================
+    SHOW FULL MEDIA CONTENT 
+==================================================================
 */
 
 function showFullMediaContent(mediaType, result) {
@@ -553,7 +657,7 @@ function showFullMediaContent(mediaType, result) {
                 <span>${rating}</span>
                 <span>${status}</span>
                 <span>${date}</span>
-                <span class="from-collection" onclick="addRemoveFromCollection(${tmdbId})">Add/Remove from Collection</span>
+                <span class="from-collection" onclick="listEditor('addRemove',${tmdbId})">Add/Remove from Collection</span>
             </div>
             <p id="media-tagline">${tagline}</p>
             <p id="media-overview">${overview}</p>
@@ -566,9 +670,9 @@ function showFullMediaContent(mediaType, result) {
 
 
 /*
-==============================
+==================================================================
     GET & SHOW USER LISTS
-==============================
+==================================================================
 */
 
 function showMyLists() {
@@ -620,65 +724,6 @@ function showMyLists() {
 };
 
 
-
-/*
-==============================
-    PAGINATION 
-==============================
-*/
-
-function pagination(primary, secondary, totalPages, page) {
-    resetPagination();
-
-    // Indexes
-    let totalBoxes = 5;
-    let start;
-    let end;
-
-    // Index Logic
-    if (totalPages <= totalBoxes) {
-        start = 1;
-        end = totalPages;
-    } 
-    else {
-        if (page <= 3) {
-            start = 1;
-            end = 5
-        }
-        else if (page > 3 && page < (totalPages - 2)) {
-            start = page - 2;
-            end = page + 2;
-        }
-        else {
-            start = totalPages - 4;
-            end = totalPages;
-        };
-    };
-
-    // First Page Element 
-    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${1})">first</span>`;
-
-    
-    let i = 0;
-    while ((start + i) <= end) {
-        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${start + i})">${start + i}</span>`;
-        i++;
-    };
-    
-    // Last page element
-    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${totalPages})">last</span>`;
-
-    // Highlight current page
-    const paginationBox = document.querySelectorAll('.pagination-box');
-    for (let i in paginationBox) {
-        if (page == paginationBox[i].innerText) {
-            paginationBox[i].style.backgroundColor = '#333';
-        };
-    };
-};
-
-
-
 /*
 ==============================
     SAMPLE LIST DATA
@@ -690,56 +735,50 @@ function showNoListsText() {
         <p class="list-heading">You don't have any created lists<br />
         <span class="show-sample-lists" onclick="sampleLists()">Click here</span> for sample lists</p>
         `;
-}
+};
 
 function sampleLists() {
     let userlists = localStorage.setItem('movielist:userlists', sampleData);
     parseLocalStorageLists();
     showMyLists();
     fadeIn('#user-lists');
-}
+};
 
 
 
 /*
 ==================================================================
-    ANIMATION FUNCTIONS
+    SHOW SEARCH RESULTS
 ==================================================================
 */
 
-function onMediaHover() {
-    const mediaItem = document.querySelectorAll('.media-item');
-    mediaItem.forEach(item => {
-        item.onmouseenter = () => item.children[2].style.display = 'inline-block';
-        item.onmouseleave = () => item.children[2].style.display = 'none';
-    });
-};
+function showSearchResults(results) {
 
-function fadeIn(id) {
-    const element = document.querySelector(`${id}`);
-    element.style.opacity = 0;
+    if (!results.length) return;
     
-    let opacity = 0;
-    const interval = setInterval(() => {
-        opacity += .05; 
-        element.style.opacity = opacity;
-        if (opacity >= 1) clearInterval(interval);
-    }, 15);
-};
+    for (let i = 0; i < 6; i++) {
+        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
+            let title = results[i].title || results[i].name;
+            let date = results[i].release_date || results[i].first_air_date || '';
+            let mediaType = results[i].media_type || 'movie';
 
-function fadeOut(id) {
-    const element = document.querySelector(`${id}`);
-    element.style.opacity = 1;
-    
-    let opacity = 1;
-    const interval = setInterval(() => {
-        opacity -= .05; 
-        element.style.opacity = opacity;
-        if (opacity <= 0) {
-            clearInterval(interval);
+            if (date)  date = date.slice(0,4);
+            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
         };
-    }, 15);
-}
+    };
+};
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /*
@@ -767,10 +806,9 @@ let url;
 let data;
 
 
-
 /*
 ==============================
-    FETCH TMDB DATA
+    FETCH MAIN TMDB DATA
 ==============================
 */
 
@@ -795,34 +833,6 @@ function fetchTMDbData(primary, secondary, page = 1) {
         console.log(err);
     });
 };
-
-
-
-/*
-==============================
-    FETCH SEARCH DATA
-==============================
-*/
-
-function getTMDbSearchData(searchQuery) {
-    fetch(`${SEARCH_URL}${API_KEY}&language=en-US&query=${searchQuery}&page=1&include_adult=false`, 
-        {
-            headers: new Headers ({ 'Accept': 'application/json'})
-        })
-    .then(response => {
-        return response.text();
-    })
-    .then(text => {
-        data = JSON.parse(text);
-        resetSearchResults();
-        showSearchResults(data.results);
-    })
-    .catch(err => {
-         // TODO: 404 Error
-        console.log(err);
-    });
-};
-
 
 
 /*
@@ -854,10 +864,37 @@ function fetchMediaData(mediaType,tmdbId) {
 };
 
 
+/*
+==============================
+    FETCH SEARCH DATA
+==============================
+*/
+
+function getTMDbSearchData(searchQuery) {
+    fetch(`${SEARCH_URL}${API_KEY}&language=en-US&query=${searchQuery}&page=1&include_adult=false`, 
+        {
+            headers: new Headers ({ 'Accept': 'application/json'})
+        })
+    .then(response => {
+        return response.text();
+    })
+    .then(text => {
+        data = JSON.parse(text);
+        resetSearchResults();
+        showSearchResults(data.results);
+    })
+    .catch(err => {
+         // TODO: 404 Error
+        console.log(err);
+    });
+};
+
+
+
 
 /*
 ==================================================================
-    SAMPLE DATA FOR DEVELOPMENT PURPOSES
+    SAMPLE LIST DATA
 ==================================================================
 */
 
@@ -1237,7 +1274,7 @@ const mylists = {
     ]
   };
 
-  // Convert to JSON to imitate real api reponse
+  // CONVERT TO JSON 
   let sampleData = JSON.stringify(mylists);
 
 /*
@@ -1245,8 +1282,6 @@ const mylists = {
     INIT APP
 ==================================================================
 */
-
-
 
 function init() {
     parseLocalStorageLists();

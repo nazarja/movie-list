@@ -18,6 +18,9 @@ const mainPagination = document.querySelector('#main-pagination');
 const fullMediaContent = document.querySelector('#full-media-content');
 const myLists = document.querySelector('#main-mylists');
 const userLists = document.querySelector('#user-lists');
+const listEditorDiv = document.querySelector('#list-editor-div');
+const newListEditor = document.querySelector('#new-list-editor');
+const newListInput = document.querySelector('#new-list-input');
 
 
 let state = {
@@ -36,9 +39,27 @@ let state = {
 
 function setEventListeners() {
 
+
     /*
     ==============================
-        MENU BTN CLICK
+    NAV ITEM CLICK
+    ==============================
+    */
+
+    navItem.forEach(navitem => {
+        navitem.addEventListener('click', () => {
+            nav(navitem.dataset.nav);
+            
+            if (window.innerWidth < 800) {
+                menuBtn.click();
+            }
+            resetSearchResults();
+        });
+    });
+
+    /*
+    ==============================
+        MENU TOGGLE CLICK
     ==============================
     */
 
@@ -53,25 +74,6 @@ function setEventListeners() {
             
         }
         resetSearchResults();
-    });
-
-
-
-    /*
-    ==============================
-    NAV ITEM CLICK
-    ==============================
-    */
-
-    navItem.forEach(navitem => {
-        navitem.addEventListener('click', () => {
-            nav(navitem.dataset.nav);
-            
-            if (window.innerWidth < 800) {
-                menuBtn.click();
-                }
-                resetSearchResults();
-            });
     });
 
     
@@ -154,6 +156,68 @@ function resetMyLists() {
 
 function resetUserLists() {
     userLists.innerHTML = '';
+};
+
+
+
+
+/*
+==================================================================
+    ANIMATION FUNCTIONS
+==================================================================
+*/
+
+/*
+==============================
+    FADE IN ELEMENT BY ID
+==============================
+*/
+
+function fadeIn(id) {
+    const element = document.querySelector(`${id}`);
+    element.style.opacity = 0;
+    
+    let opacity = 0;
+    const interval = setInterval(() => {
+        opacity += .05; 
+        element.style.opacity = opacity;
+        if (opacity >= 1) clearInterval(interval);
+    }, 15);
+};
+
+
+/*
+==============================
+    FADE OUT ELEMENT BY ID
+==============================
+*/
+
+function fadeOut(id) {
+    const element = document.querySelector(`${id}`);
+    element.style.opacity = 1;
+    
+    let opacity = 1;
+    const interval = setInterval(() => {
+        opacity -= .05; 
+        element.style.opacity = opacity;
+        if (opacity <= 0) {
+            clearInterval(interval);
+        };
+    }, 15);
+};
+
+
+/*
+==============================
+    HOVER POSTER BOX
+==============================
+*/
+function onMediaHover() {
+    const mediaItem = document.querySelectorAll('.media-item');
+    mediaItem.forEach(item => {
+        item.onmouseenter = () => item.children[2].style.display = 'inline-block';
+        item.onmouseleave = () => item.children[2].style.display = 'none';
+    });
 };
 
 

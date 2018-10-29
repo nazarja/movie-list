@@ -12,7 +12,7 @@
 
     
     <header>
-        <!-- Topbar - Logo & Nav Btn -->
+        <!-- TOPBAR, LOGO & MOBILE MENU TOGGLE -->
         <div id="topbar">
             <a href="index.html" id="logo">
                 <i class="material-icons" id="movie-icon">movie_filter</i>
@@ -24,14 +24,14 @@
             <i tabindex="0" aria-label="menu button" class="material-icons" id="menu-btn">menu</i>
         </div>
 
-        <!-- Search Input & Search Results -->
+        <!-- SEARCH INPUT & SEARCH RESULTS -->
         <div id="search">
             <input id="search-input" type="text" placeholder="Search TMDb for Movies & TV Shows ..." autocomplete="off" maxlength="100">
             <i tabindex="0"class="material-icons search-clear">close</i>
             <div id="search-results"></div>
         </div>
 
-        <!-- Primary & Secondry Nav -->
+        <!-- PRIMARY & SECONDRY NAVIGATION -->
         <nav>
             <div id="secondry-nav"></div>
             <div id="primary-nav">
@@ -46,21 +46,35 @@
     </header>
 
 
-    <!-- Main Content Container -->
-    <!-- Content will dynamically change based on navigation -->
+    <!-- CONTENT CHANGES DYNAMICALLY BASED ON NAVIGATION -->
     <main id="main">
+
+        <!-- MAIN CONTENT -->
         <div id="main-content"></div>
         <div id="main-pagination"></div>
+
+        <!-- FULL MEDIA CONTENT -->
         <div id="full-media-content"></div>
+
+        <!-- MY LISTS -->
         <div id="main-mylists">
             <h1 class="list-heading">My Lists</h1>
-            <p class="create-new-list" onclick="createNewList()">Create New List<i class="material-icons new-list-icon">fiber_new</i></p>
+            <p class="create-new-list" onclick="listEditor('newList')">Create New List<i class="material-icons new-list-icon">fiber_new</i></p>
             <hr />
             <div id="user-lists"></div>
         </div>
+
+        <!-- LIST EDITOR -->
+        <div id="list-editor-div">
+            <div id="new-list-editor">
+                <p>Create a new list</p>
+                <input type="text" id="new-list-input">
+            </div>
+            <div id="add-to-list"></div>
+        </div>
     </main>
     
-    <!-- JavaScript -->
+    <!-- JAVASCRIPT -->
     <script src="app/js/dist/script.js"></script>
 </body>
 </html>
