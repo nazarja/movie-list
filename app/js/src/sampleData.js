@@ -213,7 +213,7 @@ const mylists = {
         "release_date": "2018-08-02"
       }
     ],
-    tvshows: [
+    tv_shows: [
       {
         "original_name": "The Flash",
         "genre_ids": [
@@ -377,6 +377,28 @@ const mylists = {
         "vote_average": 7.1,
         "overview": "Set in Springfield, the average American town, the show focuses on the antics and everyday adventures of the Simpson family; Homer, Marge, Bart, Lisa and Maggie, as well as a virtual cast of thousands. Since the beginning, the series has been a pop culture icon, attracting hundreds of celebrities to guest star. The show has also made name for itself in its fearless satirical take on politics, media and American life in general.",
         "poster_path": "/yTZQkSsxUFJZJe67IenRM0AEklc.jpg"
+      },
+      {
+        "vote_count": 1497,
+        "id": 335983,
+        "video": false,
+        "vote_average": 6.6,
+        "title": "Venom",
+        "popularity": 401.758,
+        "poster_path": "/2uNW4WbgBXL25BAbXGLnLqX71Sw.jpg",
+        "original_language": "en",
+        "original_title": "Venom",
+        "genre_ids": [
+          878,
+          28,
+          80,
+          28,
+          27
+        ],
+        "backdrop_path": "/VuukZLgaCrho2Ar8Scl9HtV3yD.jpg",
+        "adult": false,
+        "overview": "When Eddie Brock acquires the powers of a symbiote, he will have to release his alter-ego \"Venom\" to save his life.",
+        "release_date": "2018-10-03"
       }
     ]
   };

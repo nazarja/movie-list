@@ -23,7 +23,8 @@ const userLists = document.querySelector('#user-lists');
 let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
-    mylists : {}
+    mylists : {},
+    media: ''
 };
 
 
@@ -156,8 +157,6 @@ function resetUserLists() {
 };
 
 
-
-
 /*
 ==================================================================
     ANIMATION FUNCTIONS
@@ -218,21 +217,7 @@ function onMediaHover() {
 };
 
 
-/*
-==============================
-    OPEN/CLOSE ADD NEW LIST/ITEM
-==============================
-*/
 
-function openAddNewList(id) {
-    console.log('openList');
-    document.querySelector(id).style.visibility = 'visible';
-};
-
-function closeAddNewList(id) {
-    console.log('closeList');
-    document.querySelector(id).style.visibility = 'hidden';
-}
 
 
 
@@ -396,24 +381,20 @@ function parseLocalStorageLists() {
 
 function checkIfInCollection(tmdbId) {
 
-    let arr= [[],[]];
     if (Object.keys(state.mylists).length) {
-
-        // Iterate over lists
         for(let lists in state.mylists) {
             let list = state.mylists[lists];
-            arr[0].push(lists);
-
             for (let i = 0; i < list.length; i++) {
                 if (tmdbId == list[i].id) {
-                    arr[1].push(true, lists);
-                    break;
+                    return true;
                 };
-            } ;
+            };
         };
-    };
-    return arr;
+        return false;
+    }; 
+    return false;
 };
+
 
 
 
@@ -423,13 +404,91 @@ function checkIfInCollection(tmdbId) {
 ==================================================================
 */
 
+
+/*
+==============================
+    UPDATE LIST 
+==============================
+*/
+
+
+function updateList(tmdbId, id) {
+
+    // Get element
+    let element = document.querySelector(id);
+    element.innerHTML = '';
+    element.style.visibility = 'visible';
+
+    // Check if any lists exist
+    // If not, return an option to add a list
+    if (!Object.keys(state.mylists).length) {
+        element.innerHTML = `
+            <p onclick="closeAddNewList('${id}')" class="close-add-item">
+                Close
+                <i class="material-icons close-icon">close</i>
+            </p>
+            <p>You don't have any created lists</p>
+        `;
+    }
+
+    // If lists exist - return lists
+    else {
+        let isInList = [];
+        
+        for(let lists in state.mylists) {
+            // Get list key
+            let foundItem;
+            let list = state.mylists[lists];
+
+            for (let i = 0; i < list.length; i++) {
+                if (tmdbId == list[i].id) {
+                    isInList.push([true, lists]);
+                    foundItem = true;
+                };
+            };
+
+            if (!foundItem) {
+                isInList.push([false, lists]);
+            }; 
+        };
+
+        
+        // Apply Close Button
+        element.innerHTML += `
+            <p onclick="closeAddNewList('${id}')" class="close-add-item">
+                Close
+                <i class="material-icons close-icon">close</i>
+            </p>
+        `;
+
+        isInList.forEach(item => {
+            if (item[0]) {
+                element.innerHTML += `
+                    <p onclick="deleteItemFromList('${item[1]}', '${tmdbId}', '${id}', true)">
+                        ${item[1]}
+                        <i class="material-icons remove-circle-icon">remove_circle</i>
+                    </p>
+                `;
+            }
+            else {
+                element.innerHTML += `
+                    <p onclick="addItemToList('${item[1]}', '${tmdbId}', '${id}')">
+                        ${item[1]}
+                        <i class="material-icons add-circle-icon">add_circle</i>
+                    </p>
+                `;
+            }
+        });
+    }; 
+};
+
 /*
 ==============================
     CREATE NEW LIST
 ==============================
 */
 
-function addNewList(divId,inputId) {
+function addNewList(divId, inputId) {
 
     // Get input - return if empty
     let input = document.querySelector(inputId);
@@ -447,16 +506,18 @@ function addNewList(divId,inputId) {
 };
 
 
-
 /*
 ==============================
-    ADD ITEM TO LIST
+    ADD ITEM TO LIST 
 ==============================
 */
 
-function addItemToList() {
-
-};
+function addItemToList(list, tmdbId, id) {
+    state.mylists[list].push(state.media);
+    let userlists  =JSON.stringify(state.mylists);
+    localStorage.setItem('movielist:userlists', userlists);
+    updateList(tmdbId, id);
+}
 
 
 
@@ -472,12 +533,14 @@ function deleteList(list, id) {
     if (confirmDelete) {
         delete state.mylists[list];
         let userlists = JSON.stringify(state.mylists);
-        let element = document.querySelector(`#${id}`);
         localStorage.setItem('movielist:userlists', userlists);
-
-        fadeOut(`#${id}`);
-        setTimeout(() => element.remove(), 200);
     };
+
+    if (id) {
+        let element = document.querySelector(id);
+        fadeOut(id);
+        setTimeout(() => element.remove(), 200);
+    }
 
     if (!Object.keys(state.mylists).length) {
         showNoListsText();
@@ -492,25 +555,53 @@ function deleteList(list, id) {
 ==============================
 */
 
-function deleteItemFromList(list, tmdbId, id) {
+function deleteItemFromList(list, tmdbId, id, noRemove) {
 
-    for(let i in state.mylists[list]) {
+    for (let i in state.mylists[list]) {
         if (state.mylists[list][i].id == tmdbId) {
             state.mylists[list].splice(i, 1);
+            let userlists = JSON.stringify(state.mylists);
+            localStorage.setItem('movielist:userlists', userlists);
+            break;
         };
     };
 
-    let userlists = JSON.stringify(state.mylists);
-    let element = document.querySelector(`#${id}`);
-    localStorage.setItem('movielist:userlists', userlists);
+    if (id && !noRemove) {
+        let element = document.querySelector(id);
+        fadeOut(id);
+        setTimeout(() => element.remove(), 200);
+    };
 
-    fadeOut(`#${id}`);
-    setTimeout(() => element.remove(), 200);
-}
+    if (noRemove) {
+        updateList(tmdbId, id);
+    }
+};
 
 
 
 
+
+/*
+==================================================================
+    SHOW SEARCH RESULTS
+==================================================================
+*/
+
+function showSearchResults(results) {
+
+    if (!results.length) return;
+    
+    for (let i = 0; i < 6; i++) {
+        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
+            let title = results[i].title || results[i].name;
+            let date = results[i].release_date || results[i].first_air_date || '';
+            let mediaType = results[i].media_type || 'movie';
+
+            if (date)  date = date.slice(0,4);
+            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
+        };
+    };
+};
 
 
 /*
@@ -526,7 +617,7 @@ function showContentResults(results) {
     resetMediaResults();
     resetMyLists();
 
-    results.map(result => {
+    results.map((result, i) => {
         const tmdbId = result.id;
         const title = result.title || result.name || 'Unknown';
         const rating = result.vote_average || '0';
@@ -539,27 +630,158 @@ function showContentResults(results) {
 
 
         // CHECK IF IN COLLECTION
-        let inCollectionColor = '#222';
-        let collections = checkIfInCollection(tmdbId);
-        if (collections[1][0]) inCollectionColor = 'crimson';
+        let isInCollectionColor = '#222';
+        let isInCollection = checkIfInCollection(tmdbId);
+        if (isInCollection) isInCollectionColor = 'crimson';
 
 
         mainContent.innerHTML += `
             <div class="media-item">
-                <i class="material-icons is-in-collection" style="color: ${inCollectionColor}">collections</i>
+                <i class="material-icons is-in-collection" style="color: ${isInCollectionColor}">collections</i>
                 <img class="media-poster" src="${poster}" alt="${title}" onclick="fetchMediaData('${mediaType}',${tmdbId})">
                 <span class="more-information" onclick="fetchMediaData('${mediaType}',${tmdbId})">More Information</span>
                 <div>
                     <span class="title">${title}</span><span class="rating">${rating}</span>
                 </div>
                 <div>
-                    <p class="add-remove-from-collection" onclick="listEditor('addRemove',${tmdbId})">Add/Remove from Collection</p>
+                    <p class="add-remove-from-collection" onclick="updateList(${tmdbId}, '#update-list-${i}')">Add/Remove from Collection</p>
+                    
+                    <!-- ADD REMOVE ITEM FROM COLLECTION -->
+                    <div id="update-list-${i}"></div>
                 </div>
             </div>
         `;
     });
     onMediaHover();
 };
+
+
+
+/*
+==================================================================
+    SHOW FULL MEDIA CONTENT 
+==================================================================
+*/
+
+function showFullMediaContent(mediaType, result) {
+
+    const tmdbId = result.id || '0';
+    const title = result.title || result.name || 'Unknown';
+    const tagline = result.tagline || `NO. SEASONS: ${result.number_of_seasons}  ~  NO. EPISODES: ${result.number_of_episodes}` || '';
+    const overview = result.overview || '';
+    const rating = result.vote_average || '0';
+    let date = result.release_date || result.first_air_date || '';
+    let status = result.status || '';
+    let backdrop = BACKDROP + result.backdrop_path;
+    let poster = POSTER + result.poster_path;
+    let trailer = []; 
+
+    if (date) date = date.split('-').reverse().join('-');
+    if (result.backdrop_path == null) backdrop = DEFAULT_BACKDROP;
+    if (result.poster_path == null) poster = DEFAULT_POSTER;
+
+    // Get Trailer and check for undefined
+    if (result.videos.results.length != 0) {
+        trailer = result.videos.results.map(video => {
+            if (video.type == 'Trailer') {
+                return `https://www.youtube.com/watch?v=${video.key}`;
+            }
+        }).filter(video => {
+            if (video != 'undefined') {
+                return video;
+            }
+        });
+    } 
+    // If no trailer exists - search youtube
+    else {
+        trailer[0] = `https://www.youtube.com/results?search_query=${title}`;
+    }
+
+
+    fullMediaContent.innerHTML = `
+        <p class="content-title">MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
+        <div id="media-showcase" style="background-image: url('${backdrop}')">
+            <a class="download-fanart" href="${backdrop}"target="_blank">DOWNLOAD FANART<br /><i class="material-icons download-icon">cloud_download</i></a>
+            <h1 id="media-title">${title}</h1>
+        </div>
+        <div id="media-details">
+            <img width="140" id="media-poster" src="${poster}" alt="${title}">
+            <div id="media-details-bar">
+                <a href="${trailer[0]}" target=_blank">Trailer</a>
+                <span>${rating}</span>
+                <span>${status}</span>
+                <span>${date}</span>
+                <span class="from-collection" onclick="updateList(${tmdbId},'#from-full-media-collection')">Add/Remove from Collection</span>
+
+                <!-- ADD REMOVE ITEM FROM COLLECTION -->
+                <div id="from-full-media-collection"></div>
+
+            </div>
+            <p id="media-tagline">${tagline}</p>
+            <p id="media-overview">${overview}</p>
+        </div>
+    `;
+    fullMediaContent.style.display = 'block';
+    state.media = result;
+    fadeIn('#full-media-content');
+};
+
+
+
+/*
+==================================================================
+    GET & SHOW USER LISTS
+==================================================================
+*/
+
+function showMyLists() {
+    resetUserLists();
+    myLists.style.display = 'block';
+
+    if (Object.keys(state.mylists).length !== 0) {
+         // Iterate over lists
+         let i = 1;
+         for(let lists in state.mylists) {
+            let list = state.mylists[lists];
+
+            let userList = `
+            <div class="userlist"  id="list-${lists}-${i}">
+                <div class="list-titlebar">
+                    <h2>${lists}</h2>
+                    <p class="delete-list" onclick="deleteList('${lists}', '#list-${lists}-${i}')">Delete List<i class="material-icons delete-list-icon">delete</i></p>
+                </div>
+            `;
+
+            for (let i = 0; i < list.length; i++) {
+                const tmdbId = list[i].id;
+                const title = list[i].title || list[i].name || 'Unknown';
+                const rating = list[i].vote_average || '0';
+
+                let date = list[i].release_date || list[i].first_air_date || '';
+                if (date)  date = date.slice(0,4);
+
+                let mediaType;
+                if (list[i].hasOwnProperty('adult')) mediaType = 'movie';
+                else  mediaType = 'tv'; 
+
+                userList += `
+                    <div class="list-item" id="list-item-${lists}-${i}">
+                        <div onclick="deleteItemFromList('${lists}','${tmdbId}','#list-item-${lists}-${i}')"><i class="list-item-delete material-icons delete-list-icon">delete</i></div>
+                        <div class="list-item-rating">${rating}</div>
+                        <div class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})"><span class="list-title">${title}</span>  (${date})</div>
+                    </div>
+                `;
+            } ;
+            userList += `</div>`;
+            userLists.innerHTML += userList;
+            i++; 
+        };
+    }
+    else {
+        showNoListsText();
+    }
+};
+
 
 
 /*
@@ -619,128 +841,6 @@ function pagination(primary, secondary, totalPages, page) {
 };
 
 
-
-/*
-==================================================================
-    SHOW FULL MEDIA CONTENT 
-==================================================================
-*/
-
-function showFullMediaContent(mediaType, result) {
-
-    const tmdbId = result.id || '0';
-    const title = result.title || result.name || 'Unknown';
-    const tagline = result.tagline || `NO. SEASONS: ${result.number_of_seasons}  ~  NO. EPISODES: ${result.number_of_episodes}` || '';
-    const overview = result.overview || '';
-    const rating = result.vote_average || '0';
-    let date = result.release_date || result.first_air_date || '';
-    let status = result.status || '';
-    let backdrop = BACKDROP + result.backdrop_path;
-    let poster = POSTER + result.poster_path;
-    let trailer = []; 
-
-    if (date) date = date.split('-').reverse().join('-');
-    if (result.backdrop_path == null) backdrop = DEFAULT_BACKDROP;
-    if (result.poster_path == null) poster = DEFAULT_POSTER;
-
-    // Get Trailer and check for undefined
-    if (result.videos.results.length != 0) {
-        trailer = result.videos.results.map(video => {
-            if (video.type == 'Trailer') {
-                return `https://www.youtube.com/watch?v=${video.key}`;
-            }
-        }).filter(video => {
-            if (video != 'undefined') {
-                return video;
-            }
-        });
-    } 
-    // If no trailer exists - search youtube
-    else {
-        trailer[0] = `https://www.youtube.com/results?search_query=${title}`;
-    }
-
-
-    fullMediaContent.innerHTML = `
-        <p class="content-title">MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
-        <div id="media-showcase" style="background-image: url('${backdrop}')">
-            <a class="download-fanart" href="${backdrop}"target="_blank">DOWNLOAD FANART<br /><i class="material-icons download-icon">cloud_download</i></a>
-            <h1 id="media-title">${title}</h1>
-        </div>
-        <div id="media-details">
-            <img width="140" id="media-poster" src="${poster}" alt="${title}">
-            <div id="media-details-bar">
-                <a href="${trailer[0]}" target=_blank">Trailer</a>
-                <span>${rating}</span>
-                <span>${status}</span>
-                <span>${date}</span>
-                <span class="from-collection" onclick="listEditor('addRemove',${tmdbId})">Add/Remove from Collection</span>
-            </div>
-            <p id="media-tagline">${tagline}</p>
-            <p id="media-overview">${overview}</p>
-        </div>
-    `;
-    fullMediaContent.style.display = 'block';
-    fadeIn('#full-media-content');
-};
-
-
-
-/*
-==================================================================
-    GET & SHOW USER LISTS
-==================================================================
-*/
-
-function showMyLists() {
-    resetUserLists();
-    myLists.style.display = 'block';
-
-    if (Object.keys(state.mylists).length !== 0) {
-         // Iterate over lists
-         let i = 1;
-         for(let lists in state.mylists) {
-            let list = state.mylists[lists];
-
-            let userList = `
-            <div class="userlist"  id="list-${lists}-${i}">
-                <div class="list-titlebar">
-                    <h2>${lists}</h2>
-                    <p class="delete-list" onclick="deleteList('${lists}', 'list-${lists}-${i}')">Delete List<i class="material-icons delete-list-icon">delete</i></p>
-                </div>
-            `;
-
-            for (let i = 0; i < list.length; i++) {
-                const tmdbId = list[i].id;
-                const title = list[i].title || list[i].name || 'Unknown';
-                const rating = list[i].vote_average || '0';
-
-                let date = list[i].release_date || list[i].first_air_date || '';
-                if (date)  date = date.slice(0,4);
-
-                let mediaType;
-                if (list[i].hasOwnProperty('adult')) mediaType = 'movie';
-                else  mediaType = 'tv'; 
-
-                userList += `
-                    <div class="list-item" id="list-item-${lists}-${i}">
-                        <div onclick="deleteItemFromList('${lists}','${tmdbId}','list-item-${lists}-${i}')"><i class="list-item-delete material-icons delete-list-icon">delete</i></div>
-                        <div class="list-item-rating">${rating}</div>
-                        <div class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})"><span class="list-title">${title}</span>  (${date})</div>
-                    </div>
-                `;
-            } ;
-            userList += `</div>`;
-            userLists.innerHTML += userList;
-            i++; 
-        };
-    }
-    else {
-        showNoListsText();
-    }
-};
-
-
 /*
 ==============================
     LIST DATA
@@ -761,33 +861,19 @@ function sampleLists() {
     fadeIn('#user-lists');
 };
 
-
-
-
 /*
-==================================================================
-    SHOW SEARCH RESULTS
-==================================================================
+==============================
+    OPEN/CLOSE ADD NEW LIST/ITEM
+==============================
 */
 
-function showSearchResults(results) {
-
-    if (!results.length) return;
-    
-    for (let i = 0; i < 6; i++) {
-        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
-            let title = results[i].title || results[i].name;
-            let date = results[i].release_date || results[i].first_air_date || '';
-            let mediaType = results[i].media_type || 'movie';
-
-            if (date)  date = date.slice(0,4);
-            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
-        };
-    };
+function openAddNewList(id) {
+    document.querySelector(id).style.visibility = 'visible';
 };
 
-
-
+function closeAddNewList(id) {
+    document.querySelector(id).style.visibility = 'hidden';
+}
 
 
 
@@ -1124,7 +1210,7 @@ const mylists = {
         "release_date": "2018-08-02"
       }
     ],
-    tvshows: [
+    tv_shows: [
       {
         "original_name": "The Flash",
         "genre_ids": [
@@ -1288,6 +1374,28 @@ const mylists = {
         "vote_average": 7.1,
         "overview": "Set in Springfield, the average American town, the show focuses on the antics and everyday adventures of the Simpson family; Homer, Marge, Bart, Lisa and Maggie, as well as a virtual cast of thousands. Since the beginning, the series has been a pop culture icon, attracting hundreds of celebrities to guest star. The show has also made name for itself in its fearless satirical take on politics, media and American life in general.",
         "poster_path": "/yTZQkSsxUFJZJe67IenRM0AEklc.jpg"
+      },
+      {
+        "vote_count": 1497,
+        "id": 335983,
+        "video": false,
+        "vote_average": 6.6,
+        "title": "Venom",
+        "popularity": 401.758,
+        "poster_path": "/2uNW4WbgBXL25BAbXGLnLqX71Sw.jpg",
+        "original_language": "en",
+        "original_title": "Venom",
+        "genre_ids": [
+          878,
+          28,
+          80,
+          28,
+          27
+        ],
+        "backdrop_path": "/VuukZLgaCrho2Ar8Scl9HtV3yD.jpg",
+        "adult": false,
+        "overview": "When Eddie Brock acquires the powers of a symbiote, he will have to release his alter-ego \"Venom\" to save his life.",
+        "release_date": "2018-10-03"
       }
     ]
   };

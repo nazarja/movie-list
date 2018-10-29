@@ -217,16 +217,18 @@ main {
                 min-height: 187.5px;
                 float: left;
                 border: 1px solid $white;
+                z-index: 1;
                 @include breakpoint {
                     display: inline-block;
                 }
             }
 
             #media-details-bar {
+                position: relative;
                 min-height: 50px;
                 padding-right: 10px;
                 text-align: center;
-                color: $white;
+                color:#ddd;
                 background-color: $black-font;
                 @include breakpoint {
                     text-align: right;
@@ -236,7 +238,6 @@ main {
                     display: inline-block;
                     position: relative;
                     padding: 2px 5px;
-                    color: #ddd;
                     font-size: 0.9rem;
                     @media (min-width: 449px) {
                         top: 12px;
@@ -249,6 +250,7 @@ main {
 
                 a, .from-collection {
                     @extend %underline;
+                    color: #ddd;
                 }
             }
 
@@ -264,11 +266,56 @@ main {
                 text-transform: uppercase;
                 color: #000;
             }
+
+
+            /*
+            ============================
+                ADD ITEM TO LIST
+            ============================
+            */
+
+            #from-full-media-collection {
+                @include pos-absolute (60px, 1%, auto, auto);
+                @extend %add-media-list;
+                color: $grey-font;
+                position: absolute;
+                min-width: 260px;
+                padding: 0 40px 30px 0px;
+                text-align: left;
+
+                .close-add-item {
+                    text-align: right;
+                    padding-right: 30px;
+                }
+
+                p {
+                    @extend %underline;
+                    display: block;
+                    margin: 5px;
+                    text-transform: uppercase;
+
+                    &:hover {
+                        transition: 0s;
+                    }
+
+                    .material-icons {
+                        @include pos-absolute(4px, 0, auto, auto);
+                    }
+
+                    .close-icon {
+                        color: $red;
+                        font-weight: bold;
+                        font-size: 1.2rem;
+                        top: 2px;
+                    }
+                }
+            }
         }
         @include breakpoint {
             width: 75%;
         }
     }
 }
+
 
 

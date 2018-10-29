@@ -30,7 +30,7 @@ gulp.task('watch-sass', () => {
     gulp.src([
                 'app/styles/sass/main.scss',
                 'app/styles/sass/navigation.scss',
-                'app/styles/sass/main-content.scss',
+                'app/styles/sass/content.scss',
                 'app/styles/sass/mylists.scss'
                 
     ])

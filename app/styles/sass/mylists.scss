@@ -153,15 +153,7 @@
 
 #mylists-add-new-list {
     @include pos-absolute (60px, 5%, auto, auto);
-    visibility: hidden;
-    background-color: $white;
-    border: 1px solid #bbb;
-    border-top: 0;
-    border-radius: 5px;
-    z-index: 4;
-    padding: 10px 10px 20px 20px;
-    box-sizing: border-box;
-    box-shadow: $box-shadow;
+    @extend %add-media-list;
 
     .list-p {
         @extend %no-spacing;
@@ -191,4 +183,7 @@
         font-family: monospace;
     } 
 }
+
+
+
 

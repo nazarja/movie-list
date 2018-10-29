@@ -23,7 +23,8 @@ const userLists = document.querySelector('#user-lists');
 let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
-    mylists : {}
+    mylists : {},
+    media: ''
 };
 
 
@@ -156,8 +157,6 @@ function resetUserLists() {
 };
 
 
-
-
 /*
 ==================================================================
     ANIMATION FUNCTIONS
@@ -218,21 +217,7 @@ function onMediaHover() {
 };
 
 
-/*
-==============================
-    OPEN/CLOSE ADD NEW LIST/ITEM
-==============================
-*/
 
-function openAddNewList(id) {
-    console.log('openList');
-    document.querySelector(id).style.visibility = 'visible';
-};
-
-function closeAddNewList(id) {
-    console.log('closeList');
-    document.querySelector(id).style.visibility = 'hidden';
-}
 
 
 

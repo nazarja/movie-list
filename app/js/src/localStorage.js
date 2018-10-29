@@ -33,24 +33,20 @@ function parseLocalStorageLists() {
 
 function checkIfInCollection(tmdbId) {
 
-    let arr= [[],[]];
     if (Object.keys(state.mylists).length) {
-
-        // Iterate over lists
         for(let lists in state.mylists) {
             let list = state.mylists[lists];
-            arr[0].push(lists);
-
             for (let i = 0; i < list.length; i++) {
                 if (tmdbId == list[i].id) {
-                    arr[1].push(true, lists);
-                    break;
+                    return true;
                 };
-            } ;
+            };
         };
-    };
-    return arr;
+        return false;
+    }; 
+    return false;
 };
+
 
 
 
@@ -60,13 +56,91 @@ function checkIfInCollection(tmdbId) {
 ==================================================================
 */
 
+
+/*
+==============================
+    UPDATE LIST 
+==============================
+*/
+
+
+function updateList(tmdbId, id) {
+
+    // Get element
+    let element = document.querySelector(id);
+    element.innerHTML = '';
+    element.style.visibility = 'visible';
+
+    // Check if any lists exist
+    // If not, return an option to add a list
+    if (!Object.keys(state.mylists).length) {
+        element.innerHTML = `
+            <p onclick="closeAddNewList('${id}')" class="close-add-item">
+                Close
+                <i class="material-icons close-icon">close</i>
+            </p>
+            <p>You don't have any created lists</p>
+        `;
+    }
+
+    // If lists exist - return lists
+    else {
+        let isInList = [];
+        
+        for(let lists in state.mylists) {
+            // Get list key
+            let foundItem;
+            let list = state.mylists[lists];
+
+            for (let i = 0; i < list.length; i++) {
+                if (tmdbId == list[i].id) {
+                    isInList.push([true, lists]);
+                    foundItem = true;
+                };
+            };
+
+            if (!foundItem) {
+                isInList.push([false, lists]);
+            }; 
+        };
+
+        
+        // Apply Close Button
+        element.innerHTML += `
+            <p onclick="closeAddNewList('${id}')" class="close-add-item">
+                Close
+                <i class="material-icons close-icon">close</i>
+            </p>
+        `;
+
+        isInList.forEach(item => {
+            if (item[0]) {
+                element.innerHTML += `
+                    <p onclick="deleteItemFromList('${item[1]}', '${tmdbId}', '${id}', true)">
+                        ${item[1]}
+                        <i class="material-icons remove-circle-icon">remove_circle</i>
+                    </p>
+                `;
+            }
+            else {
+                element.innerHTML += `
+                    <p onclick="addItemToList('${item[1]}', '${tmdbId}', '${id}')">
+                        ${item[1]}
+                        <i class="material-icons add-circle-icon">add_circle</i>
+                    </p>
+                `;
+            }
+        });
+    }; 
+};
+
 /*
 ==============================
     CREATE NEW LIST
 ==============================
 */
 
-function addNewList(divId,inputId) {
+function addNewList(divId, inputId) {
 
     // Get input - return if empty
     let input = document.querySelector(inputId);
@@ -84,16 +158,18 @@ function addNewList(divId,inputId) {
 };
 
 
-
 /*
 ==============================
-    ADD ITEM TO LIST
+    ADD ITEM TO LIST 
 ==============================
 */
 
-function addItemToList() {
-
-};
+function addItemToList(list, tmdbId, id) {
+    state.mylists[list].push(state.media);
+    let userlists  =JSON.stringify(state.mylists);
+    localStorage.setItem('movielist:userlists', userlists);
+    updateList(tmdbId, id);
+}
 
 
 
@@ -109,12 +185,14 @@ function deleteList(list, id) {
     if (confirmDelete) {
         delete state.mylists[list];
         let userlists = JSON.stringify(state.mylists);
-        let element = document.querySelector(`#${id}`);
         localStorage.setItem('movielist:userlists', userlists);
-
-        fadeOut(`#${id}`);
-        setTimeout(() => element.remove(), 200);
     };
+
+    if (id) {
+        let element = document.querySelector(id);
+        fadeOut(id);
+        setTimeout(() => element.remove(), 200);
+    }
 
     if (!Object.keys(state.mylists).length) {
         showNoListsText();
@@ -129,21 +207,27 @@ function deleteList(list, id) {
 ==============================
 */
 
-function deleteItemFromList(list, tmdbId, id) {
+function deleteItemFromList(list, tmdbId, id, noRemove) {
 
-    for(let i in state.mylists[list]) {
+    for (let i in state.mylists[list]) {
         if (state.mylists[list][i].id == tmdbId) {
             state.mylists[list].splice(i, 1);
+            let userlists = JSON.stringify(state.mylists);
+            localStorage.setItem('movielist:userlists', userlists);
+            break;
         };
     };
 
-    let userlists = JSON.stringify(state.mylists);
-    let element = document.querySelector(`#${id}`);
-    localStorage.setItem('movielist:userlists', userlists);
+    if (id && !noRemove) {
+        let element = document.querySelector(id);
+        fadeOut(id);
+        setTimeout(() => element.remove(), 200);
+    };
 
-    fadeOut(`#${id}`);
-    setTimeout(() => element.remove(), 200);
-}
+    if (noRemove) {
+        updateList(tmdbId, id);
+    }
+};
 
 
 
