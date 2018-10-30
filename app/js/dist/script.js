@@ -496,7 +496,7 @@ function updateList(tmdbId, id) {
                     isInList.push([true, lists]);
                     foundItem = true;
                 };
-            };
+            }
 
             // IF FOUND IS STILL FALSE - MEDIA ITEM MUST NOT EXIST
             // PUT FALSE INTO ARRAY
@@ -643,11 +643,13 @@ function deleteItemFromList(list, tmdbId, id, remove) {
         let element = document.querySelector(id);
         fadeOut(id);
         setTimeout(() => element.remove(), 200);
+        console.log('1');
     };
 
     // IF ELEMENT IS TO BE UPDATED
     if (!remove) {
         updateList(tmdbId, id);
+        console.log('2');
     };
 };
 
@@ -677,7 +679,7 @@ function showContentResults(results) {
         const tmdbId = result.id;
         const title = result.title || result.name || 'Unknown';
         const rating = result.vote_average || '0';
-        let poster = `${POSTER}result.poster_path`;
+        let poster = `${POSTER}${result.poster_path}`;
         let mediaType;
         
         // IF POSTER FAILS & GET MEDIA TYPE
@@ -725,8 +727,8 @@ function showFullMediaContent(result) {
     const rating = result.vote_average || '0';
     let date = result.release_date || result.first_air_date || '';
     let status = result.status || '';
-    let backdrop = `${BACKDROP}result.backdrop_path`;
-    let poster = `${POSTER}result.poster_path`;
+    let backdrop = `${BACKDROP}${result.backdrop_path}`;
+    let poster = `${POSTER}${result.poster_path}`;
     let trailer = []; 
 
     // CHANGE DATE TO EUROPEAN FORMAT 
@@ -888,7 +890,7 @@ function showMyLists() {
                 // CREATE HTML - ALSO NEEDS UNIQUE ID
                 userList += `
                     <div class="list-item" id="list-item-${lists}-${i}">
-                        <div onclick="deleteItemFromList('${lists}','${tmdbId}','#list-item-${lists}-${i}')">
+                        <div onclick="deleteItemFromList('${lists}','${tmdbId}','#list-item-${lists}-${i}', true)">
                             <i class="list-item-delete material-icons delete-list-icon">delete</i>
                         </div>
                         <div class="list-item-rating">${rating}</div>

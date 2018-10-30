@@ -107,7 +107,7 @@ function updateList(tmdbId, id) {
                     isInList.push([true, lists]);
                     foundItem = true;
                 };
-            };
+            }
 
             // IF FOUND IS STILL FALSE - MEDIA ITEM MUST NOT EXIST
             // PUT FALSE INTO ARRAY
@@ -254,11 +254,13 @@ function deleteItemFromList(list, tmdbId, id, remove) {
         let element = document.querySelector(id);
         fadeOut(id);
         setTimeout(() => element.remove(), 200);
+        console.log('1');
     };
 
     // IF ELEMENT IS TO BE UPDATED
     if (!remove) {
         updateList(tmdbId, id);
+        console.log('2');
     };
 };
 
