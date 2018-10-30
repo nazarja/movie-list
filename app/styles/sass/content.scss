@@ -60,11 +60,13 @@ main {
                 cursor: pointer;
             }
 
-            .more-information{
-                @extend %underline;
+            .genres {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                text-transform: uppercase;
             }
 
-            .genres {
+            .more-information {
                 @include pos-absolute(auto, auto, 65px, 0);
                 display: none;
                 width: 100%;
