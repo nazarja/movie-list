@@ -60,11 +60,11 @@ main {
                 cursor: pointer;
             }
 
-            .add-remove-from-collection {
+            .more-information{
                 @extend %underline;
             }
 
-            .more-information {
+            .genres {
                 @include pos-absolute(auto, auto, 65px, 0);
                 display: none;
                 width: 100%;

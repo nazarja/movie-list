@@ -1,3 +1,5 @@
+const movieGenres = [[28,"Action"],[12,"Adventure"],[16,"Animation"],[35,"Comedy"],[80,"Crime"],[99,"Documentary"],[18,"Drama"],[10751,"Family"],[14,"Fantasy"],[36,"History"],[27,"Horror"],[10402,"Music"],[9648,"Mystery"],[10749,"Romance"],[878,"Science Fiction"],[10770,"TV Movie"],[53,"Thriller"],[10752,"War"],[37,"Western"]];
+const tvGenres = [[10759,"Action & Adventure"],[16,"Animation"],[35,"Comedy"],[80,"Crime"],[99,"Documentary"],[18,"Drama"],[10751,"Family"],[10762,"Kids"],[9648,"Mystery"],[10763,"News"],[10764,"Reality"],[10765,"Sci-Fi & Fantasy"],[10766,"Soap"],[10767,"Talk"],[10768,"War & Politics"],[37,"Western"]];
 
 /*
 ==================================================================
@@ -21,13 +23,26 @@ function showContentResults(results) {
         const tmdbId = result.id;
         const title = result.title || result.name || 'Unknown';
         const rating = result.vote_average || '0';
+        const genreIds = result.genre_ids || [];
         let poster = `${POSTER}${result.poster_path}`;
         let mediaType;
+        let genreNames = '';
         
-        // IF POSTER FAILS & GET MEDIA TYPE
+        // IF POSTER FAILS
         if (result.poster_path == null) poster = DEFAULT_POSTER;
-        if (result.hasOwnProperty('adult')) mediaType = 'movie';
-        else  mediaType = 'tv';
+
+        // GET MEDIA TYPE
+        if (result.hasOwnProperty('adult')) {genreType = movieGenres; mediaType = 'movie';}
+        else {genreType = tvGenres; mediaType = 'tv';} 
+
+         // GET GENRES 
+         genreIds.forEach(genre => {
+            genreType.forEach(id => {
+                if (genre == id[0]) {
+                    genreNames += `${id[1]} `;
+                }
+            });
+        });
 
 
         // CHECK IF IN COLLECTION
@@ -40,9 +55,9 @@ function showContentResults(results) {
             <div class="media-item" onclick="fetchMediaData('${mediaType}',${tmdbId})">
                 <i class="material-icons is-in-collection" style="color: ${isInCollectionColor}">collections</i>
                 <img class="media-poster" src="${poster}" alt="${title}">
-                <span class="more-information">More Information</span>
+                <span class="genres">${genreNames}</span>
                 <div><span class="title">${title}</span><span class="rating">${rating}</span></div>
-                <div><p class="add-remove-from-collection">Add/Remove from Collection</p></div>
+                <div><p class="more-information">More Information</p></div>
             </div>
         `;
     });

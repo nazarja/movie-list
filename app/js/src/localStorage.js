@@ -82,7 +82,7 @@ function updateList(tmdbId, id) {
                 Close
                 <i class="material-icons close-icon">close</i>
             </p>
-            <p>You don't have any created lists</p>
+            <p onclick="nav('mylists,null')">You don't have any created lists</p>
         `;
     }
 
@@ -254,13 +254,11 @@ function deleteItemFromList(list, tmdbId, id, remove) {
         let element = document.querySelector(id);
         fadeOut(id);
         setTimeout(() => element.remove(), 200);
-        console.log('1');
     };
 
     // IF ELEMENT IS TO BE UPDATED
     if (!remove) {
         updateList(tmdbId, id);
-        console.log('2');
     };
 };
 
