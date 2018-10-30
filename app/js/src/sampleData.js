@@ -421,5 +421,6 @@ const mylists = {
     ]
   };
 
-  // CONVERT TO JSON 
+  // CONVERT OBJECT TO JSON
+  // USE AS SAMPLE LISTS WHEN ALL LIST DELETED
   let sampleData = JSON.stringify(mylists);

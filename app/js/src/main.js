@@ -20,6 +20,8 @@ const myLists = document.querySelector('#main-mylists');
 const userLists = document.querySelector('#user-lists');
 
 
+// i WANTED A REACT LIKE LOCAL STATE TO WORK WITH
+// MENUS, RESULTS, AND LISTS WILL BE STORED HERE
 let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
@@ -35,15 +37,16 @@ let state = {
 ==================================================================
 */
 
-function setEventListeners() {
 
+// EVENT LISTENERS SET AT INIT
+// INCLUDES LOTS OF RESETS
+function setEventListeners() {
 
     /*
     ==============================
     NAV ITEM CLICK
     ==============================
     */
-
     navItem.forEach(navitem => {
         navitem.addEventListener('click', () => {
             nav(navitem.dataset.nav);
@@ -60,7 +63,6 @@ function setEventListeners() {
         MENU TOGGLE CLICK
     ==============================
     */
-
     menuBtn.addEventListener('click', () => { 
         if (menuBtn.innerHTML == 'menu') {
             menuBtn.innerHTML = 'close';
@@ -81,7 +83,6 @@ function setEventListeners() {
         SEARCH INPUT / CLEAR
     ==============================
     */
-
     searchInput.addEventListener('input', () => {
         getSearchInput();
     });
@@ -98,7 +99,6 @@ function setEventListeners() {
         WINDOW RESIZE
     ==============================
     */
-
     window.addEventListener("resize", () => {
         if (window.innerWidth > 800 && primaryNav.style.left == '-140px') {
             menuBtn.innerHTML = 'menu';
@@ -156,6 +156,15 @@ function resetUserLists() {
     userLists.innerHTML = '';
 };
 
+function openAddNewList(id) {
+    document.querySelector(id).style.visibility = 'visible';
+};
+
+function closeAddNewList(id) {
+    document.querySelector(id).style.visibility = 'hidden';
+}
+
+
 
 /*
 ==================================================================
@@ -169,7 +178,10 @@ function resetUserLists() {
 ==============================
 */
 
+// GET ELEMENT ID, INCRAESE OPACITY OVER TIME
+// LESSENS SHARPNESS WHEN ELEMENTS CHANGE 
 function fadeIn(id) {
+
     const element = document.querySelector(`${id}`);
     element.style.opacity = 0;
     
@@ -182,13 +194,17 @@ function fadeIn(id) {
 };
 
 
+
 /*
 ==============================
     FADE OUT ELEMENT BY ID
 ==============================
 */
 
+// GET ELEMENT ID, DECREASE OPACITY OVER TIME
+// LESSENS SHARPNESS WHEN ELEMENTS CHANGE 
 function fadeOut(id) {
+
     const element = document.querySelector(`${id}`);
     element.style.opacity = 1;
     
@@ -203,11 +219,17 @@ function fadeOut(id) {
 };
 
 
+
 /*
 ==============================
     HOVER POSTER BOX
 ==============================
 */
+
+
+// AS ELEMENTS APPEAR DYNAMICALLY - CANT SET EVENT LISTENERS AT INIT
+// SMALL POSTER HOVER ANIMATION
+// SELECTING DIV TO SHOW BY PARENT NODES CHILDREN SELECTOR
 function onMediaHover() {
     const mediaItem = document.querySelectorAll('.media-item');
     mediaItem.forEach(item => {

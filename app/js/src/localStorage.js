@@ -7,11 +7,13 @@
 
 /*
 ==============================
-    CHECK / GET USER LISTS
+    PARSE LOCAL STORAGE LISTS
 ==============================
 */
 
+// IF LISTS EXIST, PARSE & STORE IN LOCAL STATE
 function parseLocalStorageLists() {
+
     if ('movielist:userlists' in localStorage) {
         let userlists = localStorage.getItem('movielist:userlists');
         userlists = JSON.parse(userlists);
@@ -27,16 +29,20 @@ function parseLocalStorageLists() {
 
 /*
 ==============================
-    CHECK IF IN LIST
+    CHECK IF MEDIA ITEM IN LIST
 ==============================
 */
 
+// SMALL FUNCTION TO QUICKLY CHECK IF TMDB ID EXISTS...
+// ...IN A LIST. RETURNS A BOOLEAN 
 function checkIfInCollection(tmdbId) {
 
+    // CHECK THAT EXISTING LISTS HAVE ENTRIES
     if (Object.keys(state.mylists).length) {
         for(let lists in state.mylists) {
             let list = state.mylists[lists];
             for (let i = 0; i < list.length; i++) {
+                // IF ID MATCHES - BREAK AND RETURN
                 if (tmdbId == list[i].id) {
                     return true;
                 };
@@ -49,13 +55,11 @@ function checkIfInCollection(tmdbId) {
 
 
 
-
 /*
 ==================================================================
-    CRUD FUNCTIONS
+    CRUD FUNCTIONS / CREATE / UPDATE / DELETE
 ==================================================================
 */
-
 
 /*
 ==============================
@@ -63,16 +67,15 @@ function checkIfInCollection(tmdbId) {
 ==============================
 */
 
-
 function updateList(tmdbId, id) {
 
-    // Get element
+    // GET PASSED IN UNIQUE ID & SET CONTENT VISIBLE
     let element = document.querySelector(id);
     element.innerHTML = '';
     element.style.visibility = 'visible';
 
-    // Check if any lists exist
-    // If not, return an option to add a list
+    // CHECK THAT ANY LISTS HAVE VAILD ENTRIES
+    // IF NOT SEND MESSAGE
     if (!Object.keys(state.mylists).length) {
         element.innerHTML = `
             <p onclick="closeAddNewList('${id}')" class="close-add-item">
@@ -83,29 +86,38 @@ function updateList(tmdbId, id) {
         `;
     }
 
-    // If lists exist - return lists
+    // IF LISTS EXIST 
     else {
+
+        // STORE BOOLEANS IN AN ARRAY
         let isInList = [];
         
+        // ITERATE LISTS
         for(let lists in state.mylists) {
-            // Get list key
+            
+            // SET FOUND TO FALSE
             let foundItem;
             let list = state.mylists[lists];
 
             for (let i = 0; i < list.length; i++) {
+
+                // IF MATCH FOUND PUT IN LIST AS TRUE
+                // AN ITEM MAY BE ADDED TWICE, DONT BREAK
                 if (tmdbId == list[i].id) {
                     isInList.push([true, lists]);
                     foundItem = true;
                 };
             };
 
+            // IF FOUND IS STILL FALSE - MEDIA ITEM MUST NOT EXIST
+            // PUT FALSE INTO ARRAY
             if (!foundItem) {
                 isInList.push([false, lists]);
             }; 
         };
 
         
-        // Apply Close Button
+        // CREATE CLOSE BUTTON HTML
         element.innerHTML += `
             <p onclick="closeAddNewList('${id}')" class="close-add-item">
                 Close
@@ -113,6 +125,9 @@ function updateList(tmdbId, id) {
             </p>
         `;
 
+        // ITERATE OVER ARRAY AND ASSIGN DIFFERNET CALLBACKS FOR TRUE AND FALSE
+        // NEED TO PASS IN ARGUMENTS TO CALLBACKS 
+        // LIST TITLE, UNIQUE ID, TMDB ID, BOOLEAN TO REMOVE ELEMENT 
         isInList.forEach(item => {
             if (item[0]) {
                 element.innerHTML += `
@@ -129,33 +144,37 @@ function updateList(tmdbId, id) {
                         <i class="material-icons add-circle-icon">add_circle</i>
                     </p>
                 `;
-            }
+            };
         });
     }; 
 };
 
+
+
 /*
 ==============================
-    CREATE NEW LIST
+    ADD NEW LIST
 ==============================
 */
 
+// PASS IN DIV ID, AND INPUT ID TO SELECT BOTH
 function addNewList(divId, inputId) {
 
-    // Get input - return if empty
+    // IF INPUT IS EMPTY - DO NOTHING
     let input = document.querySelector(inputId);
     if (!input.value.length) return;
 
-    // Add to local state
+    // REPLACE SPACES - RESET INPUT VALUE & ADD TO LOCAL STATE
     let title = input.value.toLowerCase().replace(/\s/g, '_');
     state.mylists[title] = [];
     input.value = '';
 
-    // Add to local storage
+    // SET TO LOCAL STORAGE, SHOW UPDATED HTML, CLOSE DIV 
     localStorage.setItem('movielist:userlists', JSON.stringify(state.mylists));
     showMyLists();
     closeAddNewList(divId);
 };
+
 
 
 /*
@@ -164,6 +183,9 @@ function addNewList(divId, inputId) {
 ==============================
 */
 
+// IN FULL MEDIA SCREEN
+// PUSH TO LOCAL STATE, SET LOCAL STORAGE, UPDATE LISTS
+// RENDER AGAIN
 function addItemToList(list, tmdbId, id) {
     state.mylists[list].push(state.media);
     let userlists = JSON.stringify(state.mylists);
@@ -180,20 +202,25 @@ function addItemToList(list, tmdbId, id) {
 */
 
 function deleteList(list, id) {
+
+    // GET CONFIRMATION BEFORE DELETING AN ENTIRE LIST
     let confirmDelete = confirm('Are you sure you want to delete this list?');
 
+    // DELETE LIST & SET LOCAL STORAGE
     if (confirmDelete) {
         delete state.mylists[list];
         let userlists = JSON.stringify(state.mylists);
         localStorage.setItem('movielist:userlists', userlists);
     };
 
+    // IF AN ID WAS PASSED, REMOVE ELEMENT
     if (id) {
         let element = document.querySelector(id);
         fadeOut(id);
         setTimeout(() => element.remove(), 200);
     }
 
+    // IF LAST LIST DELETED - SHOW NO LISTS TEXT
     if (!Object.keys(state.mylists).length) {
         showNoListsText();
     };
@@ -209,7 +236,11 @@ function deleteList(list, id) {
 
 function deleteItemFromList(list, tmdbId, id, remove) {
 
+
     for (let i in state.mylists[list]) {
+
+        // GET A MATCH - SPLICE OUT OF LIST
+        // SET LOCAL STORAGE & BREAK
         if (state.mylists[list][i].id == tmdbId) {
             state.mylists[list].splice(i, 1);
             let userlists = JSON.stringify(state.mylists);
@@ -218,15 +249,17 @@ function deleteItemFromList(list, tmdbId, id, remove) {
         };
     };
 
+    // IF ELEMENT TO BE REMOVED
     if (id && remove) {
         let element = document.querySelector(id);
         fadeOut(id);
         setTimeout(() => element.remove(), 200);
     };
 
+    // IF ELEMENT IS TO BE UPDATED
     if (!remove) {
         updateList(tmdbId, id);
-    }
+    };
 };
 
 

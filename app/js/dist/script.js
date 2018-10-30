@@ -20,6 +20,8 @@ const myLists = document.querySelector('#main-mylists');
 const userLists = document.querySelector('#user-lists');
 
 
+// i WANTED A REACT LIKE LOCAL STATE TO WORK WITH
+// MENUS, RESULTS, AND LISTS WILL BE STORED HERE
 let state = {
     movies : ['Popular', 'Top Rated', 'Upcoming', 'Now Playing'],
     tvshows : ['Popular', 'Top Rated', 'On the Air', 'Airing Today'],
@@ -35,15 +37,16 @@ let state = {
 ==================================================================
 */
 
-function setEventListeners() {
 
+// EVENT LISTENERS SET AT INIT
+// INCLUDES LOTS OF RESETS
+function setEventListeners() {
 
     /*
     ==============================
     NAV ITEM CLICK
     ==============================
     */
-
     navItem.forEach(navitem => {
         navitem.addEventListener('click', () => {
             nav(navitem.dataset.nav);
@@ -60,7 +63,6 @@ function setEventListeners() {
         MENU TOGGLE CLICK
     ==============================
     */
-
     menuBtn.addEventListener('click', () => { 
         if (menuBtn.innerHTML == 'menu') {
             menuBtn.innerHTML = 'close';
@@ -81,7 +83,6 @@ function setEventListeners() {
         SEARCH INPUT / CLEAR
     ==============================
     */
-
     searchInput.addEventListener('input', () => {
         getSearchInput();
     });
@@ -98,7 +99,6 @@ function setEventListeners() {
         WINDOW RESIZE
     ==============================
     */
-
     window.addEventListener("resize", () => {
         if (window.innerWidth > 800 && primaryNav.style.left == '-140px') {
             menuBtn.innerHTML = 'menu';
@@ -156,6 +156,15 @@ function resetUserLists() {
     userLists.innerHTML = '';
 };
 
+function openAddNewList(id) {
+    document.querySelector(id).style.visibility = 'visible';
+};
+
+function closeAddNewList(id) {
+    document.querySelector(id).style.visibility = 'hidden';
+}
+
+
 
 /*
 ==================================================================
@@ -169,7 +178,10 @@ function resetUserLists() {
 ==============================
 */
 
+// GET ELEMENT ID, INCRAESE OPACITY OVER TIME
+// LESSENS SHARPNESS WHEN ELEMENTS CHANGE 
 function fadeIn(id) {
+
     const element = document.querySelector(`${id}`);
     element.style.opacity = 0;
     
@@ -182,13 +194,17 @@ function fadeIn(id) {
 };
 
 
+
 /*
 ==============================
     FADE OUT ELEMENT BY ID
 ==============================
 */
 
+// GET ELEMENT ID, DECREASE OPACITY OVER TIME
+// LESSENS SHARPNESS WHEN ELEMENTS CHANGE 
 function fadeOut(id) {
+
     const element = document.querySelector(`${id}`);
     element.style.opacity = 1;
     
@@ -203,11 +219,17 @@ function fadeOut(id) {
 };
 
 
+
 /*
 ==============================
     HOVER POSTER BOX
 ==============================
 */
+
+
+// AS ELEMENTS APPEAR DYNAMICALLY - CANT SET EVENT LISTENERS AT INIT
+// SMALL POSTER HOVER ANIMATION
+// SELECTING DIV TO SHOW BY PARENT NODES CHILDREN SELECTOR
 function onMediaHover() {
     const mediaItem = document.querySelectorAll('.media-item');
     mediaItem.forEach(item => {
@@ -226,15 +248,19 @@ function onMediaHover() {
 
 /*
 ==================================================================
-    MAIN NAIGATION FUNCTIONS
+    MAIN NAVIGATION 
 ==================================================================
 */
 
+
+// ARGUMENT WILL BE RECIVEDAS A STRING CONTAINING ..
+// .. THE CATEGORY AND SUB-CATEGORY
 function nav(param) {
     let nav = param.split(',');
     let primary = nav[0];
     let secondary = nav[1];
 
+    // SIMPLE SWITCH STATEMENT TO DECIDE DIRECTION
     switch(primary) {
         case 'movies':
             fadeIn('#main-content');
@@ -254,6 +280,7 @@ function nav(param) {
             break;
     };
 
+    // RESET STYLES NEED - IM NOT USING REACT HERE!!
     resetMediaResults();
     resetPagination(); 
     resetFullMediaContent();
@@ -268,17 +295,24 @@ function nav(param) {
 ==============================
 */
 
+// WILL CREATE A SECOND MENU BASED ON ARRAY IN LOCAL STATE
 function manageSecondaryNav(primary, secondary) {
+
+    // SOME ITEMS HAVE NO SECOND MENU & ARE SET TO NULL
     if (secondary == 'null') {
         secondaryNav.innerHTML = ``;
         return;
     };
 
+    // CREATE HTML, REPLACE SPACES, LOWERCASE
+    // PASS DATA NEEDED TO CALL NAV AGAIN
     secondaryNav.innerHTML = `<ul>`
     for (let i of state[primary]) {
         let secondary = i.toLowerCase().replace(/\s/g, '_');
         secondaryNav.innerHTML += `
-            <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">${i}</li>
+            <li tabindex="0" class="nav-child nav-item" onclick="nav('${primary},${secondary}')" data-nav="${primary},${secondary}">
+                ${i}
+            </li>
         `;
     };
     secondaryNav.innerHTML += `</ul>`;
@@ -292,8 +326,10 @@ function manageSecondaryNav(primary, secondary) {
 ==============================
 */
 
-// Iterate over nav items and remove active class
+// ITERATE OVER BOTH MENUS AND APPLY AN ACTIVE CLASS TO .. 
+// .. LINKED PARENT AND CHILD ITEMS
 function manageActiveClass(primary, secondary) {
+
     let activeParent = document.querySelectorAll('.nav-parent');
     let activeChild = document.querySelectorAll('.nav-child');
 
@@ -310,7 +346,6 @@ function manageActiveClass(primary, secondary) {
             child.classList.add('active-child');
         };
     });
-
 };
 
 
@@ -321,19 +356,25 @@ function manageActiveClass(primary, secondary) {
 */
 
 function getSearchInput() {
+
+    // DONT START UNTIL INPUT VALUE IS GREATER THAN 3 CHARS
+    // ENCODE ANY SPACES FOR URLS
+    // SET EVENT LISTENER FOR CLICKING OUTSIDE AREA - CLOSE IF IT HAPPENS
     if (searchInput.value.length > 3) {
         searchClear.style.visibility =  'visible';
         clickOutsideElement();
         getTMDbSearchData(searchInput.value.replace(/\s/g, '%20'));
     };
 
+    // WHEN VALUE GOES BACK UNDER 3 CHARS RESET
     if (searchInput.value.length < 4) {
         resetSearchResults();
-    }
+    };
 
+    // IF VALUE IS 0 HIDE THE CLOSE/CLEAR BUTTON
     if (searchInput.value.length == 0) {
         searchClear.style.visibility = 'hidden';
-    }
+    };
 };
 
 
@@ -355,11 +396,13 @@ function getSearchInput() {
 
 /*
 ==============================
-    CHECK / GET USER LISTS
+    PARSE LOCAL STORAGE LISTS
 ==============================
 */
 
+// IF LISTS EXIST, PARSE & STORE IN LOCAL STATE
 function parseLocalStorageLists() {
+
     if ('movielist:userlists' in localStorage) {
         let userlists = localStorage.getItem('movielist:userlists');
         userlists = JSON.parse(userlists);
@@ -375,16 +418,20 @@ function parseLocalStorageLists() {
 
 /*
 ==============================
-    CHECK IF IN LIST
+    CHECK IF MEDIA ITEM IN LIST
 ==============================
 */
 
+// SMALL FUNCTION TO QUICKLY CHECK IF TMDB ID EXISTS...
+// ...IN A LIST. RETURNS A BOOLEAN 
 function checkIfInCollection(tmdbId) {
 
+    // CHECK THAT EXISTING LISTS HAVE ENTRIES
     if (Object.keys(state.mylists).length) {
         for(let lists in state.mylists) {
             let list = state.mylists[lists];
             for (let i = 0; i < list.length; i++) {
+                // IF ID MATCHES - BREAK AND RETURN
                 if (tmdbId == list[i].id) {
                     return true;
                 };
@@ -397,13 +444,11 @@ function checkIfInCollection(tmdbId) {
 
 
 
-
 /*
 ==================================================================
-    CRUD FUNCTIONS
+    CRUD FUNCTIONS / CREATE / UPDATE / DELETE
 ==================================================================
 */
-
 
 /*
 ==============================
@@ -411,16 +456,15 @@ function checkIfInCollection(tmdbId) {
 ==============================
 */
 
-
 function updateList(tmdbId, id) {
 
-    // Get element
+    // GET PASSED IN UNIQUE ID & SET CONTENT VISIBLE
     let element = document.querySelector(id);
     element.innerHTML = '';
     element.style.visibility = 'visible';
 
-    // Check if any lists exist
-    // If not, return an option to add a list
+    // CHECK THAT ANY LISTS HAVE VAILD ENTRIES
+    // IF NOT SEND MESSAGE
     if (!Object.keys(state.mylists).length) {
         element.innerHTML = `
             <p onclick="closeAddNewList('${id}')" class="close-add-item">
@@ -431,29 +475,38 @@ function updateList(tmdbId, id) {
         `;
     }
 
-    // If lists exist - return lists
+    // IF LISTS EXIST 
     else {
+
+        // STORE BOOLEANS IN AN ARRAY
         let isInList = [];
         
+        // ITERATE LISTS
         for(let lists in state.mylists) {
-            // Get list key
+            
+            // SET FOUND TO FALSE
             let foundItem;
             let list = state.mylists[lists];
 
             for (let i = 0; i < list.length; i++) {
+
+                // IF MATCH FOUND PUT IN LIST AS TRUE
+                // AN ITEM MAY BE ADDED TWICE, DONT BREAK
                 if (tmdbId == list[i].id) {
                     isInList.push([true, lists]);
                     foundItem = true;
                 };
             };
 
+            // IF FOUND IS STILL FALSE - MEDIA ITEM MUST NOT EXIST
+            // PUT FALSE INTO ARRAY
             if (!foundItem) {
                 isInList.push([false, lists]);
             }; 
         };
 
         
-        // Apply Close Button
+        // CREATE CLOSE BUTTON HTML
         element.innerHTML += `
             <p onclick="closeAddNewList('${id}')" class="close-add-item">
                 Close
@@ -461,6 +514,9 @@ function updateList(tmdbId, id) {
             </p>
         `;
 
+        // ITERATE OVER ARRAY AND ASSIGN DIFFERNET CALLBACKS FOR TRUE AND FALSE
+        // NEED TO PASS IN ARGUMENTS TO CALLBACKS 
+        // LIST TITLE, UNIQUE ID, TMDB ID, BOOLEAN TO REMOVE ELEMENT 
         isInList.forEach(item => {
             if (item[0]) {
                 element.innerHTML += `
@@ -477,33 +533,37 @@ function updateList(tmdbId, id) {
                         <i class="material-icons add-circle-icon">add_circle</i>
                     </p>
                 `;
-            }
+            };
         });
     }; 
 };
 
+
+
 /*
 ==============================
-    CREATE NEW LIST
+    ADD NEW LIST
 ==============================
 */
 
+// PASS IN DIV ID, AND INPUT ID TO SELECT BOTH
 function addNewList(divId, inputId) {
 
-    // Get input - return if empty
+    // IF INPUT IS EMPTY - DO NOTHING
     let input = document.querySelector(inputId);
     if (!input.value.length) return;
 
-    // Add to local state
+    // REPLACE SPACES - RESET INPUT VALUE & ADD TO LOCAL STATE
     let title = input.value.toLowerCase().replace(/\s/g, '_');
     state.mylists[title] = [];
     input.value = '';
 
-    // Add to local storage
+    // SET TO LOCAL STORAGE, SHOW UPDATED HTML, CLOSE DIV 
     localStorage.setItem('movielist:userlists', JSON.stringify(state.mylists));
     showMyLists();
     closeAddNewList(divId);
 };
+
 
 
 /*
@@ -512,6 +572,9 @@ function addNewList(divId, inputId) {
 ==============================
 */
 
+// IN FULL MEDIA SCREEN
+// PUSH TO LOCAL STATE, SET LOCAL STORAGE, UPDATE LISTS
+// RENDER AGAIN
 function addItemToList(list, tmdbId, id) {
     state.mylists[list].push(state.media);
     let userlists = JSON.stringify(state.mylists);
@@ -528,20 +591,25 @@ function addItemToList(list, tmdbId, id) {
 */
 
 function deleteList(list, id) {
+
+    // GET CONFIRMATION BEFORE DELETING AN ENTIRE LIST
     let confirmDelete = confirm('Are you sure you want to delete this list?');
 
+    // DELETE LIST & SET LOCAL STORAGE
     if (confirmDelete) {
         delete state.mylists[list];
         let userlists = JSON.stringify(state.mylists);
         localStorage.setItem('movielist:userlists', userlists);
     };
 
+    // IF AN ID WAS PASSED, REMOVE ELEMENT
     if (id) {
         let element = document.querySelector(id);
         fadeOut(id);
         setTimeout(() => element.remove(), 200);
     }
 
+    // IF LAST LIST DELETED - SHOW NO LISTS TEXT
     if (!Object.keys(state.mylists).length) {
         showNoListsText();
     };
@@ -557,7 +625,11 @@ function deleteList(list, id) {
 
 function deleteItemFromList(list, tmdbId, id, remove) {
 
+
     for (let i in state.mylists[list]) {
+
+        // GET A MATCH - SPLICE OUT OF LIST
+        // SET LOCAL STORAGE & BREAK
         if (state.mylists[list][i].id == tmdbId) {
             state.mylists[list].splice(i, 1);
             let userlists = JSON.stringify(state.mylists);
@@ -566,42 +638,21 @@ function deleteItemFromList(list, tmdbId, id, remove) {
         };
     };
 
+    // IF ELEMENT TO BE REMOVED
     if (id && remove) {
         let element = document.querySelector(id);
         fadeOut(id);
         setTimeout(() => element.remove(), 200);
     };
 
+    // IF ELEMENT IS TO BE UPDATED
     if (!remove) {
         updateList(tmdbId, id);
-    }
-};
-
-
-
-
-
-/*
-==================================================================
-    SHOW SEARCH RESULTS
-==================================================================
-*/
-
-function showSearchResults(results) {
-
-    if (!results.length) return;
-    
-    for (let i = 0; i < 6; i++) {
-        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
-            let title = results[i].title || results[i].name;
-            let date = results[i].release_date || results[i].first_air_date || '';
-            let mediaType = results[i].media_type || 'movie';
-
-            if (date)  date = date.slice(0,4);
-            searchResults.innerHTML += `<p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">${title} (${date})</p>`;
-        };
     };
 };
+
+
+
 
 
 /*
@@ -612,18 +663,24 @@ function showSearchResults(results) {
 
 function showContentResults(results) {
 
+    // RETURN IF NO DATA PRESENT
     if (!results.length) return;
 
+    // RESET CONTENT
     resetMediaResults();
     resetMyLists();
 
-    results.map((result, i) => {
+    // MAP OVER DATA
+    results.map(result => {
+
+        // EXTRACT RESULTS
         const tmdbId = result.id;
         const title = result.title || result.name || 'Unknown';
         const rating = result.vote_average || '0';
-        let poster = POSTER + result.poster_path;
+        let poster = `${POSTER}result.poster_path`;
         let mediaType;
         
+        // IF POSTER FAILS & GET MEDIA TYPE
         if (result.poster_path == null) poster = DEFAULT_POSTER;
         if (result.hasOwnProperty('adult')) mediaType = 'movie';
         else  mediaType = 'tv';
@@ -634,21 +691,19 @@ function showContentResults(results) {
         let isInCollection = checkIfInCollection(tmdbId);
         if (isInCollection) isInCollectionColor = 'crimson';
 
-
+        // CREATE HTML TO RETURN
         mainContent.innerHTML += `
             <div class="media-item" onclick="fetchMediaData('${mediaType}',${tmdbId})">
-                <i class="material-icons is-in-collection"  style="color: ${isInCollectionColor}">collections</i>
+                <i class="material-icons is-in-collection" style="color: ${isInCollectionColor}">collections</i>
                 <img class="media-poster" src="${poster}" alt="${title}">
                 <span class="more-information">More Information</span>
-                <div>
-                    <span class="title">${title}</span><span class="rating">${rating}</span>
-                </div>
-                <div>
-                    <p class="add-remove-from-collection">Add/Remove from Collection</p>
-                </div>
+                <div><span class="title">${title}</span><span class="rating">${rating}</span></div>
+                <div><p class="add-remove-from-collection">Add/Remove from Collection</p></div>
             </div>
         `;
     });
+
+    // HOVER ANIMATION
     onMediaHover();
 };
 
@@ -660,8 +715,9 @@ function showContentResults(results) {
 ==================================================================
 */
 
-function showFullMediaContent(mediaType, result) {
+function showFullMediaContent(result) {
 
+    // EXTRACT RESULTS & SET BACKUP IF FAILURE
     const tmdbId = result.id || '0';
     const title = result.title || result.name || 'Unknown';
     const tagline = result.tagline || `NO. SEASONS: ${result.number_of_seasons}  ~  NO. EPISODES: ${result.number_of_episodes}` || '';
@@ -669,15 +725,18 @@ function showFullMediaContent(mediaType, result) {
     const rating = result.vote_average || '0';
     let date = result.release_date || result.first_air_date || '';
     let status = result.status || '';
-    let backdrop = BACKDROP + result.backdrop_path;
-    let poster = POSTER + result.poster_path;
+    let backdrop = `${BACKDROP}result.backdrop_path`;
+    let poster = `${POSTER}result.poster_path`;
     let trailer = []; 
 
+    // CHANGE DATE TO EUROPEAN FORMAT 
+    // IF ARTWORK FAILS, SET THE DEFAULT ARTWORK
     if (date) date = date.split('-').reverse().join('-');
     if (result.backdrop_path == null) backdrop = DEFAULT_BACKDROP;
     if (result.poster_path == null) poster = DEFAULT_POSTER;
 
-    // Get Trailer and check for undefined
+    // GET TRAILER & GET FOR UNDEFINED
+    // RETURN NEW ARRAY AND FILTER BASED ON VIDEO TYPE
     if (result.videos.results.length != 0) {
         trailer = result.videos.results.map(video => {
             if (video.type == 'Trailer') {
@@ -689,37 +748,47 @@ function showFullMediaContent(mediaType, result) {
             }
         });
     } 
-    // If no trailer exists - search youtube
+    
+    // IF NO TRAILERS EXIST - REDIRECT TO YOUTUBE WITH QUERY
     else {
         trailer[0] = `https://www.youtube.com/results?search_query=${title}`;
     }
 
-
+    // CREATE HTML TO RETURN
     fullMediaContent.innerHTML = `
-        <p class="content-title">MEDIA DETAILS <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i></p>
+        <p class="content-title">MEDIA DETAILS
+            <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i>
+        </p>
+
+        <!-- MEDIA BACKDROP -->
         <div id="media-showcase" style="background-image: url('${backdrop}')">
-            <a class="download-fanart" href="${backdrop}"target="_blank">DOWNLOAD FANART<br /><i class="material-icons download-icon">cloud_download</i></a>
+            <a class="download-fanart" href="${backdrop}"target="_blank">DOWNLOAD FANART<br />
+                <i class="material-icons download-icon">cloud_download</i>
+            </a>
             <h1 id="media-title">${title}</h1>
         </div>
+
+        <!-- MEDIA DETAILS -->
         <div id="media-details">
             <img width="140" id="media-poster" src="${poster}" alt="${title}">
             <div id="media-details-bar">
                 <a href="${trailer[0]}" target=_blank">Trailer</a>
-                <span>${rating}</span>
-                <span>${status}</span>
-                <span>${date}</span>
+                <span>${rating}</span><span>${status}</span><span>${date}</span>
                 <span class="from-collection" onclick="updateList(${tmdbId},'#from-full-media-collection')">Add/Remove from Collection</span>
 
                 <!-- ADD REMOVE ITEM FROM COLLECTION -->
                 <div id="from-full-media-collection"></div>
-
             </div>
             <p id="media-tagline">${tagline}</p>
             <p id="media-overview">${overview}</p>
         </div>
     `;
     fullMediaContent.style.display = 'block';
+
+    // PASS CONTENT TO STATE FOR ADDING TO A LIST
     state.media = result;
+
+    // ANIMATION ON RENDER
     fadeIn('#full-media-content');
 };
 
@@ -727,45 +796,105 @@ function showFullMediaContent(mediaType, result) {
 
 /*
 ==================================================================
-    GET & SHOW USER LISTS
+    SHOW SEARCH RESULTS
+==================================================================
+*/
+
+function showSearchResults(results) {
+
+    // IF EMPTY RETURN
+    if (!results.length) return;
+    
+    // ITERATE OVER RESULTS
+    // ONLY SHOW MAX 6 RESULTS
+    for (let i = 0; i < 6; i++) {
+
+        // DO NOT INCLUDE PEOPLE - ONLY MOVIES OR TV SHOW MEDIA
+        if (results[i].media_type == 'movie' || results[i].media_type == 'tv') {
+
+            // EXTRACT RESULTS & ASSIGN BACKUPS IF FAILURE
+            let mediaType = results[i].media_type || 'movie';
+            let title = results[i].title || results[i].name;
+            let date = results[i].release_date || results[i].first_air_date || '';
+
+            // ONLY WANT THE YEAR - SLICE & RETURN
+            if (date)  date = date.slice(0,4);
+
+            // CREATE HTML
+            searchResults.innerHTML += `
+                <p onclick="fetchMediaData('${mediaType}',${results[i].id});resetSearchResults();resetSearchInputValue()">
+                    ${title} (${date})
+                </p>
+            `;
+        };
+    };
+};
+
+
+
+/*
+==================================================================
+    SHOW USER LISTS
 ==================================================================
 */
 
 function showMyLists() {
+
+    // RESETS & DISPLAY LIST SECTION
     resetUserLists();
     myLists.style.display = 'block';
 
+    // CHECK LISTS ARE NOT EMPTY BEFORE 
     if (Object.keys(state.mylists).length !== 0) {
-         // Iterate over lists
+
          let i = 1;
+
+         // ITERATE OVER LISTS
          for(let lists in state.mylists) {
+
+            // GET THE KEY FOR EACH LIST
             let list = state.mylists[lists];
 
+            // CREATE HTML & ASSIGN UNIQUE ID FOR DELETING ELEMENTS
+            // CREATING THE LIST HEADING AND DELETE BUTTON
             let userList = `
             <div class="userlist"  id="list-${lists}-${i}">
                 <div class="list-titlebar">
                     <h2>${lists}</h2>
-                    <p class="delete-list" onclick="deleteList('${lists}', '#list-${lists}-${i}')">Delete List<i class="material-icons delete-list-icon">delete</i></p>
+                    <p class="delete-list" onclick="deleteList('${lists}', '#list-${lists}-${i}')">
+                        Delete List
+                        <i class="material-icons delete-list-icon">delete</i>
+                    </p>
                 </div>
             `;
 
+            // ITERATE OVER THE LENGTH OF EACH LIST
             for (let i = 0; i < list.length; i++) {
+
+                // EXTRACT INFO & ASSIGN BACKUPS IF FAILURE
                 const tmdbId = list[i].id;
                 const title = list[i].title || list[i].name || 'Unknown';
                 const rating = list[i].vote_average || '0';
-
                 let date = list[i].release_date || list[i].first_air_date || '';
+                let mediaType;
+
+                // SLICE LIST FORMAT TO YEAR ONLY
                 if (date)  date = date.slice(0,4);
 
-                let mediaType;
+                // IF TH EADULT PROPERTY EXISTS - MEDIA TYPE IS MOVIE ELSE TVSHOW
                 if (list[i].hasOwnProperty('adult')) mediaType = 'movie';
                 else  mediaType = 'tv'; 
 
+                // CREATE HTML - ALSO NEEDS UNIQUE ID
                 userList += `
                     <div class="list-item" id="list-item-${lists}-${i}">
-                        <div onclick="deleteItemFromList('${lists}','${tmdbId}','#list-item-${lists}-${i}')"><i class="list-item-delete material-icons delete-list-icon">delete</i></div>
+                        <div onclick="deleteItemFromList('${lists}','${tmdbId}','#list-item-${lists}-${i}')">
+                            <i class="list-item-delete material-icons delete-list-icon">delete</i>
+                        </div>
                         <div class="list-item-rating">${rating}</div>
-                        <div class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})"><span class="list-title">${title}</span>  (${date})</div>
+                        <div class="list-item-title" onclick="fetchMediaData('${mediaType}',${tmdbId})">
+                            <span class="list-title">${title}</span>  (${date})
+                        </div>
                     </div>
                 `;
             } ;
@@ -775,8 +904,39 @@ function showMyLists() {
         };
     }
     else {
+
+        // IF NO LISTS EXIST - SHOW NO LIST TEXT
         showNoListsText();
     }
+};
+
+
+
+/*
+==============================
+    SAMPLE LIST DATA
+==============================
+*/
+
+function showNoListsText() {
+    userLists.innerHTML = `
+        <p class="list-heading">
+            You don't have any created lists<br />
+            <span class="show-sample-lists" onclick="sampleLists()">Click here</span> 
+            for sample lists
+        </p>
+    `;
+};
+
+
+// AFTER CLICK - SET SAMPLE DATA INTO LOCAL STORAGE
+// CHAIN EVENTS TO PARSE AND ADD TO LOCAL STATE
+// CALL SHOW LISTS - CONTENT SHOULD APPEAR
+function sampleLists() {
+    localStorage.setItem('movielist:userlists', sampleData);
+    parseLocalStorageLists();
+    showMyLists();
+    fadeIn('#user-lists');
 };
 
 
@@ -787,48 +947,63 @@ function showMyLists() {
 ==============================
 */
 
+// REVISITED A FEW TIMES
+// FOUND BETTER STRATEGY RELATING TO A GOOGLE STYLE PAGINATION METHOD
+// APPLIED SIMILAR STRUCTURE TO MY LOGIC
 function pagination(primary, secondary, totalPages, page) {
     resetPagination();
 
-    // Indexes
+    // INDEXS
     let totalBoxes = 5;
     let start;
     let end;
 
-    // Index Logic
+    // CREATE INDEX LOGIC
+    // LESS THAN 5 PAGES
     if (totalPages <= totalBoxes) {
         start = 1;
         end = totalPages;
     } 
     else {
+        // WHEN ABOVE 5 PAGES
         if (page <= 3) {
             start = 1;
             end = 5
         }
+        // IF JUST BELOW TOTAL PAGES
         else if (page > 3 && page < (totalPages - 2)) {
             start = page - 2;
             end = page + 2;
         }
+        // END OF TOTAL PAGES
         else {
             start = totalPages - 4;
             end = totalPages;
         };
     };
 
-    // First Page Element 
-    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${1})">first</span>`;
+    // SET A PERMENANT FIRST PAGE
+    mainPagination.innerHTML += `
+        <span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${1})">first</span>
+    `;
 
     
     let i = 0;
+
+    //  CREATE PAGE BOXES FROM START OF INDEX TO END OF INDEX
     while ((start + i) <= end) {
-        mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${start + i})">${start + i}</span>`;
+        mainPagination.innerHTML += `
+            <span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${start + i})">${start + i}</span>
+        `;
         i++;
     };
 
-    // Last page element
-    mainPagination.innerHTML += `<span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${totalPages})">last</span>`;
+    // SET A PERMENANT LAST PAGE
+    mainPagination.innerHTML += `
+        <span class="pagination-box" onclick="fetchTMDbData('${primary}','${secondary}',${totalPages})">last</span>
+    `;
 
-    // Highlight current page
+    // HIGHLIGHT CURRENT PAGE
     const paginationBox = document.querySelectorAll('.pagination-box');
     for (let i in paginationBox) {
         if (page == paginationBox[i].innerText) {
@@ -838,39 +1013,9 @@ function pagination(primary, secondary, totalPages, page) {
 };
 
 
-/*
-==============================
-    LIST DATA
-==============================
-*/
 
-function showNoListsText() {
-    userLists.innerHTML = `
-        <p class="list-heading">You don't have any created lists<br />
-        <span class="show-sample-lists" onclick="sampleLists()">Click here</span> for sample lists</p>
-        `;
-};
 
-function sampleLists() {
-    localStorage.setItem('movielist:userlists', sampleData);
-    parseLocalStorageLists();
-    showMyLists();
-    fadeIn('#user-lists');
-};
 
-/*
-==============================
-    OPEN/CLOSE ADD NEW LIST/ITEM
-==============================
-*/
-
-function openAddNewList(id) {
-    document.querySelector(id).style.visibility = 'visible';
-};
-
-function closeAddNewList(id) {
-    document.querySelector(id).style.visibility = 'hidden';
-}
 
 
 
@@ -884,43 +1029,42 @@ function closeAddNewList(id) {
 
 /*
 ==================================================================
-    TMDB API ROUTES
+    TMDB / API ROUTES
 ==================================================================
 */
 
-/*
-==============================
-    VARIABLES
-==============================
-*/
-
-const API_KEY = `?api_key=d41fd9978486321b466e29bfec203902`;
-const MOVIES_URL = 'https://api.themoviedb.org/3/movie/';
-const TVSHOWS_URL = 'https://api.themoviedb.org/3/tv/';
-const SEARCH_URL = 'https://api.themoviedb.org/3/search/multi';
-const EXTRA = "&language=en-US";
+// TMDB URLS
+const API_KEY = '?api_key=d41fd9978486321b466e29bfec203902';
+const MOVIES = 'https://api.themoviedb.org/3/movie/';
+const TVSHOWS = 'https://api.themoviedb.org/3/tv/';
+const SEARCH = 'https://api.themoviedb.org/3/search/multi';
+const LANGUAGE = '&language=en-US';
 const POSTER = 'https://image.tmdb.org/t/p/w200';
 const BACKDROP = 'https://image.tmdb.org/t/p/w1280/';
-const DEFAULT_BACKDROP = 'https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-blue-10d3d41d2a0af9ebcb85f7fb62ffb6671c15ae8ea9bc82a2c6941f223143409e.png'
-const DEFAULT_POSTER = 'https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-blue-10d3d41d2a0af9ebcb85f7fb62ffb6671c15ae8ea9bc82a2c6941f223143409e.png'
+const DEFAULT_BACKDROP = 'https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-blue-10d3d41d2a0af9ebcb85f7fb62ffb6671c15ae8ea9bc82a2c6941f223143409e.png';
+const DEFAULT_POSTER = 'https://www.themoviedb.org/assets/1/v4/logos/408x161-powered-by-rectangle-blue-10d3d41d2a0af9ebcb85f7fb62ffb6671c15ae8ea9bc82a2c6941f223143409e.png';
 let url;
 let data;
 
 
+
 /*
 ==============================
-    FETCH MAIN TMDB DATA
+    FETCH MAIN TMDB CONTENT
 ==============================
 */
 
 function fetchTMDbData(primary, secondary, page = 1) {
-    if (primary == 'movies') url = MOVIES_URL;
-    else if (primary == 'tvshows') url = TVSHOWS_URL;
 
-    fetch(`${url}${secondary}${API_KEY}${EXTRA}&page=${+page}`, 
-        {
-            headers: new Headers ({ 'Accept': 'application/json'})
-        })
+    // GET MEDIA TYPE
+    if (primary == 'movies') url = MOVIES;
+    else if (primary == 'tvshows') url = TVSHOWS;
+
+    // MAKE REQUEST WITH HEADERS
+    fetch(`${url}${secondary}${API_KEY}${LANGUAGE}&page=${+page}`, 
+    {
+        headers: new Headers ({ 'Accept': 'application/json'})
+    })
     .then(response => {
         return response.text();
     })
@@ -930,24 +1074,26 @@ function fetchTMDbData(primary, secondary, page = 1) {
         pagination(primary, secondary, data.total_pages, page);
     })
     .catch(err => {
-        // TODO: 404 Error
         console.log(err);
     });
 };
 
 
+
 /*
 ================================
-    FETCH FULL MEDIA DATA
+    FETCH FULL MEDIA CONTENT
 ================================
 */
 
-function fetchMediaData(mediaType,tmdbId) {
+function fetchMediaData(mediaType, tmdbId) {
     
-    if (mediaType == 'movie') url = MOVIES_URL;
-    else url = TVSHOWS_URL;
+    // GET MEDIA TYPE
+    if (mediaType == 'movie') url = MOVIES;
+    else url = TVSHOWS;
 
-    fetch(`${url}${tmdbId}${API_KEY}${EXTRA}&append_to_response=videos`, 
+    // MAKE REQUEST WITH HEADERS
+    fetch(`${url}${tmdbId}${API_KEY}${LANGUAGE}&append_to_response=videos`, 
     {
         headers: new Headers ({ 'Accept': 'application/json'})
     })
@@ -956,26 +1102,28 @@ function fetchMediaData(mediaType,tmdbId) {
     })
     .then(text => {
         data = JSON.parse(text);
-        showFullMediaContent(mediaType, data);
+        showFullMediaContent(data);
     })
     .catch(err => {
-        // TODO: 404 Error
         console.log(err);
     });
 };
 
 
+
 /*
 ==============================
-    FETCH SEARCH DATA
+    FETCH SEARCH CONTENT
 ==============================
 */
 
 function getTMDbSearchData(searchQuery) {
-    fetch(`${SEARCH_URL}${API_KEY}&language=en-US&query=${searchQuery}&page=1&include_adult=false`, 
-        {
-            headers: new Headers ({ 'Accept': 'application/json'})
-        })
+
+    // MAKE REQUEST WITH HEADERS
+    fetch(`${SEARCH}${API_KEY}&language=en-US&query=${searchQuery}&page=1&include_adult=false`, 
+    {
+        headers: new Headers ({ 'Accept': 'application/json'})
+    })
     .then(response => {
         return response.text();
     })
@@ -985,7 +1133,6 @@ function getTMDbSearchData(searchQuery) {
         showSearchResults(data.results);
     })
     .catch(err => {
-         // TODO: 404 Error
         console.log(err);
     });
 };
@@ -1415,15 +1562,19 @@ const mylists = {
     ]
   };
 
-  // CONVERT TO JSON 
+  // CONVERT OBJECT TO JSON
+  // USE AS SAMPLE LISTS WHEN ALL LIST DELETED
   let sampleData = JSON.stringify(mylists);
 
 /*
 ==================================================================
-    INIT APP
+    INIT APPLICATION / START FUNCTIONS
 ==================================================================
 */
 
+// PARSE ANY LOCAL STORAGE LISTS INTO LOCAL STATE
+// SET ANY GLOBAL EVENT LISTENERS
+// CALL NAVIGATION ON DEFAULT PAGE
 function init() {
     parseLocalStorageLists();
     setEventListeners();
