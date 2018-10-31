@@ -500,6 +500,8 @@ main {
       main #full-media-content #media-details #media-tagline {
         text-transform: uppercase;
         color: #000; }
+      main #full-media-content #media-details #media-overview {
+        padding-bottom: 40px; }
       main #full-media-content #media-details #from-full-media-collection {
         position: absolute;
         top: 60px;
@@ -509,11 +511,11 @@ main {
         color: #484539;
         position: absolute;
         min-width: 260px;
-        padding: 0 40px 30px 0px;
+        padding-bottom: 5px;
         text-align: left; }
         main #full-media-content #media-details #from-full-media-collection .close-add-item {
           text-align: right;
-          padding-right: 30px; }
+          padding-right: 45px; }
         main #full-media-content #media-details #from-full-media-collection p {
           display: block;
           margin: 5px;
@@ -525,12 +527,19 @@ main {
             top: 4px;
             right: 0;
             bottom: auto;
-            left: auto; }
+            left: auto;
+            margin-right: 15px; }
           main #full-media-content #media-details #from-full-media-collection p .close-icon {
             color: #b91335;
             font-weight: bold;
             font-size: 1.2rem;
             top: 2px; }
+        @media (min-width: 450px) and (max-width: 800px) {
+          main #full-media-content #media-details #from-full-media-collection {
+            padding-bottom: 20px; } }
+        @media (min-width: 800px) {
+          main #full-media-content #media-details #from-full-media-collection {
+            padding: 0px 20px 20px 0; } }
     @media (min-width: 800px) {
       main #full-media-content {
         width: 75%; } }

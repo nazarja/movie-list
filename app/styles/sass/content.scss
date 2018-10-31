@@ -274,6 +274,10 @@ main {
                 color: #000;
             }
 
+            #media-overview {
+                padding-bottom: 40px;
+            }
+
 
             /*
             ============================
@@ -287,12 +291,12 @@ main {
                 color: $grey-font;
                 position: absolute;
                 min-width: 260px;
-                padding: 0 40px 30px 0px;
+                padding-bottom: 5px;
                 text-align: left;
 
                 .close-add-item {
                     text-align: right;
-                    padding-right: 30px;
+                    padding-right: 45px;
                 }
 
                 p {
@@ -307,6 +311,7 @@ main {
 
                     .material-icons {
                         @include pos-absolute(4px, 0, auto, auto);
+                        margin-right: 15px;
                     }
 
                     .close-icon {
@@ -315,6 +320,14 @@ main {
                         font-size: 1.2rem;
                         top: 2px;
                     }
+                }
+
+                @media (min-width: 450px) and  (max-width: 800px) {
+                    padding-bottom: 20px;
+                }
+
+                @include breakpoint {
+                    padding: 0px 20px 20px 0;
                 }
             }
         }
