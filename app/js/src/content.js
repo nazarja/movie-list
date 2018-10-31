@@ -372,6 +372,14 @@ function pagination(primary, secondary, totalPages, page) {
     };
 };
 
+
+
+/*
+==============================
+    UDATE POSTER ICON
+==============================
+*/
+
 // AFTER ADDING / REMOVING FROM A LIST - UPDATE POSTER ICON STATUS
 function checkIfCollectionChanged(tmdbId) {
     const icons = document.querySelectorAll('.is-in-collection');
