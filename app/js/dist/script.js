@@ -276,8 +276,6 @@ function nav(param) {
             fadeIn('#main-mylists');
             showMyLists();
             break;
-        case 'statistics':
-            break;
         default:
             break;
     };
