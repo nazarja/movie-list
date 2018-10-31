@@ -327,9 +327,9 @@ main {
         color: #484539;
         cursor: pointer; }
       main #main-content .media-item .genres {
+        text-transform: uppercase;
         text-overflow: ellipsis;
-        overflow: hidden;
-        text-transform: uppercase; }
+        overflow: hidden; }
       main #main-content .media-item .more-information {
         position: absolute;
         top: auto;

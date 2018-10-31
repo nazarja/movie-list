@@ -712,7 +712,7 @@ function showContentResults(results) {
         // CREATE HTML TO RETURN
         mainContent.innerHTML += `
             <div class="media-item" onclick="fetchMediaData('${mediaType}',${tmdbId})">
-                <i class="material-icons is-in-collection" style="color: ${isInCollectionColor}">collections</i>
+                <i class="material-icons is-in-collection" style="color: ${isInCollectionColor}" data-tmdbid="${tmdbId}">collections</i>
                 <img class="media-poster" src="${poster}" alt="${title}">
                 <span class="more-information">More Information</span>
                 <div><span class="title">${title}</span><span class="rating">${rating}</span></div>
@@ -775,7 +775,7 @@ function showFullMediaContent(result) {
     // CREATE HTML TO RETURN
     fullMediaContent.innerHTML = `
         <p class="content-title">MEDIA DETAILS
-            <i class="material-icons close-media-content" onclick="resetFullMediaContent()">close</i>
+            <i class="material-icons close-media-content" onclick="resetFullMediaContent(); checkIfCollectionChanged(${tmdbId})">close</i>
         </p>
 
         <!-- MEDIA BACKDROP -->
@@ -1030,8 +1030,19 @@ function pagination(primary, secondary, totalPages, page) {
     };
 };
 
+// AFTER ADDING / REMOVING FROM A LIST - UPDATE POSTER ICON STATUS
+function checkIfCollectionChanged(tmdbId) {
+    const icons = document.querySelectorAll('.is-in-collection');
+    icons.forEach(icon => {
+        const dataTmdbId = parseInt(icon.dataset.tmdbid) || 0;
 
-
+        if (dataTmdbId == tmdbId) {
+            const isInCollection = checkIfInCollection(tmdbId);
+            if (isInCollection) icon.style.color = 'crimson';
+            else icon.style.color = '#222';
+        }
+    });
+};
 
 
 

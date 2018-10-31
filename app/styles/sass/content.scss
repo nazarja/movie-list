@@ -61,9 +61,9 @@ main {
             }
 
             .genres {
+                text-transform: uppercase;
                 text-overflow: ellipsis;
                 overflow: hidden;
-                text-transform: uppercase;
             }
 
             .more-information {
