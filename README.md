@@ -141,7 +141,7 @@ For inspiration I read over the Jasmine documentation and I also turned to the s
 
 ---
  
-This project is deployed as requested on github pages at [https://nazarja.github.io/movie-listindex.html]
+This project is deployed as requested on github pages at [https://nazarja.github.io/movie-list/index.html]
 I have also deployed the website to my personal website via file transfer and it is currently viewable at [http://seanmurphy.eu/movie-list]
 
 

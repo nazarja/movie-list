@@ -161,6 +161,8 @@ function resetUserLists() {
     userLists.innerHTML = '';
 };
 
+
+// NOT A RESET BUT OPEN/CLOSE HIDDEN DIV
 function openAddNewList(id) {
     document.querySelector(id).style.visibility = 'visible';
 };
