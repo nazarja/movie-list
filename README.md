@@ -142,6 +142,7 @@ For inspiration I read over the Jasmine documentation and I also turned to the s
 ---
  
 This project is deployed as requested on github pages at [https://nazarja.github.io/movie-list/index.html]
+
 I have also deployed the website to my personal website via file transfer and it is currently viewable at [http://seanmurphy.eu/movie-list]
 
 
@@ -152,6 +153,9 @@ All code is viewable at my github repository at [https://github.com/nazarja/movi
 
 ## Credits
 ---
+- The slide animation on the mobile menu is taken from [https://easings.net]
+- The box shadow on some element is taken from Material Design guidelines.
+- Help with how to proceed with Jasmine testing was from user @johnL3
 
 
 ### Content
@@ -165,4 +169,4 @@ All code is viewable at my github repository at [https://github.com/nazarja/movi
 ### Acknowledgements
 
 - While deciding upon what features and layout my site might have,
-I took inspiration from [https://track.tv] and [https://www.themoviedb.org] and [https://kodi.tv]
+I took inspiration from [https://track.tv] , [https://www.themoviedb.org] , [https://kodi.tv] and material design principles.
